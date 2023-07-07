@@ -18,7 +18,7 @@ async function initializePinecone() {
   }
 }
 
-export const createVectorStore = async (docs) => {
+export const createVectorStore = async (docs, namespace) => {
   try {
     const pinecone = await initializePinecone();
     const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX);
@@ -26,7 +26,7 @@ export const createVectorStore = async (docs) => {
     //embed the PDF documents
     await PineconeStore.fromDocuments(docs, embeddings, {
       pineconeIndex,
-      namespace: process.env.PINECONE_NAMESPACE,
+      namespace: namespace || process.env.PINECONE_NAMESPACE,
       textKey: "text",
     });
   } catch (error) {
@@ -35,13 +35,13 @@ export const createVectorStore = async (docs) => {
   }
 };
 
-export const fetchVectorStore = async () => {
+export const fetchVectorStore = async (namespace) => {
   try {
     const pinecone = await initializePinecone();
     const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX);
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
       pineconeIndex,
-      namespace: process.env.PINECONE_NAMESPACE,
+      namespace: namespace || process.env.PINECONE_NAMESPACE,
       textKey: "text",
     });
     return vectorStore;

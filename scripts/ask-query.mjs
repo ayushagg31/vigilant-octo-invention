@@ -19,7 +19,7 @@ Question: {question}
 Helpful answer in markdown:`;
 
 export const ask = async () => {
-  const vectorStore = await fetchVectorStore();
+  const vectorStore = await fetchVectorStore("Diet Plan.pdf_1688744541645");
   const chain = ConversationalRetrievalQAChain.fromLLM(
     model,
     vectorStore.asRetriever(),
@@ -32,7 +32,7 @@ export const ask = async () => {
   );
   const response = await chain.call({
     question: "summarize the content of this document under 50 words",
-    chat_history: []
+    chat_history: [],
   });
 
   console.log("<======response========>", response);
