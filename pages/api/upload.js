@@ -8,7 +8,7 @@ const generateFileName = (filename) => {
   const fileType = filename.split(".").pop();
 
   const fileName = filename.replace(`.${fileType}`, "");
-  return `${fileName}-${uniqid()}.${fileType}`;
+  return { fileName: `${fileName}-${uniqid()}.${fileType}`, fileType };
 };
 
 const upload = multer({
@@ -26,7 +26,7 @@ const uploadHandler = (req, res) => {
           .json({ error: "Failed to upload file in memory" });
       }
       const file = req.file;
-      const fileName = generateFileName(file.originalname);
+      const { fileName, fileType } = generateFileName(file.originalname);
       fs.writeFile(`docs/${fileName}`, file.buffer, async (err) => {
         if (err) {
           console.error(err);
@@ -36,7 +36,7 @@ const uploadHandler = (req, res) => {
         } else {
           console.log("File written successfully");
           try {
-            await ingestData(fileName);
+            await ingestData(fileName, fileType);
             console.log("Ingestion complete");
             return res.status(200).json({
               message: "File uploaded and ingested successfully",
