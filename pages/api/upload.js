@@ -43,8 +43,8 @@ const uploadHandler = (req, res) => {
               fileName,
             });
           } catch (error) {
-            console.error("Ingestion Failed!!!", error);
-            return res.status(500).json({ error: "Ingestion Failed!!!" });
+            console.error("Ingestion Failed", error);
+            return res.status(500).json({ error: error.message });
           }
         }
       });

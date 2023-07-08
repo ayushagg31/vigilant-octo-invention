@@ -35,7 +35,3 @@ export const ask = async (vectorStore, question, chat_history = []) => {
   });
   return response;
 };
-
-// (async () => {
-//   await ask();
-// })();
