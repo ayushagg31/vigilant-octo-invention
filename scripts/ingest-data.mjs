@@ -2,7 +2,7 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { createVectorStore } from "../utils/pinecone.config.js";
 
-export const ingestData = async (fileName = "notes.pdf") => {
+export const ingestData = async (fileName) => {
   const loader = new PDFLoader(`docs/${fileName}`);
 
   const rawText = await loader.load();
@@ -15,10 +15,8 @@ export const ingestData = async (fileName = "notes.pdf") => {
   // split text into chunks
   const docs = await textSplitter.splitDocuments(rawText);
 
-  fileName = `${fileName}_${Date.now()}`;
-
   // create and store the embeddings in the vectorStore
-  await createVectorStore(docs, fileName);
+  await createVectorStore(docs, fileName); // this shit cost money, use frugally
 };
 
 // (async () => {

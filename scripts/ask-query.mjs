@@ -1,6 +1,5 @@
 import { ConversationalRetrievalQAChain } from "langchain/chains";
 import { model } from "../utils/openai.config.js";
-import { fetchVectorStore } from "../utils/pinecone.config.js";
 
 const CONDENSE_PROMPT = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
 
@@ -18,8 +17,7 @@ If the question is not related to the context, politely respond that you are tun
 Question: {question}
 Helpful answer in markdown:`;
 
-export const ask = async () => {
-  const vectorStore = await fetchVectorStore("Diet Plan.pdf_1688744541645");
+export const ask = async (vectorStore, question, chat_history = []) => {
   const chain = ConversationalRetrievalQAChain.fromLLM(
     model,
     vectorStore.asRetriever(),
@@ -27,17 +25,17 @@ export const ask = async () => {
       qaTemplate: QA_PROMPT,
       questionGeneratorTemplate: CONDENSE_PROMPT,
       // The number of source documents returned is 4 by default
-      returnSourceDocuments: true,
+      // returnSourceDocuments: true,
     }
   );
   const response = await chain.call({
-    question: "summarize the content of this document under 50 words",
-    chat_history: [],
+    // this shit cost money, use frugally
+    question,
+    chat_history,
   });
-
-  console.log("<======response========>", response);
+  return response;
 };
 
-(async () => {
-  await ask();
-})();
+// (async () => {
+//   await ask();
+// })();

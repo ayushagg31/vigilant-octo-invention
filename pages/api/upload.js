@@ -1,32 +1,57 @@
 // pages/api/upload.js
-import multer from "multer";
-import fs from "fs";
 import { ingestData } from "../../scripts/ingest-data.mjs";
+import multer from "multer";
+import uniqid from "uniqid";
+import fs from "fs";
+
+const generateFileName = (filename) => {
+  const fileType = filename.split(".").pop();
+
+  const fileName = filename.replace(`.${fileType}`, "");
+  return `${fileName}-${uniqid()}.${fileType}`;
+};
 
 const upload = multer({
   storage: multer.memoryStorage(), // Use in-memory storage for simplicity
 });
 
-const uploadHandler = async (req, res) => {
-  const uploader = upload.single("file");
-  uploader(req, res, (error) => {
-    if (error) {
-      console.error(error);
-      return res.status(500).json({ error: "Something went wrong" });
-    }
-
-    const file = req.file;
-    fs.writeFile(`docs/${file.originalname}`, file.buffer, (err) => {
-      if (err) console.log(err);
-      else {
-        console.log("File written successfully\n");
+const uploadHandler = (req, res) => {
+  try {
+    const uploader = upload.single("file");
+    uploader(req, res, (error) => {
+      if (error) {
+        console.error(error);
+        return res
+          .status(500)
+          .json({ error: "Failed to upload file in memory" });
       }
+      const file = req.file;
+      const fileName = generateFileName(file.originalname);
+      fs.writeFile(`docs/${fileName}`, file.buffer, async (err) => {
+        if (err) {
+          console.error(err);
+          return res
+            .status(500)
+            .json({ error: "Failed to write file in disk" });
+        } else {
+          console.log("File written successfully");
+          try {
+            await ingestData(fileName);
+            console.log("Ingestion complete");
+            return res.status(200).json({
+              message: "File uploaded and ingested successfully",
+              fileName,
+            });
+          } catch (error) {
+            console.error("Ingestion Failed!!!", error);
+            return res.status(500).json({ error: "Ingestion Failed!!!" });
+          }
+        }
+      });
     });
-    ingestData(file.originalname).then((res) => {
-      console.log("Ingestion complete");
-    });
-    return res.status(200).json({ message: "File uploaded successfully" });
-  });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
 };
 
 export const config = {
@@ -35,10 +60,14 @@ export const config = {
   },
 };
 
-export default function handler(req, res) {
-  if (req.method === "POST") {
-    return uploadHandler(req, res);
-  } else {
-    res.status(405).json({ error: "Method Not Allowed" });
+export default async function handler(req, res) {
+  try {
+    if (req.method === "POST") {
+      return uploadHandler(req, res);
+    } else {
+      res.status(405).json({ error: "Method Not Allowed" });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
   }
 }

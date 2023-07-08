@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 const FileUploader = () => {
   const [file, setFile] = useState(null);
+  const router = useRouter();
 
   const handleFileChange = (event) => {
     setFile(event.target.files[0]);
@@ -20,7 +22,10 @@ const FileUploader = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      console.log(response);
+      router.push({
+        pathname: "/",
+        query: { fileName: response.data?.fileName },
+      });
     } catch (error) {
       console.error("Error:", error);
     }
