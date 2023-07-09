@@ -21,7 +21,7 @@ async function initializePinecone() {
 export const createVectorStore = async (docs, namespace) => {
   try {
     const pinecone = await initializePinecone();
-    const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX);
+    const pineconeIndex = pinecone.Index(process.env.INDEX_NAME);
 
     //embed the PDF documents
     await PineconeStore.fromDocuments(docs, embeddings, {
@@ -38,7 +38,7 @@ export const createVectorStore = async (docs, namespace) => {
 export const fetchVectorStore = async (namespace) => {
   try {
     const pinecone = await initializePinecone();
-    const pineconeIndex = pinecone.Index(process.env.PINECONE_INDEX);
+    const pineconeIndex = pinecone.Index(process.env.INDEX_NAME);
     const vectorStore = await PineconeStore.fromExistingIndex(embeddings, {
       pineconeIndex,
       namespace: namespace || process.env.PINECONE_NAMESPACE,

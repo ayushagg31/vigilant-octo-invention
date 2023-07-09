@@ -1,8 +1,8 @@
-import { fetchVectorStore } from "../../utils/pinecone.config";
+import { fetchVectorStore } from "../../utils/chroma.config";
 import { ask } from "../../scripts/ask-query.mjs";
 
 export default async function handler(req, res) {
-  const { question, history, fileName } = req.body;
+  const { question, history, collectionName } = req.body;
 
   //only accept post requests
   if (req.method !== "POST") {
@@ -17,10 +17,14 @@ export default async function handler(req, res) {
   const sanitizedQuestion = question.trim().replaceAll("\n", " ");
 
   try {
-    const vectorStore = await fetchVectorStore(fileName);
+    const vectorStore = await fetchVectorStore(collectionName);
 
     // query
-    const response = await ask(vectorStore, sanitizedQuestion, history);
+    const response = await ask(
+      vectorStore,
+      sanitizedQuestion,
+      history.slice(-4)
+    );
     res.status(200).json({ message: response.text });
   } catch (error) {
     console.log("error", error);

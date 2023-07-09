@@ -5,17 +5,18 @@ import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useRouter } from "next/router";
+import { HumanChatMessage, AIChatMessage } from "langchain/schema";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const {
-    query: { fileName },
+    query: { collectionName },
   } = useRouter();
   const [messages, setMessages] = useState([
     {
-      message: "Hi there! How can I help?",
+      message: "Hi, what would you like to learn about this document?",
       type: "apiMessage",
     },
   ]);
@@ -61,13 +62,19 @@ export default function Home() {
       { message: userInput, type: "userMessage" },
     ]);
 
+    const query = new HumanChatMessage(userInput);
+
     // Send user question and history to API
     const response = await fetch("/api/chat", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ question: userInput, history: history, fileName }),
+      body: JSON.stringify({
+        question: userInput,
+        history: history,
+        collectionName,
+      }),
     });
 
     if (!response.ok) {
@@ -78,6 +85,7 @@ export default function Home() {
     // Reset user input
     setUserInput("");
     const data = await response.json();
+
     if (data.error) {
       handleError();
       return;
@@ -87,6 +95,13 @@ export default function Home() {
       ...prevMessages,
       { message: data.message, type: "apiMessage" },
     ]);
+
+    setHistory((prevHistory) => [
+      ...prevHistory,
+      query,
+      new AIChatMessage(data.message),
+    ]);
+
     setLoading(false);
   };
 
@@ -100,18 +115,6 @@ export default function Home() {
       e.preventDefault();
     }
   };
-
-  // Keep history in sync with messages
-  useEffect(() => {
-    if (messages.length >= 3) {
-      setHistory([
-        [
-          messages[messages.length - 2].message,
-          messages[messages.length - 1].message,
-        ],
-      ]);
-    }
-  }, [messages]);
 
   return (
     <>

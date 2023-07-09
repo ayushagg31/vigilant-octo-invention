@@ -24,7 +24,7 @@ const FileUploader = () => {
       });
       router.push({
         pathname: "/chat",
-        query: { fileName: response.data?.fileName },
+        query: { collectionName: response.data?.collectionName },
       });
     } catch (error) {
       console.error("Error:", error);
