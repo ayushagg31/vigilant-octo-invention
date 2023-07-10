@@ -1,5 +1,5 @@
 import { ConversationalRetrievalQAChain } from "langchain/chains";
-import { model } from "../utils/openai.config.js";
+import { model } from "../config/openai.config.js";
 
 const CONDENSE_PROMPT = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
 

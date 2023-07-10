@@ -1,7 +1,7 @@
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { JSONLoader } from "langchain/document_loaders/fs/json";
-import { createVectorStore } from "../utils/chroma.config.js";
+import { createVectorStore } from "../config/qdrant.config.js";
 import { SRTLoader } from "langchain/document_loaders/fs/srt";
 import { TextLoader } from "langchain/document_loaders/fs/text";
 import { CSVLoader } from "langchain/document_loaders/fs/csv";
@@ -9,14 +9,13 @@ import { DocxLoader } from "langchain/document_loaders/fs/docx";
 import { HNLoader } from "langchain/document_loaders/web/hn";
 import { IMSDBLoader } from "langchain/document_loaders/web/imsdb";
 import { GitbookLoader } from "langchain/document_loaders/web/gitbook";
-import { CheerioWebBaseLoader } from "langchain/document_loaders/web/cheerio";
+import { EPubLoader } from "langchain/document_loaders/fs/epub";
+import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer";
 
-const sampleURL = "https://news.ycombinator.com/item?id=34817881";
 export const ingestData = async (collectionName, fileName, fileType) => {
   try {
     let loader;
     const filePath = `docs/${fileName}`;
-    // fileType = "url";
     // TODO: need to test all types of loader other than pdf
     switch (fileType) {
       case "pdf":
@@ -29,6 +28,9 @@ export const ingestData = async (collectionName, fileName, fileType) => {
       case "srt":
         loader = new SRTLoader(filePath);
         break;
+      case "epub":
+        loader = new EPubLoader(filePath, { splitChapters: false });
+        break;
       case "txt":
         loader = new TextLoader(filePath);
         break;
@@ -40,17 +42,17 @@ export const ingestData = async (collectionName, fileName, fileType) => {
         loader = new DocxLoader(filePath);
         break;
       case "hn": // Hackernews
-        loader = new HNLoader(sampleURL);
+        loader = new HNLoader(fileName);
         break;
       case "imsdb": // IMSDB
-        loader = new IMSDBLoader(sampleURL);
+        loader = new IMSDBLoader(fileName);
         break;
       case "gitbook": // gitbook
-        loader = new GitbookLoader(sampleURL);
+        loader = new GitbookLoader(fileName);
         break;
-      // case "web": // web
-      //   loader = new CheerioWebBaseLoader(sampleURL);
-      //   break;
+      case "web": // web
+        loader = new PuppeteerWebBaseLoader(fileName);
+        break;
       default: {
         console.error(`${fileType} not supported`);
         throw new Error(`${fileType} not supported`);
@@ -65,9 +67,9 @@ export const ingestData = async (collectionName, fileName, fileType) => {
 
     // split text into chunks
     const docs = await textSplitter.splitDocuments(rawText);
-
+    console.log(docs);
     // this shit cost money, use frugally
-    await createVectorStore(docs, collectionName);
+    // await createVectorStore(docs, collectionName);
   } catch (err) {
     console.error("Ingestion failed", err);
     throw new Error(err.message);

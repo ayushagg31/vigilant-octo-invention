@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
@@ -72,7 +71,7 @@ export default function Home() {
       },
       body: JSON.stringify({
         question: userInput,
-        history: history,
+        history: history.slice(-4),
         collectionName,
       }),
     });

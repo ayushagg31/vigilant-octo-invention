@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import isUrl from "is-url";
 
 const FileUploader = () => {
   const [file, setFile] = useState(null);
+  const [url, setUrl] = useState("");
+
   const router = useRouter();
 
   const handleFileChange = (event) => {
@@ -31,11 +34,40 @@ const FileUploader = () => {
     }
   };
 
+  const handleUrlChange = (event) => {
+    const inputUrl = event.target.value;
+    setUrl(inputUrl);
+  };
+
+  const saveAsPDF = async (e) => {
+    e.preventDefault();
+    if (isUrl(url)) {
+      try {
+        const response = await axios.post("/api/download", { pdfUrl: url });
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    } else {
+      alert("Invalid URL");
+    }
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <input type="file" accept="application/pdf" onChange={handleFileChange} />
-      <button type="submit">Upload</button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="file"
+          accept="application/pdf"
+          onChange={handleFileChange}
+        />
+        <button type="submit">Upload</button>
+      </form>
+      <form onSubmit={saveAsPDF}>
+        <input type="url" onChange={handleUrlChange} />
+        <button type="submit">Submit</button>
+      </form>
+    </>
   );
 };
 
