@@ -23,15 +23,15 @@ const Example = () => {
               </figure>
             </div>
             <div className="media-content">
-              <p className="title is-4">John Smith</p>
-              <p className="subtitle is-6">@johnsmith</p>
+              <p className="title is-4">Divya Prakash Jha</p>
+              <p className="subtitle is-6">@dpjha</p>
             </div>
           </div>
 
           <div className="content">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus
-            nec iaculis mauris. <a>@bulmaio</a>.<a href="#">#css</a>{" "}
-            <a href="#">#responsive</a>
+            nec iaculis mauris. <a>@ayagarwal</a>.<a href="#">#ai</a>{" "}
+            <a href="#">#nice</a>
             <br />
             {/* <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time> */}
           </div>
