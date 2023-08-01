@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useRouter } from "next/router";
 import { HumanChatMessage, AIChatMessage } from "langchain/schema";
+import axios from 'axios';
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
@@ -64,16 +65,13 @@ export default function Home() {
     const query = new HumanChatMessage(userInput);
 
     // Send user question and history to API
-    const response = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        question: userInput,
-        history: history.slice(-4),
-        collectionName,
-      }),
+    const header = {
+      "Content-Type": "application/json",
+    };
+    const response = await axios.post("/api/chat", {
+      question: userInput,
+      history: history.slice(-4),
+      collectionName,
     });
 
     if (!response.ok) {
@@ -208,7 +206,7 @@ export default function Home() {
               </button>
             </form>
           </div>
-          <div className={styles.footer}></div>
+          <div className={styles.footer}>Powered by Bois 💖</div>
         </div>
       </main>
     </>
