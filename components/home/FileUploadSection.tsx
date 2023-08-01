@@ -1,17 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import DragAndDrop from "../common/DragAndDrop";
 
 export const FileUploadSection = () => {
   const router = useRouter();
   const [file, setFile] = useState(null);
 
-  const handleFileChange = (event) => {
-    setFile(event.target.files[0]);
+  const handleFileChange = (files) => {
+    console.log(files[0]);
+    setFile(files[0]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
     try {
@@ -29,25 +32,32 @@ export const FileUploadSection = () => {
     }
   };
 
+  const removeFile = () => {
+    setFile(null);
+  };
+
   return (
-    <form onSubmit={handleSubmit}>
-      <div className="file is-success is-boxed is-justify-content-center	">
-        <label className="file-label">
-          <input
-            className="file-input"
-            type="file"
-            accept="application/pdf"
-            name="files"
-            onChange={handleFileChange}
-          />
-          <span className="file-cta">
-            <span className="file-icon">
-              <i className="fas fa-cloud-upload-alt"></i>
-            </span>
-            <span className="file-label">Select a PDF file</span>
-          </span>
-        </label>
-      </div>
-    </form>
+    <>
+      {!file ? (
+        <DragAndDrop onFileSelect={handleFileChange} />
+      ) : (
+        <>
+          <div className="is-flex">
+            <h1 className="mr-2">{file?.name}</h1>
+            <div onClick={removeFile}>
+              <i className="fa fa-trash"></i>
+            </div>
+          </div>
+          <button
+            className="button is-link mt-3"
+            onClick={handleSubmit}
+            disabled={!file}
+          >
+            Upload
+          </button>
+        </>
+      )}
+      <div className="buttons is-right"></div>
+    </>
   );
 };
