@@ -46,6 +46,7 @@ const DragAndDrop = ({ onFileSelect }) => {
           multiple={true}
           className={style.fileInput}
           onChange={handleChange}
+          accept="application/pdf"
         />
         <label
           id="label-file-upload"
@@ -53,9 +54,9 @@ const DragAndDrop = ({ onFileSelect }) => {
           className={`${style.fileInputLabel} ${dragActive ? style.dragActive : ""}`}
         >
           <div>
-            <p>Drag and drop your file here</p>
+            <p>Drag and drop your PDF file here</p>
             <p>Or</p>
-            <button className={style.uploadButton} onClick={triggerFileUpload}>Upload a file</button>
+            <button className={style.uploadButton} onClick={triggerFileUpload}>Upload a PDF file</button>
           </div>
         </label>
         {dragActive && (
