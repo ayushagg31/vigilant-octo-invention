@@ -1,22 +1,21 @@
 import React from "react";
 import Fame from "./Fame";
-import Example from "./Example";
-import TabsSection from "./TabsSection";
+import { useDashboard } from "../../store/useDashboard";
+import { BeforeUpload } from "./BeforeUpload";
+import { AfterUpload } from "./AfterUpload";
 
 const Home = () => {
+  const { showResult } = useDashboard((store) => {
+    return {
+      showResult: store.showResult,
+    };
+  });
+
   return (
     <div className="my-4">
       <Fame />
-      <div className="my-3">
-        <div className="columns">
-          <div className="column is-one-third">
-            {/* Left section of the dashboard page */}
-            <Example />
-          </div>
-          <div className="column">
-            <TabsSection />
-          </div>
-        </div>
+      <div className="m-3 mt-5" style={{ height: '70vh'}}>
+        {showResult ? <AfterUpload /> : <BeforeUpload />}
       </div>
     </div>
   );

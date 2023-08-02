@@ -1,14 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import axios from "axios";
 import DragAndDrop from "../common/DragAndDrop";
+import { useDashboard } from "../../store/useDashboard";
 
 export const FileUploadSection = () => {
   const router = useRouter();
+
+  const { isUploading, handleFileUpload, apiFailure, setApiFailure } =
+    useDashboard((store) => {
+      return {
+        handleFileUpload: store.handleFileUpload,
+        isUploading: store.isUploading,
+        apiFailure: store.apiFailure,
+        setApiFailure: store.setApiFailure,
+      };
+    });
+
   const [file, setFile] = useState(null);
 
   const handleFileChange = (files) => {
-    console.log(files[0]);
+    setApiFailure(false);
     setFile(files[0]);
   };
 
@@ -17,19 +28,7 @@ export const FileUploadSection = () => {
     if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
-    try {
-      const response = await axios.post("/api/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-      router.push({
-        pathname: "/chat",
-        query: { collectionName: response.data?.collectionName },
-      });
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    handleFileUpload(formData);
   };
 
   const removeFile = () => {
@@ -38,6 +37,15 @@ export const FileUploadSection = () => {
 
   return (
     <>
+      {file && !isUploading && apiFailure && (
+        <div className="notification is-danger">
+          <button
+            className="delete"
+            onClick={() => setApiFailure(false)}
+          ></button>
+          Server error! Please try after some time.
+        </div>
+      )}
       {!file ? (
         <DragAndDrop onFileSelect={handleFileChange} />
       ) : (
@@ -49,7 +57,7 @@ export const FileUploadSection = () => {
             </div>
           </div>
           <button
-            className="button is-link mt-3"
+            className={`button is-link mt-3 ${isUploading ? "is-loading" : ""}`}
             onClick={handleSubmit}
             disabled={!file}
           >
