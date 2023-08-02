@@ -2,31 +2,19 @@ import React, { useState } from "react";
 import { FileUploadSection } from "./FileUploadSection";
 import { FromUrl } from "./FromUrl";
 import { FromText } from "./FromText";
-
-const tabItems = [
-  {
-    id: "upload_file",
-    label: "Upload a file",
-  },
-  {
-    id: "from_url",
-    label: "From URL",
-  },
-  {
-    id: "enter_text",
-    label: "Enter text",
-  },
-];
+import { tabItems } from "../../constants/dashboard.constants";
+import { useDashboard } from "../../store/useDashboard";
 
 const TabsSection = () => {
-  const [activeTab, setActiveTab] = useState(tabItems[0].id);
-
-  const handleTabClick = (id) => {
-    setActiveTab(id);
-  };
+  const { currentTab, setCurrentTab } = useDashboard((store) => {
+    return {
+      currentTab: store.currentTab,
+      setCurrentTab: store.setCurrentTab,
+    };
+  });
 
   const renderTab = () => {
-    switch (activeTab) {
+    switch (currentTab) {
       case "upload_file":
         return <FileUploadSection />;
       case "from_url":
@@ -45,8 +33,8 @@ const TabsSection = () => {
           {tabItems.map((tabItem) => {
             return (
               <li
-                className={`${activeTab === tabItem.id ? "is-active" : ""}`}
-                onClick={() => handleTabClick(tabItem.id)}
+                className={`${currentTab === tabItem.id ? "is-active" : ""}`}
+                onClick={() => setCurrentTab(tabItem.id)}
               >
                 <a>{tabItem.label}</a>
               </li>

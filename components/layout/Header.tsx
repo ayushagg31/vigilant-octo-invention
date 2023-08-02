@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 
 function ResponsiveAppBar() {
   return (
@@ -26,12 +27,12 @@ function ResponsiveAppBar() {
 
         <div id="navbarExampleTransparentExample" className="navbar-menu">
           <div className="navbar-start">
-            <a className="navbar-item" href="#">
+            <Link className="navbar-item" href={"/"}>
               Home
-            </a>
-            <a className="navbar-item" href="#">
+            </Link>
+            <Link className="navbar-item" href={"/chat"}>
               How to use
-            </a>
+            </Link>
             <div className="navbar-item has-dropdown is-hoverable">
               <a
                 className="navbar-link"
