@@ -7,7 +7,7 @@ const Example = () => {
         <div className="card-image">
           <figure className="image is-4by3">
             <img
-              src="https://bulma.io/images/placeholders/1280x960.png"
+              src="https://picsum.photos/seed/picsum/1280/960"
               alt="Placeholder image"
             />
           </figure>
@@ -17,7 +17,7 @@ const Example = () => {
             <div className="media-left">
               <figure className="image is-48x48">
                 <img
-                  src="https://bulma.io/images/placeholders/96x96.png"
+                  src="https://picsum.photos/id/219/96/96"
                   alt="Placeholder image"
                 />
               </figure>
