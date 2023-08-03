@@ -14,9 +14,8 @@ export const AfterUpload = () => {
   );
 
   const tabTitleMap = {
-    fullText: "Full text",
-    summary: "Detailed notes",
-    conciseSummary: "Short summary",
+    fullText: "Actual document",
+    summary: "Summary",
   };
 
   const { fullText, summary, conciseSummary } = result;
