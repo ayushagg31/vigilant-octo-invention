@@ -20,13 +20,16 @@ export const AfterUpload = () => {
 
   const { fullText, summary, conciseSummary } = result;
   return (
-    <div className="columns" style={{ height: '100%'}}>
+    <div className="columns" style={{ height: "100%" }}>
       <div className="column">
         <div className="tabs">
           <ul>
             {Object.keys(result).map((key) => {
               return (
-                <li className={`${activeResultTab === key  ? 'is-active': ''}`} onClick={() => setAcitveResultTab(key)}>
+                <li
+                  className={`${activeResultTab === key ? "is-active" : ""}`}
+                  onClick={() => setAcitveResultTab(key)}
+                >
                   <a>{tabTitleMap[key]}</a>
                 </li>
               );
@@ -34,7 +37,17 @@ export const AfterUpload = () => {
           </ul>
         </div>
         <div>
-          {result[activeResultTab]}
+          {activeResultTab === "fullText" ? (
+            <object
+              data={result.url ? result.url : 'http://africau.edu/images/default/sample.pdf'}
+              type="application/pdf"
+              width="100%"
+              height="100%"
+            >
+            </object>
+          ) : (
+            result[activeResultTab]
+          )}
         </div>
       </div>
       <div className="column box is-one-third">
