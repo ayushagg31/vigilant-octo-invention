@@ -71,7 +71,7 @@ export const AfterUpload = () => {
             {result[activeResultTab] ? (
               renderResult()
             ) : (
-              <button className="button is-small is-link">
+              <button className="button is-small is-link" onClick={handleFetch}>
                 Get detailed summary of the doc
               </button>
             )}
