@@ -22,7 +22,7 @@ const uploadHandler = (req, res) => {
       const fileType = file.originalname.split(".").pop();
       const collectionName = uuidv4();
       const fileName = `${collectionName}.${fileType}`;
-      fs.writeFile(`docs/${fileName}`, file.buffer, async (err) => {
+      fs.writeFile(`public/pdfs/${fileName}`, file.buffer, async (err) => {
         if (err) {
           console.error(err);
           return res

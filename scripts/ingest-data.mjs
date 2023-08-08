@@ -15,7 +15,7 @@ import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer
 export const ingestData = async (collectionName, fileName, fileType) => {
   try {
     let loader;
-    const filePath = `docs/${fileName}`;
+    const filePath = `public/pdfs/${fileName}`;
     // TODO: need to test all types of loader other than pdf
     switch (fileType) {
       case "pdf":

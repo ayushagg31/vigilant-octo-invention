@@ -9,7 +9,10 @@ export const useDashboard = create<DashboardStoreTypes>((set) => ({
   isUploading: false,
   showResult: false,
   apiFailure: false,
-  result: null,
+  result: {
+    collectionName: '',
+    message: ''
+  },
 
   setCurrentTab: (tabName: string) => {
     set(() => ({ currentTab: tabName }));
@@ -28,7 +31,6 @@ export const useDashboard = create<DashboardStoreTypes>((set) => ({
       isUploading: true,
       showResult: false,
       apiFailure: false,
-      result: null,
     }));
 
     try {
@@ -37,37 +39,21 @@ export const useDashboard = create<DashboardStoreTypes>((set) => ({
           "Content-Type": "multipart/form-data",
         },
       });
-      // Set result
-      set(() => ({
-        isUploading: false,
-        showResult: true,
-        apiFailure: true,
-        result: response,
-      }));
-    } catch (error) {
-
-      // Setting fake success
-      
+      // Set result if success
       set(() => ({
         isUploading: false,
         showResult: true,
         apiFailure: false,
-        result: {
-          fullText: 'afsdfasd',
-          summary: 'Lorem fsadf sdafds fsd',
-          conciseSummary: 'Short summary of lorem fsadf sdafds fsd',
-        },
+        result: response.data,
       }));
-      // Setting fake success end
-
+    } catch (error) {
       // Set errors
-      // set(() => ({
-      //   isUploading: false,
-      //   showResult: false,
-      //   apiFailure: true,
-      //   response: null,
-      // }));
-      // console.error("Error:", error);
+      set(() => ({
+        isUploading: false,
+        showResult: false,
+        apiFailure: true,
+      }));
+      console.error("Error:", error);
     }
   },
 }));

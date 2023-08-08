@@ -15,7 +15,7 @@ const downloadHandler = async (req, res) => {
     const response = await axios.get(pdfUrl, { responseType: "arraybuffer" });
     const pdfContent = Buffer.from(response.data, "binary");
 
-    fs.writeFile(`docs/${fileName}`, pdfContent, async (err) => {
+    fs.writeFile(`public/pdfs/${fileName}`, pdfContent, async (err) => {
       if (err) {
         console.error(err);
         return res.status(500).json({ error: "Failed to write file in disk" });

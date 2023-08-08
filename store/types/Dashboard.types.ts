@@ -4,7 +4,10 @@ export type DashboardStoreTypes = {
   isUploading: boolean;
   showResult: boolean;
   apiFailure: boolean;
-  result: any;
+  result: {
+    collectionName: string;
+    message: string;
+  };
 
   setCurrentTab: (tabName: string) => void;
   setAcitveResultTab: (tabName: string) => void;
