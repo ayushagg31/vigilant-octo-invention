@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import GoogleSignIn from "../home/googleAuthButton";
 
 function ResponsiveAppBar() {
   return (
@@ -114,6 +115,7 @@ function ResponsiveAppBar() {
                     <span>Pricing</span>
                   </a>
                 </p>
+                <GoogleSignIn/>
               </div>
             </div>
           </div>
