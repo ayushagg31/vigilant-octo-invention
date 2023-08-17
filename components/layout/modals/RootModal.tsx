@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { useModal } from "../../../store/useModal";
 import LoginModal from "./LoginModal";
