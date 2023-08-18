@@ -12,16 +12,14 @@ const LoginModal = () => {
     closeModal: store.closeModal,
   }));
 
-  const { setUser } = useAuth((store) => ({
+  const { googleLogin, setUser } = useAuth((store) => ({
     setUser: store.setUser,
+    googleLogin: store.googleLogin,
   }));
 
   const handleClick = () => {
-    signInWithPopup(auth, provider).then((data) => {
-      setUser(data?.user);
-      // console.log(data);
-      closeModal();
-    });
+    googleLogin();
+    closeModal();
   };
 
   return (

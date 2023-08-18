@@ -1,8 +1,7 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useModal } from "../../store/useModal";
 import { useAuth } from "../../store/useAuth";
-// import LoginModal from "../layout/modals/LoginModal";
 
 function LogiButton() {
   const { openModal } = useModal((store) => ({

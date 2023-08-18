@@ -5,13 +5,6 @@ import { auth, provider } from "../../../config/googleAuth.config";
 import { signInWithPopup } from "firebase/auth";
 
 const RegisterModal = () => {
-  const handleClick = () => {
-    signInWithPopup(auth, provider).then((data) => {
-      // setValue(data?.user?.email);
-      console.log(data);
-    });
-  };
-
   return (
     <div className="modal is-active">
       <div className="modal-background"></div>
