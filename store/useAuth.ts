@@ -17,9 +17,10 @@ export const useAuth = create<UseAuthType>((set) => ({
     );
   },
   setUser: (userInfo) => set({ user: userInfo }),
-  googleLogin: () => {
+  googleLogin: (closeModal) => {
     signInWithPopup(auth, provider).then((data) => {
       setUser(data?.user);
+      closeModal();
     });
   },
 }));
