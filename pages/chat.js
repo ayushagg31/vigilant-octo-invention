@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useRouter } from "next/router";
 import { HumanChatMessage, AIChatMessage } from "langchain/schema";
-import axios from 'axios';
+import axios from "axios";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");

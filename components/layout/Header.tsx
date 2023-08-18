@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import GoogleSignIn from "../home/googleAuthButton";
+import LogiButton from "../home/LogiButton";
 
 function ResponsiveAppBar() {
   return (
@@ -115,7 +115,7 @@ function ResponsiveAppBar() {
                     <span>Pricing</span>
                   </a>
                 </p>
-                <GoogleSignIn/>
+                <LogiButton />
               </div>
             </div>
           </div>
