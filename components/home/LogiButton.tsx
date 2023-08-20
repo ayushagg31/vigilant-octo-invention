@@ -4,7 +4,8 @@ import { useModal } from "../../store/useModal";
 import { useAuth } from "../../store/useAuth";
 import {
   useDisclosure,
-  Button
+  Button,
+  Text
 } from '@chakra-ui/react'
 import { LoginModal } from "./LoginModal";
 
@@ -24,7 +25,7 @@ function LogiButton() {
       <div className="is-flex is-align-items-center">
         {user ? (
           <>
-            <p className="mr-3">Hi, {user?.displayName}</p>
+            <Text>Hi, {user?.displayName}</Text>
             <button className="button is-info is-light" onClick={logout}>
               Logout
             </button>
