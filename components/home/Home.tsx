@@ -13,7 +13,7 @@ const Home = () => {
 
   return (
     <div className="my-4">
-      {!showResult && <Fame />}
+      {/* {!showResult && <Fame />} */}
       <div className="m-3 mt-5" style={{ height: "70vh" }}>
         {showResult ? <AfterUpload /> : <BeforeUpload />}
       </div>
