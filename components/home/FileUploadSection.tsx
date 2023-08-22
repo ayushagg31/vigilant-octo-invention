@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import DragAndDrop from "../common/DragAndDrop";
 import { useDashboard } from "../../store/useDashboard";
+import { useAuth } from "../../store/useAuth"
 
 export const FileUploadSection = () => {
   const router = useRouter();
@@ -16,6 +17,10 @@ export const FileUploadSection = () => {
       };
     });
 
+  const { user } = useAuth((store) => ({
+    user: store.user,
+  }));
+
   const [file, setFile] = useState(null);
 
   const handleFileChange = (files) => {
@@ -28,6 +33,7 @@ export const FileUploadSection = () => {
     if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("userId", user.uid)
     handleFileUpload(formData);
   };
 

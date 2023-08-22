@@ -6,8 +6,7 @@ import ytdl from "ytdl-core";
 
 const ytHandler = async (req, res) => {
   try {
-    const { ytUrl } = req.body;
-    // const extractedFilename = url.pathname.split("/").pop();
+    const { ytUrl, userId } = req.body;
     const fileType = "mp3";
     const collectionName = uuidv4();
     const fileName = `${collectionName}.${fileType}`;
@@ -28,7 +27,13 @@ const ytHandler = async (req, res) => {
           const fileSizeInBytes = stats.size;
           if (fileSizeInBytes < maxAllowedSize) {
             try {
-              await ingestData(collectionName, fileName, fileType);
+              await ingestData({
+                collectionName,
+                ytUrl,
+                fileName,
+                fileType,
+                userId,
+              });
               console.log("Ingestion complete");
               return res.status(200).json({
                 message: "File transcribed and ingested successfully",
@@ -58,7 +63,9 @@ const ytHandler = async (req, res) => {
         return res.status(500).json({ error: `Error downloading audio` });
       });
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res
+      .status(500)
+      .json({ error: `Failed to transcribe: ${err.message}` });
   }
 };
 

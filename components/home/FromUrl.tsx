@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import isUrl from "is-url";
 import axios from "axios";
+import { useAuth } from "../../store/useAuth"
 
 export const FromUrl = () => {
   const [error, setError] = useState(false);
+  const { user } = useAuth((store) => ({
+    user: store.user,
+  }));
 
   const saveAsPDF = async (e) => {
     e.preventDefault();
@@ -11,8 +15,7 @@ export const FromUrl = () => {
     setError(false);
     if (isUrl(url) && url.endsWith(".pdf")) {
       try {
-        const response = await axios.post("/api/download", { pdfUrl: url });
-        console.log(response.data);
+        await axios.post("/api/download", { pdfUrl: url, userId: user.uid });
       } catch (error) {
         console.error("Error:", error);
       }

@@ -19,6 +19,7 @@ const uploadHandler = (req, res) => {
           .json({ error: "Failed to upload file in memory" });
       }
       const file = req.file;
+      const { userId } = req.body;
       const fileType = file.originalname.split(".").pop();
       const collectionName = uuidv4();
       const fileName = `${collectionName}.${fileType}`;
@@ -31,11 +32,11 @@ const uploadHandler = (req, res) => {
         } else {
           console.log("File written successfully");
           try {
-            await ingestData(collectionName, fileName, fileType);
+            await ingestData({ collectionName, fileName, fileType, userId });
             console.log("Ingestion complete");
             return res.status(200).json({
               message: "File uploaded and ingested successfully",
-              collectionName
+              collectionName,
             });
           } catch (error) {
             console.error("Ingestion Failed", error);

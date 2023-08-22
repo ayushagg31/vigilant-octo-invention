@@ -6,7 +6,7 @@ import fs from "fs";
 
 const downloadHandler = async (req, res) => {
   try {
-    const { pdfUrl } = req.body;
+    const { pdfUrl, userId } = req.body;
     // const extractedFilename = url.pathname.split("/").pop();
     const fileType = "pdf";
     const collectionName = uuidv4();
@@ -22,7 +22,7 @@ const downloadHandler = async (req, res) => {
       } else {
         console.log(`PDF saved as ${fileName}`);
         try {
-          await ingestData(collectionName, fileName, fileType);
+          await ingestData({ collectionName, pdfUrl, fileName, fileType, userId });
           console.log("Ingestion complete");
           return res.status(200).json({
             message: "File uploaded and ingested successfully",

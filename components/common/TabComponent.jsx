@@ -14,12 +14,12 @@ export const TabComponent = ({ tabConfig }) => {
             <Tabs variant='soft-rounded' colorScheme='green'>
                 <TabList>
                     {
-                        tabKeys.map((el) => <Tab>{el}</Tab>)
+                        React.Children.toArray(tabKeys.map((el) => <Tab>{el}</Tab>))
                     }
                 </TabList>
                 <TabPanels>
                     {
-                        tabComponents.map((component) => <TabPanel>{component}</TabPanel>)
+                         React.Children.toArray(tabComponents.map((component) => <TabPanel>{component}</TabPanel>))
                     }
                 </TabPanels>
             </Tabs>

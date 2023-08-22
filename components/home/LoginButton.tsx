@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import { LoginModal } from "./LoginModal";
 
-function LogiButton() {
+function LoginButton() {
   const { openModal } = useModal((store) => ({
     openModal: store.openModal,
   }));
@@ -38,4 +38,4 @@ function LogiButton() {
     </>
   );
 }
-export default LogiButton;
+export default LoginButton;

@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import isUrl from "is-url";
 import axios from "axios";
+import { useAuth } from "../../store/useAuth"
 
 export const FromYtubeUrl = () => {
     const [error, setError] = useState(false);
+
+    const { user } = useAuth((store) => ({
+        user: store.user,
+    }));
 
     const saveAsAudio = async (e) => {
         e.preventDefault();
@@ -11,8 +16,7 @@ export const FromYtubeUrl = () => {
         setError(false);
         if (isUrl(url)) {
             try {
-                const response = await axios.post("/api/ytTranscribe", { ytUrl: url });
-                console.log(response.data);
+                await axios.post("/api/ytTranscribe", { ytUrl: url, userId: user.uid });
             } catch (error) {
                 console.error("Error:", error);
             }

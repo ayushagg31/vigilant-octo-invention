@@ -1,10 +1,10 @@
 import React from "react";
 import dynamic from 'next/dynamic'
 import { Link, Box, Flex, Text, Button, Stack } from "@chakra-ui/react";
-import LogiButton from "../home/LogiButton";
+import LoginButton from "../home/LoginButton";
 
 import Logo from "./Logo";
-const TestimonialCard = dynamic(() => import('../home/LogiButton'), { ssr: false })
+const TestimonialCard = dynamic(() => import('../home/LoginButton'), { ssr: false })
 
 const NavBar = (props) => {
     const [isOpen, setIsOpen] = React.useState(false);

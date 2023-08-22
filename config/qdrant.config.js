@@ -12,7 +12,6 @@ const client = new QdrantClient({
 export const createVectorStore = async (docs, collectionName) => {
   try {
     // embed the PDF documents
-    console.log(process.env.OPEN_AI_API_KEY, process.env.QDRANT_URL)
     await QdrantVectorStore.fromDocuments(docs, embeddings, {
       client,
       collectionName: collectionName,

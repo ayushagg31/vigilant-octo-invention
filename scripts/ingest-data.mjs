@@ -5,15 +5,22 @@ import { SRTLoader } from "langchain/document_loaders/fs/srt";
 import { TextLoader } from "langchain/document_loaders/fs/text";
 import { DocxLoader } from "langchain/document_loaders/fs/docx";
 import { EPubLoader } from "langchain/document_loaders/fs/epub";
-// import { PuppeteerWebBaseLoader } from "langchain/document_loaders/web/puppeteer";
 import { AudioLoader } from "./transcribe-audio.mjs";
+import { addCollection } from "../config/firestore.config.js";
 
-export const ingestData = async (collectionName, fileName, fileType) => {
+export const ingestData = async ({
+  collectionName,
+  ytUrl = null,
+  pdfUrl = null,
+  fileName,
+  fileType,
+  userId,
+}) => {
   try {
     let loader;
-    const filePath = `public/${fileType === "mp3" ? "audios" : "pdfs"
-      }/${fileName}`;
-
+    const filePath = `public/${
+      fileType === "mp3" ? "audios" : "pdfs"
+    }/${fileName}`;
     switch (fileType) {
       case "pdf":
         loader = new PDFLoader(filePath);
@@ -48,7 +55,8 @@ export const ingestData = async (collectionName, fileName, fileType) => {
     // split text into chunks
     const docs = await textSplitter.splitDocuments(rawText);
     // this shit cost money, use frugally
-    await createVectorStore(docs, collectionName);
+    // await createVectorStore(docs, collectionName);
+    await addCollection({ collectionName, ytUrl, pdfUrl, fileType, userId });
   } catch (err) {
     console.error("Ingestion failed", err);
     throw new Error(err.message);

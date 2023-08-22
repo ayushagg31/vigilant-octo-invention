@@ -13,7 +13,7 @@ export const BeforeUpload = () => {
   const tabConfig = {
     'Upload File': <FileUploadSection />,
     'From Url': <FromUrl />,
-    'From Text': <FromText />,
+    // 'From Text': <FromText />,
     'From Youtube': <FromYtubeUrl />
   };
 

@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import LogiButton from "../home/LogiButton";
+import LoginButton from "../home/LoginButton";
 
 function ResponsiveAppBar() {
   return (
@@ -115,7 +115,7 @@ function ResponsiveAppBar() {
                     <span>Pricing</span>
                   </a>
                 </p>
-                <LogiButton />
+                <LoginButton />
               </div>
             </div>
           </div>

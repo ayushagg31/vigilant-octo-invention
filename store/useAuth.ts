@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { UseAuthType } from "./types/UseAuthType.types";
 import { auth, provider } from "../config/googleAuth.config";
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
+import { createUser } from '../config/firestore.config'
 
 export const useAuth = create<UseAuthType>((set) => ({
   user: null,
@@ -19,6 +20,7 @@ export const useAuth = create<UseAuthType>((set) => ({
   setUser: (userInfo) => set({ user: userInfo }),
   googleLogin: (closeModal) => {
     signInWithPopup(auth, provider).then((data) => {
+      createUser();
       setUser(data?.user);
       closeModal();
     });
