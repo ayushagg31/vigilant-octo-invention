@@ -9,7 +9,7 @@ export const FromUrl = () => {
     e.preventDefault();
     const url = e.target.elements.url.value;
     setError(false);
-    if (isUrl(url)) {
+    if (isUrl(url) && url.endsWith(".pdf")) {
       try {
         const response = await axios.post("/api/download", { pdfUrl: url });
         console.log(response.data);

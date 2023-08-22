@@ -8,6 +8,10 @@ export const tabItems = [
     label: "From URL",
   },
   {
+    id: "from_youtube",
+    label: "From Youtube URL",
+  },
+  {
     id: "enter_text",
     label: "Enter text",
   },
