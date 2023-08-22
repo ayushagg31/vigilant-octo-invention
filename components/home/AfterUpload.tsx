@@ -4,7 +4,8 @@ import Chat from "./Chat";
 import { TabComponent } from "../common/TabComponent";
 import { PDFObject } from 'react-pdfobject'
 import { SimpleGrid, Box } from '@chakra-ui/react'
-import { useRouter } from 'next/router';;
+import { useRouter } from 'next/router';
+import ChatWidget from "./ChatWidget";
 
 export const AfterUpload = () => {
 
@@ -12,6 +13,7 @@ export const AfterUpload = () => {
   const {
     query: { id },
   } = router
+
 
   const RenderPdf = () => {
     //if (apiFailure) return <>Error...</>;
@@ -49,10 +51,7 @@ export const AfterUpload = () => {
           <TabComponent tabConfig={tabConfig} />
         </Box>
         <Box height={"70vh"}>
-          <h1 className="is-size-4 is-italic is-uppercase">Chat with you doc!</h1>
-          <div className="box h-full">
-            <Chat />
-          </div>
+          <ChatWidget />
         </Box>
       </SimpleGrid>
     </div>

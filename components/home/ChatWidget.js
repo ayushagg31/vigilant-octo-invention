@@ -1,20 +1,23 @@
 'use client'
 import { useState, useRef, useEffect } from "react";
-import styles from "../styles/Home.module.css";
+import styles from "../../styles/Home.module.css";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { Spinner } from '@chakra-ui/react'
 import { useRouter } from "next/router";
 import { HumanChatMessage, AIChatMessage } from "langchain/schema";
+import { Box } from '@chakra-ui/react'
 import axios from "axios";
 
 export default function ChatWidget() {
   const [userInput, setUserInput] = useState("");
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   const {
-    query: { collectionName },
-  } = useRouter();
+    query: { id: collectionName },
+  } = router;
+
   const [messages, setMessages] = useState([
     {
       message: "Hi, what would you like to learn about this document?",
@@ -116,7 +119,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      <main className={styles.main}>
+      <Box>
         <div className={styles.cloud}>
           <div ref={messageListRef} className={styles.messagelist}>
             {messages.map((message, index) => {
@@ -165,7 +168,7 @@ export default function ChatWidget() {
             })}
           </div>
         </div>
-        <div className={styles.center}>
+        <div >
           <div className={styles.cloudform}>
             <form onSubmit={handleSubmit}>
               <textarea
@@ -215,7 +218,7 @@ export default function ChatWidget() {
           </div>
           <div className={styles.footer}>Powered by Bois 💖</div>
         </div>
-      </main>
+      </Box>
     </>
   );
 }
