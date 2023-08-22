@@ -4,6 +4,7 @@ import { FromUrl } from "./FromUrl";
 import { FromText } from "./FromText";
 import { tabItems } from "../../constants/dashboard.constants";
 import { useDashboard } from "../../store/useDashboard";
+import { FromYtubeUrl } from "./FromYtubeUrl";
 
 const TabsSection = () => {
   const { currentTab, setCurrentTab } = useDashboard((store) => {
@@ -19,6 +20,8 @@ const TabsSection = () => {
         return <FileUploadSection />;
       case "from_url":
         return <FromUrl />;
+        case "from_youtube":
+          return <FromYtubeUrl />;
       case "enter_text":
         return <FromText />;
       default:
