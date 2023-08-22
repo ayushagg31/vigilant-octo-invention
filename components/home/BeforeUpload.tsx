@@ -5,6 +5,7 @@ import { FileUploadSection } from "./FileUploadSection";
 import { FromUrl } from "./FromUrl";
 import { FromText } from "./FromText";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { TabComponent } from "../common/TabComponent"
 
 
 export const BeforeUpload = () => {
@@ -14,22 +15,9 @@ export const BeforeUpload = () => {
     'From Text': <FromText />
   };
 
-  const tabKeys = Object.keys(tabConfig);
-  const tabComponents = Object.values(tabConfig);
   return (
     <div id="upload-tabs">
-      <Tabs variant='soft-rounded' colorScheme='green'>
-        <TabList>
-          {
-            tabKeys.map((el) => <Tab>{el}</Tab>)
-          }
-        </TabList>
-        <TabPanels>
-          {
-            tabComponents.map((component) => <TabPanel>{component}</TabPanel>)
-          }
-        </TabPanels>
-      </Tabs>
+      <TabComponent tabConfig={tabConfig} />
     </div>
   );
 };
