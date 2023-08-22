@@ -1,22 +1,31 @@
 import React from "react";
 import Fame from "./Fame";
+import { Container } from '@chakra-ui/react'
 import { useDashboard } from "../../store/useDashboard";
 import { BeforeUpload } from "./BeforeUpload";
-import { AfterUpload } from "./AfterUpload";
+import { useRouter } from 'next/router';
+
 
 const Home = () => {
-  const { showResult } = useDashboard((store) => {
+  const router = useRouter()
+  const { showResult, collectionName } = useDashboard((store) => {
     return {
       showResult: store.showResult,
+      collectionName: store.result.collectionName
     };
   });
 
+  if (showResult) {
+    router.push({ pathname: 'docinsights', query: { id: collectionName } });
+  }
+
   return (
-    <div className="my-4">
-      {/* {!showResult && <Fame />} */}
-      <div className="m-3 mt-5" style={{ height: "70vh" }}>
-        {showResult ? <AfterUpload /> : <BeforeUpload />}
-      </div>
+    <div>
+      <Container>
+        <div>
+          <BeforeUpload />
+        </div>
+      </Container>
     </div>
   );
 };
