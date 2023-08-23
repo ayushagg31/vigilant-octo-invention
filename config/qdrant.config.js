@@ -5,8 +5,8 @@ import "dotenv/config";
 import { QdrantClient } from '@qdrant/js-client-rest';
 
 const client = new QdrantClient({
-  url: 'https://0244d58a-698c-43ba-8e1f-b25e3e3a527e.us-east-1-0.aws.cloud.qdrant.io:6333',
-  apiKey: 'Z9tTsnkuc-ZAK8OCakvRe4jbAjC2yV-QqhMsyGKDSJ71qi8e5uRbng',
+  url: process.env.QDRANT_URL,
+  apiKey: process.env.QDRANT_API_KEY,
 });
 
 export const createVectorStore = async (docs, collectionName) => {

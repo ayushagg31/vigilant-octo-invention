@@ -6,7 +6,8 @@ import ReactMarkdown from "react-markdown";
 import { Spinner } from '@chakra-ui/react'
 import { useRouter } from "next/router";
 import { HumanChatMessage, AIChatMessage } from "langchain/schema";
-import { Box } from '@chakra-ui/react'
+import { Box, Avatar, Stack } from '@chakra-ui/react'
+import { AiFillDingtalkCircle, AiOutlineRobot, AiOutlineSend } from 'react-icons/ai';
 import axios from "axios";
 
 export default function ChatWidget() {
@@ -117,53 +118,44 @@ export default function ChatWidget() {
     }
   };
 
+
   return (
     <>
-      <Box>
+      <Box h="full" w='full'>
         <div className={styles.cloud}>
           <div ref={messageListRef} className={styles.messagelist}>
             {messages.map((message, index) => {
               return (
-                // The latest message sent by the user will be animated while waiting for a response
-                <div
-                  key={index}
-                  className={
-                    message.type === "userMessage" &&
-                      loading &&
-                      index === messages.length - 1
-                      ? styles.usermessagewaiting
-                      : message.type === "apiMessage"
-                        ? styles.apimessage
-                        : styles.usermessage
-                  }
-                >
-                  {/* Display the correct icon depending on the message type */}
-                  {message.type === "apiMessage" ? (
-                    <Image
-                      src="/parroticon.png"
-                      alt="AI"
-                      width="30"
-                      height="30"
-                      className={styles.boticon}
-                      priority={true}
-                    />
-                  ) : (
-                    <Image
-                      src="/usericon.png"
-                      alt="Me"
-                      width="30"
-                      height="30"
-                      className={styles.usericon}
-                      priority={true}
-                    />
-                  )}
-                  <div className={styles.markdownanswer}>
-                    {/* Messages are being rendered in Markdown format */}
-                    <ReactMarkdown linkTarget={"_blank"}>
-                      {message.message}
-                    </ReactMarkdown>
-                  </div>
+                <div id='chat-conatiner' className={styles.chatBubbleContainer}>
+                  <Stack direction='row'>
+                    {message.type === "apiMessage" ? (
+                      <Avatar bg='black' style={{ marginTop: '0.5rem' }} icon={<AiOutlineRobot fontSize='1.5rem' />} />
+                    ) : (
+                      <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' style={{ marginTop: '0.5rem' }} />
+                    )}
+
+
+                    < div
+                      key={index}
+                      className={
+                        message.type === "userMessage" &&
+                          loading &&
+                          index === messages.length - 1
+                          ? styles.usermessagewaiting
+                          : message.type === "apiMessage"
+                            ? styles.apimessage
+                            : styles.usermessage
+                      }
+                    >
+                      <div className={styles.markdownanswer}>
+                        <ReactMarkdown linkTarget={"_blank"}>
+                          {message.message}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
+                  </Stack>
                 </div>
+
               );
             })}
           </div>
@@ -194,31 +186,17 @@ export default function ChatWidget() {
                 className={styles.generatebutton}
               >
                 {loading ? (
-                  <div className={styles.loadingwheel}>
-                    <Spinner
-                      thickness='4px'
-                      speed='0.65s'
-                      emptyColor='gray.200'
-                      color='blue.500'
-                      size='xl'
-                    />
+                  <div className={styles.typingLoader}>
                   </div>
                 ) : (
                   // Send icon SVG in input field
-                  <svg
-                    viewBox="0 0 20 20"
-                    className={styles.svgicon}
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
-                  </svg>
+                  <AiOutlineSend fontSize='1.5rem' />
                 )}
               </button>
             </form>
           </div>
-          <div className={styles.footer}>Powered by Bois 💖</div>
         </div>
-      </Box>
+      </Box >
     </>
   );
 }
