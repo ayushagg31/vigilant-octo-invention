@@ -56,6 +56,7 @@ export const ingestData = async ({
     const docs = await textSplitter.splitDocuments(rawText);
     // this shit cost money, use frugally
     // await createVectorStore(docs, collectionName);
+    if (!userId) throw new Error("UserId info missing");
     await addCollection({ collectionName, ytUrl, pdfUrl, fileType, userId });
   } catch (err) {
     console.error("Ingestion failed", err);
