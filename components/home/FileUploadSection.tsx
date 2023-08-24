@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import DragAndDrop from "../common/DragAndDrop";
 import { useDashboard } from "../../store/useDashboard";
 import { useAuth } from "../../store/useAuth"
+import { FileUploadWrapper } from "./FileUploadWrapper"
 import style from "../../styles/DragAndDrop.module.css";
 export const FileUploadSection = () => {
   const router = useRouter();
@@ -56,48 +57,41 @@ export const FileUploadSection = () => {
       {!file ? (
         <DragAndDrop onFileSelect={handleFileChange} />
       ) : (
-        <Card variant={"outline"}>
-          <CardBody>
-            <div className={style.uploadedFileSection}>
-              <Box p={4}>
-                <VStack
-                  spacing={4}
-                  align='stretch'
-                >
-                  <Box>
-                    <Flex>
-                      <div className="mr-5">
-                        <Text as='b' fontSize='sm'>{file?.name}</Text>
-                      </div>
-                      <div onClick={removeFile}>
-                        <i className="fa fa-trash"></i>
-                      </div>
-                    </Flex>
+        <FileUploadWrapper>
+            <VStack
+              spacing={4}
+              align='stretch'
+            >
+              <Box>
+                <Flex>
+                  <div className="mr-5">
+                    <Text as='b' fontSize='sm'>{file?.name}</Text>
+                  </div>
+                  <div onClick={removeFile}>
+                    <i className="fa fa-trash"></i>
+                  </div>
+                </Flex>
 
-                  </Box>
-                  <Box>
-                    <Button
-                      border='2px'
-                      borderColor='black'
-                      variant='outline'
-                      onClick={handleSubmit}
-                      isLoading={isUploading}
-                      loadingText='Uploading...'
-                      disabled={!file}>
-                      Upload
-                    </Button>
-                  </Box>
-                  <Box>
-                    {
-                      isUploading && <Progress size='xs' colorScheme="gray" isIndeterminate />
-                    }
-                  </Box>
-                </VStack>
               </Box>
-            </div>
-
-          </CardBody>
-        </Card>
+              <Box>
+                <Button
+                  border='2px'
+                  borderColor='black'
+                  variant='outline'
+                  onClick={handleSubmit}
+                  isLoading={isUploading}
+                  loadingText='Uploading...'
+                  disabled={!file}>
+                  Upload
+                </Button>
+              </Box>
+              <Box>
+                {
+                  isUploading && <Progress size='xs' colorScheme="gray" isIndeterminate />
+                }
+              </Box>
+            </VStack>
+        </FileUploadWrapper>
       )}
       <div className="buttons is-right"></div>
     </>
