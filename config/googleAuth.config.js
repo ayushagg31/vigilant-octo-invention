@@ -3,7 +3,6 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getAnalytics, logEvent } from "firebase/analytics";
 // import dotenv from "dotenv";
 // dotenv.config({ path: '.env' })
-console.log(process.env)
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_GOOGLE_AUTH_DOMAIN,
