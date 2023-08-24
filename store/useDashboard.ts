@@ -10,7 +10,7 @@ export const useDashboard = create<DashboardStoreTypes>((set) => ({
   showResult: false,
   apiFailure: false,
   result: {
-    collectionName: '',
+    collectionId: '',
     message: ''
   },
 

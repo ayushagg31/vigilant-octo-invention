@@ -5,8 +5,11 @@ import {
   arrayUnion,
   doc,
   updateDoc,
+  collection,
 } from "firebase/firestore";
 import { app, auth } from "./googleAuth.config";
+
+const COLLECTION_LIMIT = 3;
 
 const db = getFirestore(app);
 
@@ -36,6 +39,7 @@ export const createUser = async () => {
 };
 
 export const addCollection = async ({
+  collectionId,
   collectionName,
   ytUrl = null,
   pdfUrl = null,
@@ -44,13 +48,71 @@ export const addCollection = async ({
 }) => {
   try {
     const userRef = doc(db, `users/${userId}`);
+    // check if total collection count exceeding the allowed limit
+    const collections = await fetchCollections(userId);
+    if (collections.length >= COLLECTION_LIMIT) {
+      // delete the leastRecentAccessed Collection
+      const oldestTimestamp = Math.min(
+        ...collections.map((col) => col.lastAccessedTimeStamp)
+      );
+      const indexOfOldest = collections.findIndex(
+        (col) => col.lastAccessedTimeStamp === oldestTimestamp
+      );
+      const oldestCollection = collection[indexOfOldest];
+      if (indexOfOldest !== -1) {
+        collections.splice(indexOfOldest, 1);
+        await updateDoc(userRef, {
+          collections,
+        });
+      }
+    }
     await updateDoc(userRef, {
-      collections: arrayUnion({ collectionName, ytUrl, pdfUrl, fileType }),
+      collections: arrayUnion({
+        collectionId,
+        collectionName,
+        ytUrl,
+        pdfUrl,
+        fileType,
+        lastAccessedTimeStamp: Date.now(),
+      }),
     });
     console.log("Document updated successfully");
   } catch (e) {
     console.error("Error updating document: ", e);
     throw new Error("Failed to update document");
+  }
+};
+
+export const updateCollection = async ({
+  collectionId,
+  userId,
+  updatedValue,
+}) => {
+  try {
+    const userRef = doc(db, `users/${userId}`);
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) {
+      const collections = (await userDoc.data()["collections"]) || [];
+      const collectionIdx = collections.findIndex(
+        (col) => col.collectionId === collectionId
+      );
+      if (collectionIdx !== -1) {
+        collections[collectionIdx] = {
+          ...collections[collectionIdx],
+          ...updatedValue,
+        };
+
+        await updateDoc(userRef, {
+          collections,
+        });
+      }
+    } else {
+      console.error("User doesn't exist in db");
+      throw new Error("User doesn't exist in db");
+    }
+  } catch (e) {
+    console.error("Failed to update collection: ", e);
+    throw new Error("Failed to update collection");
   }
 };
 
@@ -60,10 +122,17 @@ export const verifyCollection = async ({ collectionId, userId }) => {
     const userDoc = await getDoc(userRef);
     if (userDoc.exists()) {
       const collections = await userDoc.data()["collections"];
-      let hasCollection = collections.some(
-        (collection) => collection["collectionName"] === collectionId
+      let collection = collections.find(
+        (col) => col["collectionId"] === collectionId
       );
-      return hasCollection;
+      if (collection) {
+        await updateCollection({
+          collectionId: collection.collectionId,
+          userId,
+          updatedValue: { lastAccessedTimeStamp: Date.now() },
+        });
+      }
+      return !!collection;
     } else {
       console.error("User doesn't exist in db");
       throw new Error("User doesn't exist in db");
@@ -71,5 +140,22 @@ export const verifyCollection = async ({ collectionId, userId }) => {
   } catch (e) {
     console.error("Failed to verify collection: ", e);
     throw new Error("Failed to verify collection");
+  }
+};
+
+export const fetchCollections = async (userId) => {
+  try {
+    const userRef = doc(db, `users/${userId}`);
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) {
+      const collections = (await userDoc.data()["collections"]) || [];
+      return collections;
+    } else {
+      console.error("User doesn't exist in db");
+      throw new Error("User doesn't exist in db");
+    }
+  } catch (e) {
+    console.error("Failed to fetch collections ", e);
+    throw new Error("Failed to fetch collections");
   }
 };

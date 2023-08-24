@@ -1,11 +1,11 @@
 import { Chroma } from "langchain/vectorstores/chroma";
 import { embeddings } from "./openai.config";
 
-export const createVectorStore = async (docs, collectionName) => {
+export const createVectorStore = async (docs, collectionId) => {
   try {
     const chromaConfig = {
       url: process.env.CHROMA_URL,
-      collectionName,
+      collectionName: collectionId,
     };
     // Create vector store and index the docs
     await Chroma.fromDocuments(docs, embeddings, chromaConfig);
@@ -16,11 +16,11 @@ export const createVectorStore = async (docs, collectionName) => {
   }
 };
 
-export const fetchVectorStore = async (collectionName) => {
+export const fetchVectorStore = async (collectionId) => {
   try {
     const chromaConfig = {
       url: process.env.CHROMA_URL,
-      collectionName,
+      collectionName: collectionId,
     };
 
     const vectorStore = await Chroma.fromExistingCollection(

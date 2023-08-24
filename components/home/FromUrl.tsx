@@ -17,7 +17,7 @@ export const FromUrl = () => {
     setError(false);
     if (isUrl(url) && url.endsWith(".pdf")) {
       try {
-        await axios.post("/api/download", { pdfUrl: url, userId: user.uid });
+        await axios.post("/api/download", { pdfUrl: url, userId: user.uid || "3D9dxgUuxjPs3XX5HVpyk8vGyzv2" });
       } catch (error) {
         console.error("Error:", error);
       }

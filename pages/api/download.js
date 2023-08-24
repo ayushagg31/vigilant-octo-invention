@@ -7,14 +7,12 @@ import fs from "fs";
 const downloadHandler = async (req, res) => {
   try {
     const { pdfUrl, userId } = req.body;
-    // const extractedFilename = url.pathname.split("/").pop();
     const fileType = "pdf";
-    const collectionName = uuidv4();
-    const fileName = `${collectionName}.${fileType}`;
-
+    const collectionId = uuidv4();
+    const fileName = `${collectionId}.${fileType}`;
+    const fileOriginalname = pdfUrl.substring(pdfUrl.lastIndexOf("/") + 1);
     const response = await axios.get(pdfUrl, { responseType: "arraybuffer" });
     const pdfContent = Buffer.from(response.data, "binary");
-
     fs.writeFile(`public/pdfs/${fileName}`, pdfContent, async (err) => {
       if (err) {
         console.error(err);
@@ -22,11 +20,18 @@ const downloadHandler = async (req, res) => {
       } else {
         console.log(`PDF saved as ${fileName}`);
         try {
-          await ingestData({ collectionName, pdfUrl, fileName, fileType, userId });
+          await ingestData({
+            collectionId,
+            collectionName: fileOriginalname,
+            pdfUrl,
+            fileName,
+            fileType,
+            userId,
+          });
           console.log("Ingestion complete");
           return res.status(200).json({
             message: "File uploaded and ingested successfully",
-            collectionName,
+            collectionId,
           });
         } catch (error) {
           console.error("Ingestion Failed", error);
@@ -35,6 +40,7 @@ const downloadHandler = async (req, res) => {
       }
     });
   } catch (err) {
+    console.error("Failed to download pdf", err);
     return res.status(500).json({ error: err.message });
   }
 };

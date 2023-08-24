@@ -3,7 +3,7 @@ import { ask } from "../../scripts/ask-query.mjs";
 import { HumanChatMessage, AIChatMessage } from "langchain/schema";
 
 export default async function handler(req, res) {
-  const { question, history, collectionName } = req.body;
+  const { question, history, collectionId } = req.body;
 
   // resolve TypeError:chatMessage._getType is not a function
   const histories = history.map((hist) => {
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
   const sanitizedQuestion = question.trim().replaceAll("\n", " ");
 
   try {
-    const vectorStore = await fetchVectorStore(collectionName);
+    const vectorStore = await fetchVectorStore(collectionId);
 
     // query
     const response = await ask(vectorStore, sanitizedQuestion, histories);

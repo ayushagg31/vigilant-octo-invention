@@ -16,7 +16,7 @@ export default function ChatWidget() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const {
-    query: { id: collectionName },
+    query: { id: collectionId },
   } = router;
 
   const [messages, setMessages] = useState([
@@ -76,7 +76,7 @@ export default function ChatWidget() {
     const response = await axios.post("/api/chat", {
       question: userInput,
       history: history.slice(-4),
-      collectionName,
+      collectionId,
     });
 
     if (!response.statusText === "OK") {

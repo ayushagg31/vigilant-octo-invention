@@ -1,20 +1,19 @@
 import { QdrantVectorStore } from "langchain/vectorstores/qdrant";
 import { embeddings } from "./openai.config.js";
+import { QdrantClient } from "@qdrant/js-client-rest";
 import "dotenv/config";
-
-import { QdrantClient } from '@qdrant/js-client-rest';
 
 const client = new QdrantClient({
   url: process.env.QDRANT_URL,
   apiKey: process.env.QDRANT_API_KEY,
 });
 
-export const createVectorStore = async (docs, collectionName) => {
+export const createVectorStore = async (docs, collectionId) => {
   try {
     // embed the PDF documents
     await QdrantVectorStore.fromDocuments(docs, embeddings, {
       client,
-      collectionName: collectionName,
+      collectionName: collectionId,
     });
     console.log("Qdrant Collection created successfully");
   } catch (error) {
@@ -23,13 +22,13 @@ export const createVectorStore = async (docs, collectionName) => {
   }
 };
 
-export const fetchVectorStore = async (collectionName) => {
+export const fetchVectorStore = async (collectionId) => {
   try {
     const vectorStore = await QdrantVectorStore.fromExistingCollection(
       embeddings,
       {
         client,
-        collectionName: collectionName,
+        collectionName: collectionId,
       }
     );
     return vectorStore;
@@ -38,3 +37,13 @@ export const fetchVectorStore = async (collectionName) => {
     throw new Error("Failed to fetch Qdrant Collection");
   }
 };
+
+// need to verify
+export async function removeCollection(collectionId) {
+  try {
+    const response = await client.deleteIndex(collectionId);
+    console.log("Collection removed:", response);
+  } catch (error) {
+    console.error("Error removing collection:", error);
+  }
+}
