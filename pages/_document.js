@@ -14,7 +14,7 @@ export default function Document() {
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/fontawesome.min.css"
         />
       </Head>
-      <body>
+      <body style={{ background: '#ffffff' }}>
         <Main />
         <NextScript />
       </body>

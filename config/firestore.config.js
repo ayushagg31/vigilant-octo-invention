@@ -42,16 +42,34 @@ export const addCollection = async ({
   fileType,
   userId,
 }) => {
-  if (userId) {
-    try {
-      const userRef = doc(db, `users/${userId}`);
-      await updateDoc(userRef, {
-        collections: arrayUnion({ collectionName, ytUrl, pdfUrl, fileType }),
-      });
-      console.log("Document updated successfully");
-    } catch (e) {
-      console.error("Error updating document: ", e);
-      throw new Error("Failed to update document");
+  try {
+    const userRef = doc(db, `users/${userId}`);
+    await updateDoc(userRef, {
+      collections: arrayUnion({ collectionName, ytUrl, pdfUrl, fileType }),
+    });
+    console.log("Document updated successfully");
+  } catch (e) {
+    console.error("Error updating document: ", e);
+    throw new Error("Failed to update document");
+  }
+};
+
+export const verifyCollection = async ({ collectionId, userId }) => {
+  try {
+    const userRef = doc(db, `users/${userId}`);
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) {
+      const collections = await userDoc.data()["collections"];
+      let hasCollection = collections.some(
+        (collection) => collection["collectionName"] === collectionId
+      );
+      return hasCollection;
+    } else {
+      console.error("User doesn't exist in db");
+      throw new Error("User doesn't exist in db");
     }
+  } catch (e) {
+    console.error("Failed to verify collection: ", e);
+    throw new Error("Failed to verify collection");
   }
 };

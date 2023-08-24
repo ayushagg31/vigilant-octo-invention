@@ -7,6 +7,8 @@ import { SimpleGrid, Box, useMediaQuery } from '@chakra-ui/react'
 import { useRouter } from 'next/router';
 import ChatWidget from "./ChatWidget";
 import styles from "../../styles/Home.module.css";
+import { useAuth } from "../../store/useAuth"
+import axios from "axios";
 
 export const AfterUpload = () => {
 
@@ -14,12 +16,36 @@ export const AfterUpload = () => {
   const {
     query: { id },
   } = router
+  const { user } = useAuth((store) => ({
+    user: store.user,
+  }));
 
+
+  const [isVerified, setIsVerified] = useState(true);
   // ssr-friendly media query with fallback
   const [isMaxWidth600] = useMediaQuery('(max-width: 600px)', {
     ssr: true,
     fallback: false, // return false on the server, and re-evaluate on the client side
   })
+
+
+  useEffect(() => {
+    async function verifyCollection({ collectionId, userId }) {
+      try {
+        const { data: { isVerified } } = await axios.post("/api/verifyCollection", { collectionId, userId });
+        setIsVerified(isVerified);
+      }
+      catch (err) {
+        console.error("Error:", err);
+      }
+    }
+    const queryString = window.location.search;
+    const params = new URLSearchParams(queryString);
+    const collectionId = params.get('id');
+    if (collectionId) {
+      verifyCollection({ collectionId, userId: user?.uid })
+    }
+  }, [])
 
 
 
@@ -56,7 +82,8 @@ export const AfterUpload = () => {
     marginTop: '5px',
     marginLeft: '5px'
   }
-  return (
+
+  const ChatAndTabJsx = (
     <SimpleGrid height='80vh' columns={{ sm: 1, md: 2 }} spacing={2}>
       <Box borderWidth='1px' borderRadius='lg'>
         <div style={tabStyle} >
@@ -66,6 +93,16 @@ export const AfterUpload = () => {
       <Box height={'75vh'}>
         <ChatWidget />
       </Box>
-    </SimpleGrid>
+    </SimpleGrid>);
+
+  const NotVerfiedJsx = <div>Not Verified</div >
+
+
+  return (
+    <div>
+      {
+        isVerified ? ChatAndTabJsx : NotVerfiedJsx
+      }
+    </div>
   );
 };
