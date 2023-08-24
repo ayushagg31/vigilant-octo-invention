@@ -1,5 +1,5 @@
 import React from "react";
-import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, useTabsStyles } from '@chakra-ui/react'
 
 
 export const TabComponent = ({ tabConfig }) => {
@@ -8,18 +8,22 @@ export const TabComponent = ({ tabConfig }) => {
     }
     const tabKeys = Object.keys(tabConfig);
     const tabComponents = Object.values(tabConfig);
+    const tabStyle = {
+        color: "white",
+        bg: "black",
+    }
 
     return (
         <div id="upload-tabs">
-            <Tabs variant='soft-rounded' colorScheme='green'>
-                <TabList>
+            <Tabs variant='soft-rounded' >
+                <TabList >
                     {
-                        React.Children.toArray(tabKeys.map((el) => <Tab>{el}</Tab>))
+                        tabKeys.map((el) => <Tab _selected={tabStyle}>{el}</Tab>)
                     }
                 </TabList>
                 <TabPanels>
                     {
-                         React.Children.toArray(tabComponents.map((component) => <TabPanel>{component}</TabPanel>))
+                        tabComponents.map((component) => <TabPanel>{component}</TabPanel>)
                     }
                 </TabPanels>
             </Tabs>

@@ -57,6 +57,7 @@
 }
 
 .cloudform {
+  width: 100%;
   position: relative;
 }
 
@@ -65,8 +66,7 @@
   resize: none;
   font-size: 1.1rem;
   padding: 1rem 2rem 1rem 2rem;
-  width: 75vw;
-  border-radius: 0.5rem;
+  width: 100%;
   border: 1px solid #30373d;
   background: #070809;
   color: #ececf1;
@@ -74,7 +74,7 @@
 }
 
 .textarea:disabled {
-  opacity: 0.5;
+  opacity: 0.8;
 }
 
 .textarea::placeholder {
@@ -120,7 +120,6 @@
   width: 100%;
   height: 100%;
   overflow-y: scroll;
-  border-radius: 0.5rem;
 }
 
 .messagelistloading {
@@ -131,15 +130,20 @@
 }
 
 .usermessage {
-  background: #070809;
+  background: #D1D5DB;
   padding: 1.5rem;
-  color: #ececf1;
+  margin: 5px;
+  border-radius: 0px 10px 10px 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4)
 }
 
 .usermessagewaiting {
+  border-radius: 0px 10px 10px 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
   padding: 1.5rem;
-  color: #ececf1;
-  background: linear-gradient(to left, #070809, #1a1c20, #070809);
+  margin: 5px;
+  /* Text color: Red */
+  background: linear-gradient(to left, #D1D5DB, #FFFFFF, #D1D5DB);
   background-size: 200% 200%;
   background-position: -100% 0;
   animation: loading-gradient 2s ease-in-out infinite;
@@ -151,22 +155,29 @@
   0% {
     background-position: -100% 0;
   }
+
   100% {
     background-position: 100% 0;
   }
 }
 
+
 .apimessage {
-  background: #141619;
+  background: #1c1e24;
+  color: #ffffff;
   padding: 1.5rem;
-  color: #ececf1;
   animation: fadein 0.5s;
+  margin: 5px;
+  border-radius: 0px 10px 10px 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4)
 }
+
 
 @keyframes fadein {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -224,14 +235,12 @@
 }
 
 .cloud {
-  width: 75vw;
-  height: 65vh;
-  background: #070809;
-  border-radius: 0.5rem;
-  border: 1px solid #30373d;
-  display: flex;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgb(226, 232, 240);
   justify-content: center;
   align-items: center;
+  border-radius: 10px 10px 0 0;
 }
 
 .pointsnormal {
@@ -260,6 +269,23 @@
   opacity: 0.8;
 }
 
+.chatWrapper {
+  min-height: 75vh;
+}
+
+.displaySourceWrapper {
+  min-height: 75vh;
+}
+
+.chatBubbleContainer {
+  margin: 2px 2px 2px 4px;
+}
+
+
+
+
+
+
 /* Mobile optimization */
 @media (max-width: 600px) {
   .main {
@@ -268,12 +294,10 @@
   }
 
   .cloud {
-    width: 22rem;
-    height: 28rem;
+    height: 30vh;
   }
-  .textarea {
-    width: 22rem;
-  }
+
+
   .topnav {
     border: 1px solid black;
     align-items: center;
@@ -294,4 +318,59 @@
     width: 100%;
     text-align: center;
   }
+
+  .insightWrapper {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chatWrapper {
+    min-height: 0;
+  }
+
+  .displaySourceWrapper {
+    min-height: 0;
+  }
+}
+
+
+
+
+
+/* typing loader */
+
+@keyframes typing {
+
+  0% {
+    content: "";
+    transform: translateY(0);
+  }
+
+  25% {
+    content: ".";
+    transform: translateY(-5px);
+  }
+
+  50% {
+    content: "..";
+    transform: translateY(0);
+  }
+
+  75% {
+    content: "...";
+    transform: translateY(5px);
+  }
+
+  100% {
+    content: "";
+    transform: translateY(0);
+  }
+}
+
+.typingLoader::after {
+  content: "";
+  display: inline-block;
+  font-size: 18px;
+  font-family: monospace;
+  animation: typing 1s infinite;
 }
