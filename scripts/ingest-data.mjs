@@ -7,8 +7,10 @@ import { DocxLoader } from "langchain/document_loaders/fs/docx";
 import { EPubLoader } from "langchain/document_loaders/fs/epub";
 import { AudioLoader } from "./transcribe-audio.mjs";
 import { addCollection } from "../config/firestore.config.js";
+import "dotenv/config";
 
 export const ingestData = async ({
+  collectionId,
   collectionName,
   ytUrl = null,
   pdfUrl = null,
@@ -55,9 +57,16 @@ export const ingestData = async ({
     // split text into chunks
     const docs = await textSplitter.splitDocuments(rawText);
     // this shit cost money, use frugally
-    // await createVectorStore(docs, collectionName);
+    // await createVectorStore(docs, collectionId);
     if (!userId) throw new Error("UserId info missing");
-    await addCollection({ collectionName, ytUrl, pdfUrl, fileType, userId });
+    await addCollection({
+      collectionId,
+      collectionName,
+      ytUrl,
+      pdfUrl,
+      fileType,
+      userId,
+    });
   } catch (err) {
     console.error("Ingestion failed", err);
     throw new Error(err.message);

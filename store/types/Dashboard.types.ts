@@ -5,12 +5,12 @@ export type DashboardStoreTypes = {
   showResult: boolean;
   apiFailure: boolean;
   result: {
-    collectionName: string;
+    collectionId: string;
     message: string;
   };
 
   setCurrentTab: (tabName: string) => void;
   setAcitveResultTab: (tabName: string) => void;
   setApiFailure: (failureState: boolean) => void;
-  handleFileUpload: (formData: FormData) => void; 
+  handleFileUpload: (formData: FormData) => void;
 }

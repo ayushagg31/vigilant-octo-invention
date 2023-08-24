@@ -8,11 +8,12 @@ const ytHandler = async (req, res) => {
   try {
     const { ytUrl, userId } = req.body;
     const fileType = "mp3";
-    const collectionName = uuidv4();
-    const fileName = `${collectionName}.${fileType}`;
+    const collectionId = uuidv4();
+    const fileName = `${collectionId}.${fileType}`;
     const filePath = `public/audios/${fileName}`;
     const maxAllowedSize = 25000000; // 25MB in bytes
-
+    const videoInfo = await ytdl.getInfo(ytUrl);
+    const videoTitle = videoInfo?.videoDetails?.title;
     await ytdl(ytUrl, { filter: "audioonly" })
       .pipe(fs.createWriteStream(filePath))
       .on("finish", async () => {
@@ -28,7 +29,8 @@ const ytHandler = async (req, res) => {
           if (fileSizeInBytes < maxAllowedSize) {
             try {
               await ingestData({
-                collectionName,
+                collectionId,
+                collectionName: videoTitle,
                 ytUrl,
                 fileName,
                 fileType,
@@ -37,7 +39,8 @@ const ytHandler = async (req, res) => {
               console.log("Ingestion complete");
               return res.status(200).json({
                 message: "File transcribed and ingested successfully",
-                collectionName,
+                videoTitle,
+                collectionId,
               });
             } catch (error) {
               console.error("Ingestion Failed", error);

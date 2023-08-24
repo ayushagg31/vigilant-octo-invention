@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useDashboard } from "../../store/useDashboard";
 import Chat from "./Chat";
 import { TabComponent } from "../common/TabComponent";
 import { PDFObject, ViewMode } from 'react-pdfobject'
@@ -9,6 +8,7 @@ import ChatWidget from "./ChatWidget";
 import styles from "../../styles/Home.module.css";
 import { useAuth } from "../../store/useAuth"
 import axios from "axios";
+import { useCollections } from "../../store/useCollections";
 
 export const AfterUpload = () => {
 
@@ -19,9 +19,15 @@ export const AfterUpload = () => {
   const { user } = useAuth((store) => ({
     user: store.user,
   }));
+  const { collections } = useCollections((store) => {
+    return {
+      collections: store.collections,
+    };
+  });
 
 
-  const [isVerified, setIsVerified] = useState(true);
+
+  const [isVerified, setIsVerified] = useState(false);
   // ssr-friendly media query with fallback
   const [isMaxWidth600] = useMediaQuery('(max-width: 600px)', {
     ssr: true,
@@ -43,10 +49,9 @@ export const AfterUpload = () => {
     const params = new URLSearchParams(queryString);
     const collectionId = params.get('id');
     if (collectionId) {
-      verifyCollection({ collectionId, userId: user?.uid })
+      verifyCollection({ collectionId, userId: user?.uid || "3D9dxgUuxjPs3XX5HVpyk8vGyzv2" })
     }
   }, [])
-
 
 
   const RenderPdf = () => {
@@ -73,9 +78,22 @@ export const AfterUpload = () => {
     )
   }
 
+  const DocsList = () => {
+    return (
+      <div style={{ display: "flex", color: "#000" }}>
+        {collections.map(({ collectionId, collectionName }) =>
+          <div style={{ width: "300px", height: "100px", textAlign: "center", margin: "auto", border: "1px solid black" }}>
+            <a href={`/docinsights?id=${collectionId}`} >{collectionName}</a>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   const tabConfig = {
     "Actual document": <RenderPdf />,
     "Summary": <DetailedSummary />,
+    "All Docs": <DocsList />
   }
 
   const tabStyle = {

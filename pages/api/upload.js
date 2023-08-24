@@ -21,8 +21,8 @@ const uploadHandler = (req, res) => {
       const file = req.file;
       const { userId } = req.body;
       const fileType = file.originalname.split(".").pop();
-      const collectionName = uuidv4();
-      const fileName = `${collectionName}.${fileType}`;
+      const collectionId = uuidv4();
+      const fileName = `${collectionId}.${fileType}`;
       fs.writeFile(`public/pdfs/${fileName}`, file.buffer, async (err) => {
         if (err) {
           console.error(err);
@@ -32,11 +32,17 @@ const uploadHandler = (req, res) => {
         } else {
           console.log("File written successfully");
           try {
-            await ingestData({ collectionName, fileName, fileType, userId });
+            await ingestData({
+              collectionId,
+              collectionName: file.originalname,
+              fileName,
+              fileType,
+              userId,
+            });
             console.log("Ingestion complete");
             return res.status(200).json({
               message: "File uploaded and ingested successfully",
-              collectionName,
+              collectionId,
             });
           } catch (error) {
             console.error("Ingestion Failed", error);
