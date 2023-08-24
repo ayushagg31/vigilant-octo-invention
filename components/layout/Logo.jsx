@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Text, HStack } from "@chakra-ui/react";
+import { Box, Text, HStack, Button } from "@chakra-ui/react";
 import { AiFillDingtalkCircle } from 'react-icons/ai';
+import BackButton from "./BackButton";
 
 export default function Logo(props) {
     return (
@@ -13,6 +14,9 @@ export default function Logo(props) {
                 <Text fontSize="lg" fontWeight="bold">
                     Doc Xpert
                 </Text>
+            </Box>
+            <Box>
+                <BackButton />
             </Box>
         </HStack>
     );

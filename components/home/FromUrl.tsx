@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Button } from '@chakra-ui/react'
 import isUrl from "is-url";
 import axios from "axios";
 import { useAuth } from "../../store/useAuth"
@@ -38,9 +39,13 @@ export const FromUrl = () => {
             {error && <p className="has-text-danger">Invalid URL</p>}
           </div>
           <div className="control">
-            <button className="button is-link" type="submit">
-              Submit
-            </button>
+            <Button
+              type="submit"
+              border='2px'
+              borderColor='black'
+              variant='outline'>
+              Upload
+            </Button>
           </div>
         </div>
       </form>

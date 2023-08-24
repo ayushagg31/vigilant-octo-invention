@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
+import { Card, CardBody, Icon, Text, Center, Circle, VStack, Box, Flex, Spacer, Button, Progress } from '@chakra-ui/react'
 import { useRouter } from "next/router";
 import DragAndDrop from "../common/DragAndDrop";
 import { useDashboard } from "../../store/useDashboard";
 import { useAuth } from "../../store/useAuth"
-
+import style from "../../styles/DragAndDrop.module.css";
 export const FileUploadSection = () => {
   const router = useRouter();
 
@@ -55,21 +56,48 @@ export const FileUploadSection = () => {
       {!file ? (
         <DragAndDrop onFileSelect={handleFileChange} />
       ) : (
-        <>
-          <div className="is-flex">
-            <h1 className="mr-2">{file?.name}</h1>
-            <div onClick={removeFile}>
-              <i className="fa fa-trash"></i>
+        <Card variant={"outline"}>
+          <CardBody>
+            <div className={style.uploadedFileSection}>
+              <Box p={4}>
+                <VStack
+                  spacing={4}
+                  align='stretch'
+                >
+                  <Box>
+                    <Flex>
+                      <div className="mr-5">
+                        <Text as='b' fontSize='sm'>{file?.name}</Text>
+                      </div>
+                      <div onClick={removeFile}>
+                        <i className="fa fa-trash"></i>
+                      </div>
+                    </Flex>
+
+                  </Box>
+                  <Box>
+                    <Button
+                      border='2px'
+                      borderColor='black'
+                      variant='outline'
+                      onClick={handleSubmit}
+                      isLoading={isUploading}
+                      loadingText='Uploading...'
+                      disabled={!file}>
+                      Upload
+                    </Button>
+                  </Box>
+                  <Box>
+                    {
+                      isUploading && <Progress size='xs' colorScheme="gray" isIndeterminate />
+                    }
+                  </Box>
+                </VStack>
+              </Box>
             </div>
-          </div>
-          <button
-            className={`button is-link mt-3 ${isUploading ? "is-loading" : ""}`}
-            onClick={handleSubmit}
-            disabled={!file}
-          >
-            Upload
-          </button>
-        </>
+
+          </CardBody>
+        </Card>
       )}
       <div className="buttons is-right"></div>
     </>

@@ -1,16 +1,19 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getAnalytics, logEvent } from "firebase/analytics";
-
+// import dotenv from "dotenv";
+// dotenv.config({ path: '.env' })
+console.log(process.env)
 const firebaseConfig = {
-  apiKey: "AIzaSyD9C8SrcW07toCPozlssKE1LRKsTiQUmiY",
-  authDomain: "doc-insights-d1cac.firebaseapp.com",
-  projectId: "doc-insights-d1cac",
-  storageBucket: "doc-insights-d1cac.appspot.com",
-  messagingSenderId: "312514846880",
-  appId: "1:312514846880:web:a0b2b732d07666908129c5",
-  measurementId: "G-SHEMN52342",
+  apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_GOOGLE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_GOOGLE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_GOOGLE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_GOOGLE_MESSEGING_SENDING_ID,
+  appId: process.env.NEXT_PUBLIC_GOOGLE_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_GOOGLE_MEASUREMENT_ID,
 };
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
