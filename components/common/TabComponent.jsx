@@ -18,12 +18,12 @@ export const TabComponent = ({ tabConfig }) => {
             <Tabs variant='soft-rounded' >
                 <TabList >
                     {
-                        tabKeys.map((el) => <Tab _selected={tabStyle}>{el}</Tab>)
+                        tabKeys.map((el, index) => <Tab key={index} _selected={tabStyle}>{el}</Tab>)
                     }
                 </TabList>
                 <TabPanels>
                     {
-                        tabComponents.map((component) => <TabPanel>{component}</TabPanel>)
+                        tabComponents.map((component, index) => <TabPanel key={index}>{component}</TabPanel>)
                     }
                 </TabPanels>
             </Tabs>
