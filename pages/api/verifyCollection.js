@@ -1,4 +1,4 @@
-import { verifyCollection } from "../../config/firestore.config";
+import { verifyCollection } from "../../utils/firebase.utils"
 
 export default async function handler(req, res) {
   const { collectionId, userId } = req.body;

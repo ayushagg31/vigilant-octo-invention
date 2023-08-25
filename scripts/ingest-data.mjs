@@ -6,7 +6,7 @@ import { TextLoader } from "langchain/document_loaders/fs/text";
 import { DocxLoader } from "langchain/document_loaders/fs/docx";
 import { EPubLoader } from "langchain/document_loaders/fs/epub";
 import { AudioLoader } from "./transcribe-audio.mjs";
-import { addCollection } from "../config/firestore.config.js";
+import { addCollection } from "../utils/firebase.utils.js";
 import "dotenv/config";
 
 export const ingestData = async ({
@@ -20,9 +20,8 @@ export const ingestData = async ({
 }) => {
   try {
     let loader;
-    const filePath = `public/${
-      fileType === "mp3" ? "audios" : "pdfs"
-    }/${fileName}`;
+    const filePath = `public/${fileType === "mp3" ? "audios" : "pdfs"
+      }/${fileName}`;
     switch (fileType) {
       case "pdf":
         loader = new PDFLoader(filePath);
@@ -57,7 +56,7 @@ export const ingestData = async ({
     // split text into chunks
     const docs = await textSplitter.splitDocuments(rawText);
     // this shit cost money, use frugally
-    // await createVectorStore(docs, collectionId);
+    await createVectorStore(docs, collectionId);
     if (!userId) throw new Error("UserId info missing");
     await addCollection({
       collectionId,

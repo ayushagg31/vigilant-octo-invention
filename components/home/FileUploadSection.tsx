@@ -58,39 +58,39 @@ export const FileUploadSection = () => {
         <DragAndDrop onFileSelect={handleFileChange} />
       ) : (
         <FileUploadWrapper>
-            <VStack
-              spacing={4}
-              align='stretch'
-            >
-              <Box>
-                <Flex>
-                  <div className="mr-5">
-                    <Text as='b' fontSize='sm'>{file?.name}</Text>
-                  </div>
-                  <div onClick={removeFile}>
-                    <i className="fa fa-trash"></i>
-                  </div>
-                </Flex>
+          <VStack
+            spacing={4}
+            align='stretch'
+          >
+            <Box>
+              <Flex>
+                <div className="mr-5">
+                  <Text as='b' fontSize='sm'>{file?.name}</Text>
+                </div>
+                <div onClick={removeFile}>
+                  <i className="fa fa-trash"></i>
+                </div>
+              </Flex>
 
-              </Box>
-              <Box>
-                <Button
-                  border='2px'
-                  borderColor='black'
-                  variant='outline'
-                  onClick={handleSubmit}
-                  isLoading={isUploading}
-                  loadingText='Uploading...'
-                  disabled={!file}>
-                  Upload
-                </Button>
-              </Box>
-              <Box>
-                {
-                  isUploading && <Progress size='xs' colorScheme="gray" isIndeterminate />
-                }
-              </Box>
-            </VStack>
+            </Box>
+            <Box>
+              <Button
+                border='2px'
+                borderColor='black'
+                variant='outline'
+                onClick={handleSubmit}
+                isLoading={isUploading}
+                loadingText='Uploading...'
+                disabled={!file}>
+                Upload
+              </Button>
+            </Box>
+            <Box>
+              {
+                isUploading && <Progress size='xs' colorScheme="gray" isIndeterminate />
+              }
+            </Box>
+          </VStack>
         </FileUploadWrapper>
       )}
       <div className="buttons is-right"></div>
