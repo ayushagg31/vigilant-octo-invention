@@ -23,7 +23,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "components/layout/NavBar.jsx", "components/layout/Logo.jsx"  ],
+, "components/layout/NavBar.jsx", "components/layout/Logo.jsx", "middleware.ts"  ],
   "exclude": [
     "node_modules"
   ]
