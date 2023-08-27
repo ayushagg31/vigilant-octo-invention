@@ -7,7 +7,6 @@ export default function BackButton() {
 
     let router = useRouter()
     let pathName = router.pathname;
-    console.log(pathName)
     const showBackButton = pathName === "/docinsights"
     return (
         showBackButton && <Tooltip label='Go back to dashboard'><Button onClick={() => router.push('/')} leftIcon={<IoIosArrowBack />} variant='solid'>

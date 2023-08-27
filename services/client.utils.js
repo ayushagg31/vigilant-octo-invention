@@ -18,8 +18,6 @@ const getCurrentUserToken = async () => {
 
 }
 
-
-
 export const createUser = async () => {
     const userToken = await getCurrentUserToken();
     if (userToken) {

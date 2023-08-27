@@ -46,7 +46,8 @@ const Home = () => {
       }
     }
     fetchCollections()
-  }, [user])
+  }, [user?.uid])
+  
   useEffect(() => {
     setMounted(true);
   }, []);
