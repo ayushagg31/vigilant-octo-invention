@@ -7,7 +7,7 @@ import { useCollections } from "../../store/useCollections"
 import { BeforeUpload } from "./BeforeUpload";
 import { useRouter } from 'next/router';
 import { useAuth } from "../../store/useAuth";
-import { fetchCollectionsApi } from "../../services/client.utils";
+import { fetchCollectionsApi, deleteCollectionApi } from "../../services/client.utils";
 import { Link } from '@chakra-ui/react'
 import { AiOutlineLink } from 'react-icons/ai';
 import axios from "axios"
@@ -25,8 +25,6 @@ const Home = () => {
     return { collections: store.collections, setCollections: store.setCollections };
   })
 
-
-
   if (showResult) {
     router.push({ pathname: 'docinsights', query: { id: collectionId } });
   }
@@ -39,7 +37,7 @@ const Home = () => {
   useEffect(() => {
     async function fetchCollections() {
       try {
-        const data = await fetchCollectionsApi(user?.uid || "3D9dxgUuxjPs3XX5HVpyk8vGyzv2")
+        const data = await fetchCollectionsApi()
         setCollections(data?.collections || [])
       } catch (e) {
         throw new Error('Error in fetching your docs')
@@ -47,10 +45,19 @@ const Home = () => {
     }
     fetchCollections()
   }, [user?.uid])
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  const handleCloseCollection = async (collectionId) => {
+    try {
+      const data = await deleteCollectionApi({ collectionId })
+      setCollections(data?.collections || [])
+    } catch (e) {
+      throw new Error('Error in deleting your doc', e)
+    }
+  }
 
   if (!mounted) return <></>;
   return (
@@ -74,17 +81,17 @@ const Home = () => {
               borderRadius='5px'
               p={5}
             >
-              {collections.map(({ collectionId, collectionName }) =>
+              {collections?.map(({ collectionId, collectionName }) =>
 
-                <WrapItem>
-                  <Tag size='sm' key={collectionId} border='2px' borderColor={'black'} colorScheme='gray' variant="subtle">
+                <WrapItem key={collectionId}>
+                  <Tag size='sm' border='2px' borderColor={'black'} colorScheme='gray' variant="subtle">
                     <TagLabel>
                       <Link as={NextLink} href={`/docinsights?id=${collectionId}`}>
                         {collectionName}
                       </Link>
                     </TagLabel>
                     <AiOutlineLink />
-                    <TagCloseButton />
+                    <TagCloseButton onClick={() => handleCloseCollection(collectionId)} />
                   </Tag>
                 </WrapItem>
 

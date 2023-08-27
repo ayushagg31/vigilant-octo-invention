@@ -94,25 +94,19 @@ export const updateCollection = async ({
 }) => {
   try {
     const userRef = doc(db, `users/${userId}`);
-    const userDoc = await getDoc(userRef);
-    if (userDoc.exists()) {
-      const collections = (await userDoc.data()["collections"]) || [];
-      const collectionIdx = collections.findIndex(
-        (col) => col.collectionId === collectionId
-      );
-      if (collectionIdx !== -1) {
-        collections[collectionIdx] = {
-          ...collections[collectionIdx],
-          ...updatedValue,
-        };
+    const collections = await fetchCollections(userId);
+    const collectionIdx = collections.findIndex(
+      (col) => col.collectionId === collectionId
+    );
+    if (collectionIdx !== -1) {
+      collections[collectionIdx] = {
+        ...collections[collectionIdx],
+        ...updatedValue,
+      };
 
-        await updateDoc(userRef, {
-          collections,
-        });
-      }
-    } else {
-      console.error("User doesn't exist in db");
-      throw new Error("User doesn't exist in db");
+      await updateDoc(userRef, {
+        collections,
+      });
     }
   } catch (e) {
     console.error("Failed to update collection: ", e);
@@ -120,27 +114,48 @@ export const updateCollection = async ({
   }
 };
 
-export const verifyCollection = async ({ collectionId, userId }) => {
+export const deleteCollection = async ({ collectionId, userId }) => {
+  // check if collection exists for the user,
+  // if yes delete it from firestore and Qdrant
   try {
     const userRef = doc(db, `users/${userId}`);
-    const userDoc = await getDoc(userRef);
-    if (userDoc.exists()) {
-      const collections = await userDoc.data()["collections"];
-      let collection = collections.find(
-        (col) => col["collectionId"] === collectionId
+    const { collections, isVerified } = await verifyCollection({
+      collectionId,
+      userId,
+    });
+    if (isVerified) {
+      const updatedCollection = collections.filter(
+        (col) => col.collectionId !== collectionId
       );
-      if (collection) {
-        await updateCollection({
-          collectionId: collection.collectionId,
-          userId,
-          updatedValue: { lastAccessedTimeStamp: Date.now() },
-        });
-      }
-      return !!collection;
+      await updateDoc(userRef, {
+        collections: updatedCollection,
+      });
+      await removeCollection(collectionId);
+      return updatedCollection;
     } else {
-      console.error("User doesn't exist in db");
-      throw new Error("User doesn't exist in db");
+      console.error("Collection doesn't belong to user", e);
+      throw new Error("Collection doesn't belong to user");
     }
+  } catch (e) {
+    console.error("Failed to delete collection", e);
+    throw new Error("Failed to delete collection");
+  }
+};
+
+export const verifyCollection = async ({ collectionId, userId }) => {
+  try {
+    const collections = await fetchCollections(userId);
+    let collection = collections.find(
+      (col) => col["collectionId"] === collectionId
+    );
+    if (collection) {
+      await updateCollection({
+        collectionId: collection.collectionId,
+        userId,
+        updatedValue: { lastAccessedTimeStamp: Date.now() },
+      });
+    }
+    return { collections, isVerified: !!collection };
   } catch (e) {
     console.error("Failed to verify collection: ", e);
     throw new Error("Failed to verify collection");
