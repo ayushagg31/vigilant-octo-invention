@@ -3,17 +3,18 @@ import { useAuth } from "../store/useAuth";
 import axios from "axios";
 
 const getCurrentUserToken = async () => {
-  try {
-    const user = auth?.currentUser;
-    if (user == null) {
-      return null;
+    try {
+        const user = auth?.currentUser;
+        if (user == null) {
+            return null;
+        }
+        const token = await user?.getIdToken();
+        return token;
+    } catch (er) {
+        throw new Error('error in fetching from store')
     }
-    const token = await user?.getIdToken();
-    return token;
-  } catch (er) {
-    throw new Error("error in fetching from store");
-  }
-};
+
+}
 
 export const createUser = async () => {
   const userToken = await getCurrentUserToken();
