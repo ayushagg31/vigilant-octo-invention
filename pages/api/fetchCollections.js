@@ -1,4 +1,4 @@
-import { fetchCollections } from "../../utils/firebase.utils";
+import { fetchCollections } from "../../utils/firestore.utils";
 import { AuthorizeHandler } from "../../middlewares/AuthMiddleware.ts"
 async function handler(req, res) {
   if (req.method !== "GET") {
@@ -6,7 +6,6 @@ async function handler(req, res) {
     return;
   }
 
-  let context = req.context;
   let userId = req?.context?.user.user_id;
   if (userId == undefined) {
     return res.status(400).json({ message: "Missing required data" });

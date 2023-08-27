@@ -1,12 +1,12 @@
 // pages/api/createUser.js
-import { createUser } from "../../utils/firebase.utils"
+import { createUser } from "../../utils/firestore.utils"
 import { AuthorizeHandler } from "../../middlewares/AuthMiddleware.ts"
 
 const createUserHandler = async (req, res) => {
     try {
         let user = req?.context?.user
         if (user == undefined) {
-            return res.status(400).json({ message: "can not create user due to missing user data" });
+            return res.status(400).json({ message: "Unable to create user due to missing user data" });
         }
         await createUser(user);
         return res.status(200).json({

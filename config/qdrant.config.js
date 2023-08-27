@@ -41,7 +41,7 @@ export const fetchVectorStore = async (collectionId) => {
 // need to verify
 export async function removeCollection(collectionId) {
   try {
-    const response = await client.deleteIndex(collectionId);
+    const response = await client.deleteCollection(collectionId);
     console.log("Collection removed:", response);
   } catch (error) {
     console.error("Error removing collection:", error);

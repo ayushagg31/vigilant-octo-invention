@@ -6,7 +6,7 @@ import { TextLoader } from "langchain/document_loaders/fs/text";
 import { DocxLoader } from "langchain/document_loaders/fs/docx";
 import { EPubLoader } from "langchain/document_loaders/fs/epub";
 import { AudioLoader } from "./transcribe-audio.mjs";
-import { addCollection } from "../utils/firebase.utils.js";
+import { addCollection } from "../utils/firestore.utils.js";
 import "dotenv/config";
 
 export const ingestData = async ({
