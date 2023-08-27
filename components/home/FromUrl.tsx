@@ -4,9 +4,11 @@ import isUrl from "is-url";
 import axios from "axios";
 import { useAuth } from "../../store/useAuth";
 import { FileUploadWrapper } from "./FileUploadWrapper";
+import useAPIError from "../../hooks/useApiErrorHook";
 
 export const FromUrl = () => {
   const [error, setError] = useState(false);
+  const { addError } = useAPIError()
   const { user } = useAuth((store) => ({
     user: store.user,
   }));
@@ -19,7 +21,7 @@ export const FromUrl = () => {
       try {
         await axios.post("/api/download", { pdfUrl: url, userId: user.uid || "3D9dxgUuxjPs3XX5HVpyk8vGyzv2" });
       } catch (error) {
-        console.error("Error:", error);
+        addError('error in downloading document')
       }
     } else {
       setError(true);

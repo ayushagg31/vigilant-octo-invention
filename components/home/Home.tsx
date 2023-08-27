@@ -10,8 +10,10 @@ import { useAuth } from "../../store/useAuth";
 import { fetchCollectionsApi } from "../../services/client.utils";
 import { Link } from '@chakra-ui/react'
 import { AiOutlineLink } from 'react-icons/ai';
-import axios from "axios"
+import useAPIError from "../../hooks/useApiErrorHook";
+
 const Home = () => {
+  const { addError } = useAPIError();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const { showResult, collectionId, } = useDashboard((store) => {
@@ -42,12 +44,12 @@ const Home = () => {
         const data = await fetchCollectionsApi(user?.uid || "3D9dxgUuxjPs3XX5HVpyk8vGyzv2")
         setCollections(data?.collections || [])
       } catch (e) {
-        throw new Error('Error in fetching your docs')
+        addError('Error in fetching your docs');
       }
     }
     fetchCollections()
   }, [user?.uid])
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -59,40 +61,47 @@ const Home = () => {
         <div>
           <BeforeUpload />
         </div>
-        <Box p={4}>
-          <Center>
-            <Text as='b' fontSize='xl'>
-              Your Documents
-            </Text>
-          </Center>
+        <div>
+          {
+            collections.length > 0 &&
+            <>
+              <Box p={4}>
+                <Center>
+                  <Text as='b' fontSize='xl'>
+                    Your Documents
+                  </Text>
+                </Center>
 
-        </Box>
-        <Box>
-          <div style={{ display: "flex" }}>
-            <Wrap border='1px'
-              borderColor='rgb(226, 232, 240)'
-              borderRadius='5px'
-              p={5}
-            >
-              {collections.map(({ collectionId, collectionName }) =>
+              </Box>
+              <Box>
+                <div style={{ display: "flex" }}>
+                  <Wrap border='1px'
+                    borderColor='rgb(226, 232, 240)'
+                    borderRadius='5px'
+                    p={5}
+                  >
+                    {collections.map(({ collectionId, collectionName }) =>
 
-                <WrapItem>
-                  <Tag size='sm' key={collectionId} border='2px' borderColor={'black'} colorScheme='gray' variant="subtle">
-                    <TagLabel>
-                      <Link as={NextLink} href={`/docinsights?id=${collectionId}`}>
-                        {collectionName}
-                      </Link>
-                    </TagLabel>
-                    <AiOutlineLink />
-                    <TagCloseButton />
-                  </Tag>
-                </WrapItem>
+                      <WrapItem>
+                        <Tag size='sm' key={collectionId} border='2px' borderColor={'black'} colorScheme='gray' variant="subtle">
+                          <TagLabel>
+                            <Link as={NextLink} href={`/docinsights?id=${collectionId}`}>
+                              {collectionName}
+                            </Link>
+                          </TagLabel>
+                          <AiOutlineLink />
+                          <TagCloseButton />
+                        </Tag>
+                      </WrapItem>
 
-              )}
-            </Wrap>
-          </div>
+                    )}
+                  </Wrap>
+                </div>
 
-        </Box>
+              </Box>
+            </>
+          }
+        </div>
       </Container >
     </div >
   );
