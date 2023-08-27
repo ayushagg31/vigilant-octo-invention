@@ -4,10 +4,11 @@ import isUrl from "is-url";
 import axios from "axios";
 import { useAuth } from "../../store/useAuth";
 import { FileUploadWrapper } from "./FileUploadWrapper";
+import useAPIError from "../../hooks/useApiErrorHook";
 
 export const FromYtubeUrl = () => {
     const [error, setError] = useState(false);
-
+    const { addError } = useAPIError()
     const { user } = useAuth((store) => ({
         user: store.user,
     }));
@@ -20,6 +21,7 @@ export const FromYtubeUrl = () => {
             try {
                 await axios.post("/api/ytTranscribe", { ytUrl: url, userId: user.uid });
             } catch (error) {
+                addError('error in fetching youtube link');
                 console.error("Error:", error);
             }
         } else {

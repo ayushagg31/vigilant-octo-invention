@@ -9,9 +9,11 @@ import styles from "../../styles/Home.module.css";
 import { useAuth } from "../../store/useAuth"
 import axios from "axios";
 import { useCollections } from "../../store/useCollections";
+import useAPIError from "../../hooks/useApiErrorHook";
 
 export const AfterUpload = () => {
 
+  const { addError } = useAPIError()
   const router = useRouter()
   const {
     query: { id },
@@ -42,7 +44,7 @@ export const AfterUpload = () => {
         setIsVerified(isVerified);
       }
       catch (err) {
-        console.error("Error:", err);
+        addError('Error in verifying account');
       }
     }
     const queryString = window.location.search;
