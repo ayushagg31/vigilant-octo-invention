@@ -1,13 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Card, CardBody, Icon, Text, Center, Circle, VStack, Box, Flex, Spacer, Button, Progress } from '@chakra-ui/react'
+import { Card, CardBody, Icon, Text, Center, Circle, VStack, Box, Flex, Spacer, Button, Progress } from '@chakra-ui/react';
+import axios from "axios";
 import { useRouter } from "next/router";
 import DragAndDrop from "../common/DragAndDrop";
 import { useDashboard } from "../../store/useDashboard";
-import { useAuth } from "../../store/useAuth"
-import { FileUploadWrapper } from "./FileUploadWrapper"
+import { useAuth } from "../../store/useAuth";
+import { FileUploadWrapper } from "./FileUploadWrapper";
+import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
 import style from "../../styles/DragAndDrop.module.css";
 export const FileUploadSection = () => {
   const router = useRouter();
+  const [error, setError] = useState(false);
+  const { addError } = useAPIError();
+  const { loader, addLoader, removeLoader } = useAPILoader();
 
   const { isUploading, handleFileUpload, apiFailure, setApiFailure } =
     useDashboard((store) => {
@@ -36,7 +41,22 @@ export const FileUploadSection = () => {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("userId", user.uid)
-    handleFileUpload(formData);
+    try {
+      addLoader();
+      const response = await axios.post("/api/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const { data: { collectionId } } = response;
+      removeLoader()
+      router.push({ pathname: 'docinsights', query: { id: collectionId } });
+    } catch {
+      removeLoader();
+      addError('error in fetching youtube link');
+      console.error("Error:", error);
+    }
+
   };
 
   const removeFile = () => {
@@ -79,7 +99,7 @@ export const FileUploadSection = () => {
                 borderColor='black'
                 variant='outline'
                 onClick={handleSubmit}
-                isLoading={isUploading}
+                isLoading={loader}
                 loadingText='Uploading...'
                 disabled={!file}>
                 Upload
@@ -87,7 +107,7 @@ export const FileUploadSection = () => {
             </Box>
             <Box>
               {
-                isUploading && <Progress size='xs' colorScheme="gray" isIndeterminate />
+                loader && <Progress size='xs' colorScheme="gray" isIndeterminate />
               }
             </Box>
           </VStack>

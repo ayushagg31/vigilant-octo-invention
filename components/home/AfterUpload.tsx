@@ -9,7 +9,7 @@ import styles from "../../styles/Home.module.css";
 import { useAuth } from "../../store/useAuth"
 import axios from "axios";
 import { useCollections } from "../../store/useCollections";
-import useAPIError from "../../hooks/useApiErrorHook";
+import { useAPIError } from "../../hooks/useApiHook";
 
 export const AfterUpload = () => {
 

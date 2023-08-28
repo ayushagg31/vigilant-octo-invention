@@ -10,7 +10,7 @@ import { useAuth } from "../../store/useAuth";
 import { fetchCollectionsApi, deleteCollectionApi } from "../../services/client.service";
 import { Link } from '@chakra-ui/react'
 import { AiOutlineLink } from 'react-icons/ai';
-import useAPIError from "../../hooks/useApiErrorHook";
+import { useAPIError } from "../../hooks/useApiHook";
 import axios from "axios"
 
 const Home = () => {
@@ -28,9 +28,9 @@ const Home = () => {
     return { collections: store.collections, setCollections: store.setCollections };
   })
 
-  if (showResult) {
-    router.push({ pathname: 'docinsights', query: { id: collectionId } });
-  }
+  // if (showResult) {
+  //   router.push({ pathname: 'docinsights', query: { id: collectionId } });
+  // }
 
 
   const { user } = useAuth((store) => ({
@@ -77,6 +77,13 @@ const Home = () => {
     }
   }
 
+  const creatLink = ({ collectionId, fileType, ytUrl }) => {
+    if (fileType == 'mp3') {
+      return `/docinsights?id=${collectionId}&yt=${ytUrl}`;
+    }
+    return `/docinsights?id=${collectionId}`;
+  }
+
   if (!mounted) return <></>;
   return (
     <div style={{ color: "#000" }}>
@@ -103,17 +110,17 @@ const Home = () => {
                     borderRadius='5px'
                     p={5}
                   >
-                    {collections?.map(({ collectionId, collectionName }) =>
+                    {collections?.map((collectionEl) =>
 
                       <WrapItem key={collectionId}>
                         <Tag size='sm' border='2px' borderColor={'black'} colorScheme='gray' variant="subtle">
                           <TagLabel>
-                            <Link as={NextLink} href={`/docinsights?id=${collectionId}`}>
-                              {collectionName}
+                            <Link as={NextLink} href={creatLink(collectionEl)}>
+                              {collectionEl.collectionName}
                             </Link>
                           </TagLabel>
                           <AiOutlineLink />
-                          <TagCloseButton onClick={() => handleCloseCollection(collectionId)} />
+                          <TagCloseButton onClick={() => handleCloseCollection(collectionEl.collectionId)} />
                         </Tag>
                       </WrapItem>
 

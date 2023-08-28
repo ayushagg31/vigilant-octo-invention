@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { Button } from '@chakra-ui/react'
+import { Button, Box, Progress } from '@chakra-ui/react'
 import isUrl from "is-url";
 import axios from "axios";
 import { useAuth } from "../../store/useAuth";
 import { FileUploadWrapper } from "./FileUploadWrapper";
-import useAPIError from "../../hooks/useApiErrorHook";
+import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
+import { useRouter } from "next/router";
 
 export const FromYtubeUrl = () => {
     const [error, setError] = useState(false);
-    const { addError } = useAPIError()
+    const router = useRouter();
+    const { addError } = useAPIError();
+    const { loader, addLoader, removeLoader } = useAPILoader();
     const { user } = useAuth((store) => ({
         user: store.user,
     }));
@@ -19,8 +22,14 @@ export const FromYtubeUrl = () => {
         setError(false);
         if (isUrl(url)) {
             try {
-                await axios.post("/api/ytTranscribe", { ytUrl: url, userId: user.uid });
+                addLoader();
+                const response = await axios.post("/api/ytTranscribe", { ytUrl: url, userId: user.uid });
+                console.log(response);
+                const { data: { collectionId } } = response;
+                removeLoader()
+                // router.push({ pathname: 'docinsights', query: { id: collectionId } });
             } catch (error) {
+                removeLoader();
                 addError('error in fetching youtube link');
                 console.error("Error:", error);
             }
@@ -54,6 +63,11 @@ export const FromYtubeUrl = () => {
                         </div>
                     </div>
                 </form>
+                <Box p={5}>
+                    {
+                        loader && <Progress size='xs' colorScheme="gray" isIndeterminate />
+                    }
+                </Box>
             </FileUploadWrapper>
         </>
     );

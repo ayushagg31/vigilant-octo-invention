@@ -9,7 +9,7 @@ import {
     Container,
     useToast
 } from '@chakra-ui/react'
-import useAPIError from "../hooks/useApiErrorHook";
+import { useAPIError } from "../hooks/useApiHook";
 
 function APIErrorNotificationProvider() {
 

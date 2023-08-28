@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { Button } from '@chakra-ui/react'
+import { Button, Box, Progress } from '@chakra-ui/react'
 import isUrl from "is-url";
 import axios from "axios";
 import { useAuth } from "../../store/useAuth";
 import { FileUploadWrapper } from "./FileUploadWrapper";
-import useAPIError from "../../hooks/useApiErrorHook";
+import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
+import { useRouter } from "next/router";
 
 export const FromUrl = () => {
   const [error, setError] = useState(false);
-  const { addError } = useAPIError()
+  const router = useRouter();
+  const { addError } = useAPIError();
+  const { loader, addLoader, removeLoader } = useAPILoader();
   const { user } = useAuth((store) => ({
     user: store.user,
   }));
@@ -19,8 +22,13 @@ export const FromUrl = () => {
     setError(false);
     if (isUrl(url) && url.endsWith(".pdf")) {
       try {
-        await axios.post("/api/download", { pdfUrl: url, userId: user.uid || "3D9dxgUuxjPs3XX5HVpyk8vGyzv2" });
+        addLoader();
+        const response = await axios.post("/api/download", { pdfUrl: url, userId: user.uid || "3D9dxgUuxjPs3XX5HVpyk8vGyzv2" });
+        const { data: { collectionId } } = response;
+        removeLoader()
+        router.push({ pathname: 'docinsights', query: { id: collectionId } });
       } catch (error) {
+        removeLoader();
         addError('error in downloading document')
       }
     } else {
@@ -53,6 +61,11 @@ export const FromUrl = () => {
             </div>
           </div>
         </form>
+        <Box p={5}>
+          {
+            loader && <Progress size='xs' colorScheme="gray" isIndeterminate />
+          }
+        </Box>
       </FileUploadWrapper>
 
     </>
