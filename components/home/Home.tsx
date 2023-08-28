@@ -125,7 +125,6 @@ const Home = () => {
             </>
           }
         </div>
-        <button onClick={handlePayment}>Stripe Payment</button>
       </Container >
     </div >
   );
