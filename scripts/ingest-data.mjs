@@ -6,7 +6,7 @@ import { TextLoader } from "langchain/document_loaders/fs/text";
 import { DocxLoader } from "langchain/document_loaders/fs/docx";
 import { EPubLoader } from "langchain/document_loaders/fs/epub";
 import { AudioLoader } from "./transcribe-audio.mjs";
-import { addCollection } from "../utils/firestore.utils.js";
+import { addCollection } from "../services/firestore.service";
 import "dotenv/config";
 
 export const ingestData = async ({
@@ -20,8 +20,9 @@ export const ingestData = async ({
 }) => {
   try {
     let loader;
-    const filePath = `public/${fileType === "mp3" ? "audios" : "pdfs"
-      }/${fileName}`;
+    const filePath = `public/${
+      fileType === "mp3" ? "audios" : "pdfs"
+    }/${fileName}`;
     switch (fileType) {
       case "pdf":
         loader = new PDFLoader(filePath);

@@ -1,4 +1,4 @@
-import { deleteCollection } from "../../utils/firestore.utils";
+import { deleteCollection } from  "../../services/firestore.service";
 import { AuthorizeHandler } from "../../middlewares/AuthMiddleware.ts";
 
 export default AuthorizeHandler(async function handler(req, res) {

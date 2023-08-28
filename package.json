@@ -45,6 +45,7 @@
     "react-markdown": "^8.0.4",
     "react-pdfobject": "^1.2.0",
     "srt-parser-2": "^1.2.3",
+    "stripe": "^13.3.0",
     "uniqid": "^5.4.0",
     "uuid": "^9.0.0",
     "ytdl-core": "^4.11.5",

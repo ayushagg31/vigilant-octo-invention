@@ -5,7 +5,6 @@ import {
   arrayUnion,
   doc,
   updateDoc,
-  collection,
 } from "firebase/firestore";
 import { app } from "../config/googleAuth.config";
 import { removeCollection } from "../config/qdrant.config";

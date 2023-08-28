@@ -7,7 +7,7 @@ import { useCollections } from "../../store/useCollections"
 import { BeforeUpload } from "./BeforeUpload";
 import { useRouter } from 'next/router';
 import { useAuth } from "../../store/useAuth";
-import { fetchCollectionsApi, deleteCollectionApi } from "../../services/client.utils";
+import { fetchCollectionsApi, deleteCollectionApi } from "../../services/client.service";
 import { Link } from '@chakra-ui/react'
 import { AiOutlineLink } from 'react-icons/ai';
 import useAPIError from "../../hooks/useApiErrorHook";
@@ -61,6 +61,21 @@ const Home = () => {
     }
   }
 
+  const handlePayment = async () => {
+    try {
+      const { data } = await axios.post("/api/create-checkout-session", {
+        userId: "random",
+        priceId: "price_1NjmwMSHPnNdGnAZe9guNYlQ"
+        // "price_1NjlWRSHPnNdGnAZTWiu6ymm"
+      });
+      console.log(data.url);
+      window.location.href = data.url;
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      throw new Error("Failed to create user", e.message);
+    }
+  }
+
   if (!mounted) return <></>;
   return (
     <div style={{ color: "#000" }}>
@@ -105,10 +120,15 @@ const Home = () => {
                   </Wrap>
                 </div>
 
+<<<<<<< Updated upstream
               </Box>
             </>
           }
         </div>
+=======
+        </Box>
+        <button onClick={handlePayment}>Stripe Payment</button>
+>>>>>>> Stashed changes
       </Container >
     </div >
   );

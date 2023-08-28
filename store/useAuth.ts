@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { UseAuthType } from "./types/UseAuthType.types";
 import { auth, provider } from "../config/googleAuth.config";
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import { createUser } from '../services/client.utils'
+import { createUser } from '../services/client.service'
 
 export const useAuth = create<UseAuthType>((set) => ({
   user: null,

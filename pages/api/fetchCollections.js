@@ -1,4 +1,4 @@
-import { fetchCollections } from "../../utils/firestore.utils";
+import { fetchCollections } from  "../../services/firestore.service"
 import { AuthorizeHandler } from "../../middlewares/AuthMiddleware.ts"
 
 async function handler(req, res) {

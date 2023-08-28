@@ -1,11 +1,8 @@
-<<<<<<< Updated upstream
-import { verifyCollection } from "../../utils/firestore.utils"
-=======
-import { verifyCollection } from  "../../services/firestore.service";
->>>>>>> Stashed changes
+import { createCheckoutSession } from "../../services/stripe.service";
 
 export default async function handler(req, res) {
-  const { collectionId, userId } = req.body;
+  const { userId, priceId } = req.body;
+  //   const userId = req?.context?.user.user_id;
 
   // only accept post requests
   if (req.method !== "POST") {
@@ -13,12 +10,12 @@ export default async function handler(req, res) {
     return;
   }
 
-  if (!collectionId || !userId) {
+  if (!priceId || !userId) {
     return res.status(400).json({ message: "Missing required data" });
   }
   try {
-    const { isVerified } = await verifyCollection({ collectionId, userId });
-    res.status(200).send({ isVerified });
+    const session = await createCheckoutSession({ userId, priceId });
+    res.status(200).send({ url: session.url });
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ error: error.message || "Something went wrong" });

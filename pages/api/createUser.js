@@ -1,5 +1,5 @@
 // pages/api/createUser.js
-import { createUser } from "../../utils/firestore.utils"
+import { createUser } from "../../services/firestore.service"
 import { AuthorizeHandler } from "../../middlewares/AuthMiddleware.ts"
 
 const createUserHandler = async (req, res) => {
