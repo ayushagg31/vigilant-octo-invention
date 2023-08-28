@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import Example from "./Example";
 import TabsSection from "./TabsSection";
 import { FileUploadSection } from "./FileUploadSection";
@@ -10,16 +10,20 @@ import { FromYtubeUrl } from "./FromYtubeUrl";
 
 
 export const BeforeUpload = () => {
-  const tabConfig = {
-    'Upload File': <FileUploadSection />,
-    'From Url': <FromUrl />,
-    // 'From Text': <FromText />,
-    'From Youtube': <FromYtubeUrl />
-  };
+
+  const memoizedObject = useMemo(() => {
+    return {
+      'Upload File': <FileUploadSection />,
+      'From Url': <FromUrl />,
+      // 'From Text': <FromText />,
+      'From Youtube': <FromYtubeUrl />
+    };
+
+  }, []);
 
   return (
     <div id="upload-tabs">
-      <TabComponent tabConfig={tabConfig} />
+      <TabComponent tabConfig={memoizedObject} />
     </div>
   );
 };

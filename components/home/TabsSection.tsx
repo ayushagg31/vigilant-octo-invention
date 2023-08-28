@@ -20,8 +20,8 @@ const TabsSection = () => {
         return <FileUploadSection />;
       case "from_url":
         return <FromUrl />;
-        case "from_youtube":
-          return <FromYtubeUrl />;
+      case "from_youtube":
+        return <FromYtubeUrl />;
       case "enter_text":
         return <FromText />;
       default:

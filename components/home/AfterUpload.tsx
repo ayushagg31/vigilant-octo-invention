@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Chat from "./Chat";
 import { TabComponent } from "../common/TabComponent";
 import { PDFObject, ViewMode } from 'react-pdfobject'
-import { SimpleGrid, Box, useMediaQuery } from '@chakra-ui/react'
+import { SimpleGrid, Box, useMediaQuery, VStack, StackDivider } from '@chakra-ui/react'
 import { useRouter } from 'next/router';
 import ChatWidget from "./ChatWidget";
 import ReactPlayer from 'react-player/lazy'
@@ -11,12 +11,14 @@ import { useAuth } from "../../store/useAuth"
 import axios from "axios";
 import { useCollections } from "../../store/useCollections";
 import { useAPIError } from "../../hooks/useApiHook";
+import TagDoc from "./TagDoc";
 
 export const AfterUpload = () => {
 
   const { addError } = useAPIError()
   const router = useRouter()
   const {
+    asPath,
     query: { id, yt },
   } = router
 
@@ -84,33 +86,41 @@ export const AfterUpload = () => {
 
   const DocsList = () => {
     return (
-      <div style={{ display: "flex", color: "#000" }}>
-        {collections.map(({ collectionId, collectionName }) =>
-          <div style={{ width: "300px", height: "100px", textAlign: "center", margin: "auto", border: "1px solid black" }}>
-            <a href={`/docinsights?id=${collectionId}`} >{collectionName}</a>
-          </div>
+      <div >
+        {collections.map((collectionEl, index) =>
+          <VStack
+            divider={<StackDivider borderColor='gray.200' />}
+            spacing={4}
+          >
+            <Box p={2}>
+              <TagDoc key={index} collectionEl={collectionEl} size='lg' />
+            </Box>
+
+          </VStack>
+
         )}
       </div>
     );
-  }
-
-  const ytUtl = atob('yt');
-  const tabConfig = {
-    "Actual document": youtubeUrl !== null ? <ReactPlayer url={youtubeUrl} /> : <RenderPdf />,
-    "Summary": <DetailedSummary />,
-    "All Docs": <DocsList />
   }
 
   const tabStyle = {
     marginTop: '5px',
     marginLeft: '5px'
   }
+  const memoizedObject = useMemo(() => {
+    return {
+      "Actual document": youtubeUrl !== null ? <ReactPlayer url={youtubeUrl} /> : <RenderPdf />,
+      "Summary": <DetailedSummary />,
+      "All Docs": <DocsList />
+    }
+
+  }, [asPath]);
 
   const ChatAndTabJsx = (
     <SimpleGrid height='80vh' columns={{ sm: 1, md: 2 }} spacing={2}>
       <Box borderWidth='1px' borderRadius='lg'>
         <div style={tabStyle} >
-          <TabComponent tabConfig={tabConfig} />
+          <TabComponent tabConfig={memoizedObject} />
         </div>
       </Box>
       <Box height={'75vh'}>

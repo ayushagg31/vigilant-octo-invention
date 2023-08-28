@@ -1,15 +1,14 @@
 'use client'
 import React, { useEffect, useState } from "react";
 import NextLink from 'next/link'
-import { Container, Box, HStack, Tag, TagLabel, TagRightIcon, Wrap, WrapItem, Text, TagCloseButton, Center } from '@chakra-ui/react'
+import { Container, Box, Wrap, WrapItem, Text, Center, } from '@chakra-ui/react'
 import { useDashboard } from "../../store/useDashboard";
 import { useCollections } from "../../store/useCollections"
 import { BeforeUpload } from "./BeforeUpload";
 import { useRouter } from 'next/router';
 import { useAuth } from "../../store/useAuth";
+import TagDoc from "./TagDoc";
 import { fetchCollectionsApi, deleteCollectionApi } from "../../services/client.service";
-import { Link } from '@chakra-ui/react'
-import { AiOutlineLink } from 'react-icons/ai';
 import { useAPIError } from "../../hooks/useApiHook";
 import axios from "axios"
 
@@ -27,11 +26,6 @@ const Home = () => {
   const { collections, setCollections } = useCollections((store) => {
     return { collections: store.collections, setCollections: store.setCollections };
   })
-
-  // if (showResult) {
-  //   router.push({ pathname: 'docinsights', query: { id: collectionId } });
-  // }
-
 
   const { user } = useAuth((store) => ({
     user: store.user,
@@ -53,14 +47,6 @@ const Home = () => {
     setMounted(true);
   }, []);
 
-  const handleCloseCollection = async (collectionId) => {
-    try {
-      const data = await deleteCollectionApi({ collectionId })
-      setCollections(data?.collections || [])
-    } catch (e) {
-      throw new Error('Error in deleting your doc', e)
-    }
-  }
 
   const handlePayment = async () => {
     try {
@@ -75,13 +61,6 @@ const Home = () => {
       console.error("Error adding document: ", e);
       throw new Error("Failed to create user", e.message);
     }
-  }
-
-  const creatLink = ({ collectionId, fileType, ytUrl }) => {
-    if (fileType == 'mp3') {
-      return `/docinsights?id=${collectionId}&yt=${btoa(ytUrl)}`;
-    }
-    return `/docinsights?id=${collectionId}`;
   }
 
   if (!mounted) return <></>;
@@ -113,15 +92,7 @@ const Home = () => {
                     {collections?.map((collectionEl) =>
 
                       <WrapItem key={collectionId}>
-                        <Tag size='sm' border='2px' borderColor={'black'} colorScheme='gray' variant="subtle">
-                          <TagLabel>
-                            <Link as={NextLink} href={creatLink(collectionEl)}>
-                              {collectionEl.collectionName}
-                            </Link>
-                          </TagLabel>
-                          <AiOutlineLink />
-                          <TagCloseButton onClick={() => handleCloseCollection(collectionEl.collectionId)} />
-                        </Tag>
+                        <TagDoc collectionEl={collectionEl} size='sm' />
                       </WrapItem>
 
                     )}
