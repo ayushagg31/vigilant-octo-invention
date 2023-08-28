@@ -79,7 +79,7 @@ const Home = () => {
 
   const creatLink = ({ collectionId, fileType, ytUrl }) => {
     if (fileType == 'mp3') {
-      return `/docinsights?id=${collectionId}&yt=${ytUrl}`;
+      return `/docinsights?id=${collectionId}&yt=${btoa(ytUrl)}`;
     }
     return `/docinsights?id=${collectionId}`;
   }

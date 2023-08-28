@@ -25,9 +25,9 @@ export const FromYtubeUrl = () => {
                 addLoader();
                 const response = await axios.post("/api/ytTranscribe", { ytUrl: url, userId: user.uid });
                 console.log(response);
-                const { data: { collectionId } } = response;
+                const { data: { collectionId, ytUrl } } = response;
                 removeLoader()
-                // router.push({ pathname: 'docinsights', query: { id: collectionId } });
+                router.push({ pathname: 'docinsights', query: { id: collectionId, yt: btoa(ytUrl) } });
             } catch (error) {
                 removeLoader();
                 addError('error in fetching youtube link');
@@ -54,6 +54,7 @@ export const FromYtubeUrl = () => {
                         </div>
                         <div className="control">
                             <Button
+                                isLoading={loader}
                                 type="submit"
                                 border='2px'
                                 borderColor='black'

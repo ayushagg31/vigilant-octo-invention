@@ -41,6 +41,7 @@ const ytHandler = async (req, res) => {
                 message: "File transcribed and ingested successfully",
                 videoTitle,
                 collectionId,
+                ytUrl
               });
             } catch (error) {
               console.error("Ingestion Failed", error);

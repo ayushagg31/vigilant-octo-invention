@@ -100,7 +100,7 @@ export const FileUploadSection = () => {
                 variant='outline'
                 onClick={handleSubmit}
                 isLoading={loader}
-                loadingText='Uploading...'
+                loadingText='processing your file..'
                 disabled={!file}>
                 Upload
               </Button>

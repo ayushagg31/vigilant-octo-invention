@@ -52,6 +52,7 @@ export const FromUrl = () => {
             </div>
             <div className="control">
               <Button
+                isLoading={loader}
                 type="submit"
                 border='2px'
                 borderColor='black'

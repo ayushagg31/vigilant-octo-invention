@@ -5,6 +5,7 @@ import { PDFObject, ViewMode } from 'react-pdfobject'
 import { SimpleGrid, Box, useMediaQuery } from '@chakra-ui/react'
 import { useRouter } from 'next/router';
 import ChatWidget from "./ChatWidget";
+import ReactPlayer from 'react-player/lazy'
 import styles from "../../styles/Home.module.css";
 import { useAuth } from "../../store/useAuth"
 import axios from "axios";
@@ -16,8 +17,9 @@ export const AfterUpload = () => {
   const { addError } = useAPIError()
   const router = useRouter()
   const {
-    query: { id },
+    query: { id, yt },
   } = router
+
   const { user } = useAuth((store) => ({
     user: store.user,
   }));
@@ -26,7 +28,7 @@ export const AfterUpload = () => {
       collections: store.collections,
     };
   });
-
+  let youtubeUrl = yt !== undefined && !Array.isArray(yt) ? window.atob(yt) : null;
 
 
   const [isVerified, setIsVerified] = useState(false);
@@ -92,8 +94,9 @@ export const AfterUpload = () => {
     );
   }
 
+  const ytUtl = atob('yt');
   const tabConfig = {
-    "Actual document": <RenderPdf />,
+    "Actual document": youtubeUrl !== null ? <ReactPlayer url={youtubeUrl} /> : <RenderPdf />,
     "Summary": <DetailedSummary />,
     "All Docs": <DocsList />
   }
