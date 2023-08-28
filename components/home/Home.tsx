@@ -11,6 +11,7 @@ import { fetchCollectionsApi, deleteCollectionApi } from "../../services/client.
 import { Link } from '@chakra-ui/react'
 import { AiOutlineLink } from 'react-icons/ai';
 import useAPIError from "../../hooks/useApiErrorHook";
+import axios from "axios"
 
 const Home = () => {
   const { addError } = useAPIError();
@@ -120,15 +121,11 @@ const Home = () => {
                   </Wrap>
                 </div>
 
-<<<<<<< Updated upstream
               </Box>
             </>
           }
         </div>
-=======
-        </Box>
         <button onClick={handlePayment}>Stripe Payment</button>
->>>>>>> Stashed changes
       </Container >
     </div >
   );
