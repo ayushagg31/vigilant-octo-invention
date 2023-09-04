@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Card, CardBody, Icon, Text, Center, Circle, VStack, Box, Flex, Spacer, Button, Progress } from '@chakra-ui/react';
-import axios from "axios";
 import { useRouter } from "next/router";
 import DragAndDrop from "../common/DragAndDrop";
 import { useDashboard } from "../../store/useDashboard";
@@ -8,6 +7,8 @@ import { useAuth } from "../../store/useAuth";
 import { FileUploadWrapper } from "./FileUploadWrapper";
 import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
 import style from "../../styles/DragAndDrop.module.css";
+import { uploadDocumentApi } from "../../services/client.service";
+
 export const FileUploadSection = () => {
   const router = useRouter();
   const [error, setError] = useState(false);
@@ -40,20 +41,16 @@ export const FileUploadSection = () => {
     if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("userId", user.uid)
     try {
       addLoader();
-      const response = await axios.post("/api/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await uploadDocumentApi({ formData })
       const { data: { collectionId } } = response;
       removeLoader()
       router.push({ pathname: 'docinsights', query: { id: collectionId } });
-    } catch {
+    } catch (e) {
+      console.log(e.message)
       removeLoader();
-      addError('error in fetching youtube link');
+      addError('Something went wrong, try again');
       console.error("Error:", error);
     }
 

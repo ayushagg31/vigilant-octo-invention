@@ -3,10 +3,12 @@ import { ingestData } from "../../scripts/ingest-data.mjs";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import fs from "fs";
+import { AuthorizeHandler } from "../../middlewares/AuthMiddleware";
 
 const downloadHandler = async (req, res) => {
   try {
-    const { pdfUrl, userId } = req.body;
+    const { pdfUrl } = req.body;
+    const userId = req?.context?.user.user_id;
     const fileType = "pdf";
     const collectionId = uuidv4();
     const fileName = `${collectionId}.${fileType}`;
@@ -45,7 +47,7 @@ const downloadHandler = async (req, res) => {
   }
 };
 
-export default async function handler(req, res) {
+export default AuthorizeHandler(async function handler(req, res) {
   try {
     if (req.method === "POST") {
       return await downloadHandler(req, res);
@@ -55,4 +57,4 @@ export default async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-}
+});

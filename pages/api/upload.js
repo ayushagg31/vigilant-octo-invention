@@ -3,6 +3,7 @@ import { ingestData } from "../../scripts/ingest-data.mjs";
 import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
+import { AuthorizeHandler } from "../../middlewares/AuthMiddleware.ts";
 
 const upload = multer({
   storage: multer.memoryStorage(), // Use in-memory storage for simplicity
@@ -11,6 +12,8 @@ const upload = multer({
 const uploadHandler = (req, res) => {
   try {
     const uploader = upload.single("file");
+    const userId = req?.context?.user.user_id;
+    console.log(userId, "userId");
     uploader(req, res, (error) => {
       if (error) {
         console.error(error);
@@ -19,7 +22,6 @@ const uploadHandler = (req, res) => {
           .json({ error: "Failed to upload file in memory" });
       }
       const file = req.file;
-      const { userId } = req.body;
       const fileType = file.originalname.split(".").pop();
       const collectionId = uuidv4();
       const fileName = `${collectionId}.${fileType}`;
@@ -62,7 +64,7 @@ export const config = {
   },
 };
 
-export default async function handler(req, res) {
+export default AuthorizeHandler(async function handler(req, res) {
   try {
     if (req.method === "POST") {
       return uploadHandler(req, res);
@@ -72,4 +74,4 @@ export default async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-}
+});

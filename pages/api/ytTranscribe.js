@@ -3,10 +3,12 @@ import { ingestData } from "../../scripts/ingest-data.mjs";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import ytdl from "ytdl-core";
+import { AuthorizeHandler } from "../../middlewares/AuthMiddleware";
 
 const ytHandler = async (req, res) => {
   try {
-    const { ytUrl, userId } = req.body;
+    const { ytUrl } = req.body;
+    const userId = req?.context?.user.user_id;
     const fileType = "mp3";
     const collectionId = uuidv4();
     const fileName = `${collectionId}.${fileType}`;
@@ -41,7 +43,7 @@ const ytHandler = async (req, res) => {
                 message: "File transcribed and ingested successfully",
                 videoTitle,
                 collectionId,
-                ytUrl
+                ytUrl,
               });
             } catch (error) {
               console.error("Ingestion Failed", error);
@@ -73,7 +75,7 @@ const ytHandler = async (req, res) => {
   }
 };
 
-export default async function handler(req, res) {
+export default AuthorizeHandler(async function handler(req, res) {
   try {
     if (req.method === "POST") {
       return await ytHandler(req, res);
@@ -83,4 +85,4 @@ export default async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-}
+});

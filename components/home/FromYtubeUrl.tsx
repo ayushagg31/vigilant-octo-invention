@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button, Box, Progress } from '@chakra-ui/react'
 import isUrl from "is-url";
-import axios from "axios";
 import { useAuth } from "../../store/useAuth";
 import { FileUploadWrapper } from "./FileUploadWrapper";
 import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
 import { useRouter } from "next/router";
+import { youtubeTranscribeApi } from '../../services/client.service'
 
 export const FromYtubeUrl = () => {
     const [error, setError] = useState(false);
@@ -23,7 +23,7 @@ export const FromYtubeUrl = () => {
         if (isUrl(url)) {
             try {
                 addLoader();
-                const response = await axios.post("/api/ytTranscribe", { ytUrl: url, userId: user.uid });
+                const response = await youtubeTranscribeApi({ ytUrl: url })
                 console.log(response);
                 const { data: { collectionId, ytUrl } } = response;
                 removeLoader()

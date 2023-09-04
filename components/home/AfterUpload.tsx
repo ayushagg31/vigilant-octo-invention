@@ -7,11 +7,10 @@ import { useRouter } from 'next/router';
 import ChatWidget from "./ChatWidget";
 import ReactPlayer from 'react-player/lazy'
 import styles from "../../styles/Home.module.css";
-import { useAuth } from "../../store/useAuth"
-import axios from "axios";
 import { useCollections } from "../../store/useCollections";
 import { useAPIError } from "../../hooks/useApiHook";
 import TagDoc from "./TagDoc";
+import { verifyCollectionsApi } from "../../services/client.service";
 
 export const AfterUpload = () => {
 
@@ -22,9 +21,7 @@ export const AfterUpload = () => {
     query: { id, yt },
   } = router
 
-  const { user } = useAuth((store) => ({
-    user: store.user,
-  }));
+
   const { collections } = useCollections((store) => {
     return {
       collections: store.collections,
@@ -42,9 +39,9 @@ export const AfterUpload = () => {
 
 
   useEffect(() => {
-    async function verifyCollection({ collectionId, userId }) {
+    async function verifyCollection({ collectionId }) {
       try {
-        const { data: { isVerified } } = await axios.post("/api/verifyCollection", { collectionId, userId });
+        const { data: { isVerified } } = await verifyCollectionsApi({ collectionId })
         setIsVerified(isVerified);
       }
       catch (err) {
@@ -55,7 +52,7 @@ export const AfterUpload = () => {
     const params = new URLSearchParams(queryString);
     const collectionId = params.get('id');
     if (collectionId) {
-      verifyCollection({ collectionId, userId: user?.uid || "3D9dxgUuxjPs3XX5HVpyk8vGyzv2" })
+      verifyCollection({ collectionId })
     }
   }, [])
 

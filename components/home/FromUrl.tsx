@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Button, Box, Progress } from '@chakra-ui/react'
 import isUrl from "is-url";
-import axios from "axios";
 import { useAuth } from "../../store/useAuth";
 import { FileUploadWrapper } from "./FileUploadWrapper";
 import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
 import { useRouter } from "next/router";
+import { downloadDocApi } from "../../services/client.service"
 
 export const FromUrl = () => {
   const [error, setError] = useState(false);
@@ -23,7 +23,7 @@ export const FromUrl = () => {
     if (isUrl(url) && url.endsWith(".pdf")) {
       try {
         addLoader();
-        const response = await axios.post("/api/download", { pdfUrl: url, userId: user.uid || "3D9dxgUuxjPs3XX5HVpyk8vGyzv2" });
+        const response = await downloadDocApi({ pdfUrl: url })
         const { data: { collectionId } } = response;
         removeLoader()
         router.push({ pathname: 'docinsights', query: { id: collectionId } });

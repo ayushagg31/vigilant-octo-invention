@@ -1,7 +1,9 @@
-import { verifyCollection } from  "../../services/firestore.service";
+import { verifyCollection } from "../../services/firestore.service";
+import { AuthorizeHandler } from "../../middlewares/AuthMiddleware.ts";
 
-export default async function handler(req, res) {
-  const { collectionId, userId } = req.body;
+export default AuthorizeHandler(async function handler(req, res) {
+  const { collectionId } = req.body;
+  const userId = req?.context?.user.user_id;
 
   // only accept post requests
   if (req.method !== "POST") {
@@ -19,4 +21,4 @@ export default async function handler(req, res) {
     console.log("error", error);
     res.status(500).json({ error: error.message || "Something went wrong" });
   }
-}
+});

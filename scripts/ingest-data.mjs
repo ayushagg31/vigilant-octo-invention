@@ -57,7 +57,7 @@ export const ingestData = async ({
     // split text into chunks
     const docs = await textSplitter.splitDocuments(rawText);
     // this shit cost money, use frugally
-    await createVectorStore(docs, collectionId);
+    // await createVectorStore(docs, collectionId);
     if (!userId) throw new Error("UserId info missing");
     await addCollection({
       collectionId,
