@@ -42,9 +42,9 @@ export const AfterUpload = () => {
 
 
   useEffect(() => {
-    async function verifyCollection({ collectionId, userId }) {
+    async function verifyCollection({ collectionId, userEmail }) {
       try {
-        const { data: { isVerified } } = await axios.post("/api/verifyCollection", { collectionId, userId });
+        const { data: { isVerified } } = await axios.post("/api/verifyCollection", { collectionId, userEmail });
         setIsVerified(isVerified);
       }
       catch (err) {
@@ -55,7 +55,8 @@ export const AfterUpload = () => {
     const params = new URLSearchParams(queryString);
     const collectionId = params.get('id');
     if (collectionId) {
-      verifyCollection({ collectionId, userId: user?.uid || "3D9dxgUuxjPs3XX5HVpyk8vGyzv2" })
+      // TODO: TEST Email Setup
+      verifyCollection({ collectionId, userEmail: user?.email || "agg.ayush.1997@gmail.com" })
     }
   }, [])
 

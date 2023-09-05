@@ -19,7 +19,7 @@ const uploadHandler = (req, res) => {
           .json({ error: "Failed to upload file in memory" });
       }
       const file = req.file;
-      const { userId } = req.body;
+      const { userEmail } = req.body;
       const fileType = file.originalname.split(".").pop();
       const collectionId = uuidv4();
       const fileName = `${collectionId}.${fileType}`;
@@ -37,7 +37,7 @@ const uploadHandler = (req, res) => {
               collectionName: file.originalname,
               fileName,
               fileType,
-              userId,
+              userEmail,
             });
             console.log("Ingestion complete");
             return res.status(200).json({

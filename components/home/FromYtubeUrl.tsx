@@ -23,7 +23,7 @@ export const FromYtubeUrl = () => {
         if (isUrl(url)) {
             try {
                 addLoader();
-                const response = await axios.post("/api/ytTranscribe", { ytUrl: url, userId: user.uid });
+                const response = await axios.post("/api/ytTranscribe", { ytUrl: url, userEmail: user.email });
                 console.log(response);
                 const { data: { collectionId, ytUrl } } = response;
                 removeLoader()

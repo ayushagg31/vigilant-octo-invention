@@ -6,7 +6,7 @@ import fs from "fs";
 
 const downloadHandler = async (req, res) => {
   try {
-    const { pdfUrl, userId } = req.body;
+    const { pdfUrl, userEmail } = req.body;
     const fileType = "pdf";
     const collectionId = uuidv4();
     const fileName = `${collectionId}.${fileType}`;
@@ -26,7 +26,7 @@ const downloadHandler = async (req, res) => {
             pdfUrl,
             fileName,
             fileType,
-            userId,
+            userEmail,
           });
           console.log("Ingestion complete");
           return res.status(200).json({

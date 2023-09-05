@@ -50,8 +50,10 @@ const Home = () => {
 
   const handlePayment = async () => {
     try {
+      // https://stripe.com/docs/testing
+      // https://stripe.com/docs/india-recurring-payments?integration=paymentIntents-setupIntents#testing
       const { data } = await axios.post("/api/create-checkout-session", {
-        userId: "random",
+        userEmail: "agg.ayush.1997@gmail.com",
         priceId: "price_1NjmwMSHPnNdGnAZe9guNYlQ"
         // "price_1NjlWRSHPnNdGnAZTWiu6ymm"
       });
@@ -102,6 +104,9 @@ const Home = () => {
               </Box>
             </>
           }
+          <Box p={2} style={{ border: '1px solid red', background: "pink" }}>
+            <button onClick={handlePayment}> Pay here...</button>
+          </Box>
         </div>
       </Container >
     </div >

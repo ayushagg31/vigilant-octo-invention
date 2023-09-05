@@ -1,7 +1,7 @@
 import { verifyCollection } from  "../../services/firestore.service";
 
 export default async function handler(req, res) {
-  const { collectionId, userId } = req.body;
+  const { collectionId, userEmail } = req.body;
 
   // only accept post requests
   if (req.method !== "POST") {
@@ -9,11 +9,11 @@ export default async function handler(req, res) {
     return;
   }
 
-  if (!collectionId || !userId) {
+  if (!collectionId || !userEmail) {
     return res.status(400).json({ message: "Missing required data" });
   }
   try {
-    const { isVerified } = await verifyCollection({ collectionId, userId });
+    const { isVerified } = await verifyCollection({ collectionId, userEmail });
     res.status(200).send({ isVerified });
   } catch (error) {
     console.log("error", error);

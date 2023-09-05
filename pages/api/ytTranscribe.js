@@ -6,7 +6,7 @@ import ytdl from "ytdl-core";
 
 const ytHandler = async (req, res) => {
   try {
-    const { ytUrl, userId } = req.body;
+    const { ytUrl, userEmail } = req.body;
     const fileType = "mp3";
     const collectionId = uuidv4();
     const fileName = `${collectionId}.${fileType}`;
@@ -34,7 +34,7 @@ const ytHandler = async (req, res) => {
                 ytUrl,
                 fileName,
                 fileType,
-                userId,
+                userEmail,
               });
               console.log("Ingestion complete");
               return res.status(200).json({

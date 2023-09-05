@@ -40,7 +40,7 @@ export const FileUploadSection = () => {
     if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("userId", user.uid)
+    formData.append("userEmail", user.email)
     try {
       addLoader();
       const response = await axios.post("/api/upload", formData, {

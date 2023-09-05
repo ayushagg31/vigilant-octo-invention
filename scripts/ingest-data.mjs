@@ -16,7 +16,7 @@ export const ingestData = async ({
   pdfUrl = null,
   fileName,
   fileType,
-  userId,
+  userEmail,
 }) => {
   try {
     let loader;
@@ -57,15 +57,15 @@ export const ingestData = async ({
     // split text into chunks
     const docs = await textSplitter.splitDocuments(rawText);
     // this shit cost money, use frugally
-    await createVectorStore(docs, collectionId);
-    if (!userId) throw new Error("UserId info missing");
+    // await createVectorStore(docs, collectionId);
+    if (!userEmail) throw new Error("User info missing");
     await addCollection({
       collectionId,
       collectionName,
       ytUrl,
       pdfUrl,
       fileType,
-      userId,
+      userEmail,
     });
   } catch (err) {
     console.error("Ingestion failed", err);

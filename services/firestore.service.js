@@ -17,7 +17,7 @@ export const createUser = async (user) => {
   // Get the currently signed-in user
   if (user) {
     try {
-      const userRef = doc(db, `users/${user.uid}`);
+      const userRef = doc(db, `users/${user.email}`);
       const userDoc = await getDoc(userRef);
       const initialDoc = {
         uid: user.uid,
@@ -45,12 +45,12 @@ export const addCollection = async ({
   ytUrl = null,
   pdfUrl = null,
   fileType,
-  userId,
+  userEmail,
 }) => {
   try {
-    const userRef = doc(db, `users/${userId}`);
+    const userRef = doc(db, `users/${userEmail}`);
     // check if total collection count exceeding the allowed limit
-    const collections = await fetchCollections(userId);
+    const collections = await fetchCollections(userEmail);
     if (collections.length >= COLLECTION_LIMIT) {
       // delete the leastRecentAccessed Collection
       const oldestTimestamp = Math.min(
@@ -60,7 +60,6 @@ export const addCollection = async ({
         (col) => col.lastAccessedTimeStamp === oldestTimestamp
       );
       const oldestCollection = collections[indexOfOldest];
-      console.log("oldestCollection", oldestCollection);
       if (indexOfOldest !== -1) {
         collections.splice(indexOfOldest, 1);
         await updateDoc(userRef, {
@@ -88,12 +87,12 @@ export const addCollection = async ({
 
 export const updateCollection = async ({
   collectionId,
-  userId,
+  userEmail,
   updatedValue,
 }) => {
   try {
-    const userRef = doc(db, `users/${userId}`);
-    const collections = await fetchCollections(userId);
+    const userRef = doc(db, `users/${userEmail}`);
+    const collections = await fetchCollections(userEmail);
     const collectionIdx = collections.findIndex(
       (col) => col.collectionId === collectionId
     );
@@ -113,14 +112,14 @@ export const updateCollection = async ({
   }
 };
 
-export const deleteCollection = async ({ collectionId, userId }) => {
+export const deleteCollection = async ({ collectionId, userEmail }) => {
   // check if collection exists for the user,
   // if yes delete it from firestore and Qdrant
   try {
-    const userRef = doc(db, `users/${userId}`);
+    const userRef = doc(db, `users/${userEmail}`);
     const { collections, isVerified } = await verifyCollection({
       collectionId,
-      userId,
+      userEmail,
     });
     if (isVerified) {
       const updatedCollection = collections.filter(
@@ -141,16 +140,16 @@ export const deleteCollection = async ({ collectionId, userId }) => {
   }
 };
 
-export const verifyCollection = async ({ collectionId, userId }) => {
+export const verifyCollection = async ({ collectionId, userEmail }) => {
   try {
-    const collections = await fetchCollections(userId);
+    const collections = await fetchCollections(userEmail);
     let collection = collections.find(
       (col) => col["collectionId"] === collectionId
     );
     if (collection) {
       await updateCollection({
         collectionId: collection.collectionId,
-        userId,
+        userEmail,
         updatedValue: { lastAccessedTimeStamp: Date.now() },
       });
     }
@@ -161,9 +160,9 @@ export const verifyCollection = async ({ collectionId, userId }) => {
   }
 };
 
-export const fetchCollections = async (userId) => {
+export const fetchCollections = async (userEmail) => {
   try {
-    const userRef = doc(db, `users/${userId}`);
+    const userRef = doc(db, `users/${userEmail}`);
     const userDoc = await getDoc(userRef);
     let collections;
     if (userDoc.exists()) {
@@ -177,3 +176,18 @@ export const fetchCollections = async (userId) => {
     throw new Error("Failed to fetch collections");
   }
 };
+
+export const updateUser = async ({ userEmail, paymentIntent }) => {
+  try {
+    const userRef = doc(db, `users/${userEmail}`);
+    await updateDoc(userRef, {
+      paymentIntent,
+    });
+  } catch (e) {
+    console.error("Failed to update user: ", e);
+    throw new Error("Failed to update user");
+  }
+};
+
+// Delete
+// customer.subscription.deleted

@@ -1,8 +1,8 @@
 import { createCheckoutSession } from "../../services/stripe.service";
 
 export default async function handler(req, res) {
-  const { userId, priceId } = req.body;
-  //   const userId = req?.context?.user.user_id;
+  const { userEmail, priceId } = req.body;
+  //   const userEmail = req?.context?.user.email; ?
 
   // only accept post requests
   if (req.method !== "POST") {
@@ -10,11 +10,11 @@ export default async function handler(req, res) {
     return;
   }
 
-  if (!priceId || !userId) {
+  if (!priceId || !userEmail) {
     return res.status(400).json({ message: "Missing required data" });
   }
   try {
-    const session = await createCheckoutSession({ userId, priceId });
+    const session = await createCheckoutSession({ userEmail, priceId });
     res.status(200).send({ url: session.url });
   } catch (error) {
     console.log("error", error);

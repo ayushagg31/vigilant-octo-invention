@@ -23,7 +23,7 @@ export const FromUrl = () => {
     if (isUrl(url) && url.endsWith(".pdf")) {
       try {
         addLoader();
-        const response = await axios.post("/api/download", { pdfUrl: url, userId: user.uid || "3D9dxgUuxjPs3XX5HVpyk8vGyzv2" });
+        const response = await axios.post("/api/download", { pdfUrl: url, userEmail: user.email || "agg.ayush.1997@gmail.com" });
         const { data: { collectionId } } = response;
         removeLoader()
         router.push({ pathname: 'docinsights', query: { id: collectionId } });
