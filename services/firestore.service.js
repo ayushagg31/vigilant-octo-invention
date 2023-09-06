@@ -75,6 +75,7 @@ export const addCollection = async ({
         ytUrl,
         pdfUrl,
         fileType,
+        createdAt: Date.now(),
         lastAccessedTimeStamp: Date.now(),
       }),
     });

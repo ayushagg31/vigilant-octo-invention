@@ -4,6 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import ytdl from "ytdl-core";
 
+const MAX_VIDEO_SIZE_MB = 15;
+
 const ytHandler = async (req, res) => {
   try {
     const { ytUrl, userEmail } = req.body;
@@ -11,7 +13,6 @@ const ytHandler = async (req, res) => {
     const collectionId = uuidv4();
     const fileName = `${collectionId}.${fileType}`;
     const filePath = `public/audios/${fileName}`;
-    const maxAllowedSize = 25000000; // 25MB in bytes
     const videoInfo = await ytdl.getInfo(ytUrl);
     const videoTitle = videoInfo?.videoDetails?.title;
     await ytdl(ytUrl, { filter: "audioonly" })
@@ -26,7 +27,8 @@ const ytHandler = async (req, res) => {
               .json({ error: `Error reading file stats:', ${err.message}` });
           }
           const fileSizeInBytes = stats.size;
-          if (fileSizeInBytes < maxAllowedSize) {
+          const fileSizeMB = fileSizeBytes / (1024 * 1024);
+          if (fileSizeMB < MAX_VIDEO_SIZE_MB) {
             try {
               await ingestData({
                 collectionId,
@@ -57,7 +59,7 @@ const ytHandler = async (req, res) => {
             });
             console.error("Exceeding maximum allowed file limit", err);
             return res
-              .status(500)
+              .status(400)
               .json({ error: `Exceeding maximum allowed file limit` });
           }
         });

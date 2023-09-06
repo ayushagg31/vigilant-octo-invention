@@ -3,6 +3,7 @@ import { ingestData } from "../../scripts/ingest-data.mjs";
 import multer from "multer";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
+import UsageMiddleware from "../../middlewares/UsageMiddleware";
 
 const upload = multer({
   storage: multer.memoryStorage(), // Use in-memory storage for simplicity
@@ -62,7 +63,7 @@ export const config = {
   },
 };
 
-export default async function handler(req, res) {
+export default UsageMiddleware(async function handler(req, res) {
   try {
     if (req.method === "POST") {
       return uploadHandler(req, res);
@@ -72,4 +73,4 @@ export default async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-}
+});

@@ -1,5 +1,5 @@
 import { fetchCollections } from "../../services/firestore.service";
-import { AuthorizeHandler } from "../../middlewares/AuthMiddleware.ts";
+import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
 
 async function handler(req, res) {
   if (req.method !== "GET") {
@@ -21,4 +21,4 @@ async function handler(req, res) {
   }
 }
 
-export default AuthorizeHandler(handler);
+export default AuthorizeMiddleware(handler);

@@ -1,7 +1,7 @@
 import { deleteCollection } from "../../services/firestore.service";
-import { AuthorizeHandler } from "../../middlewares/AuthMiddleware.ts";
+import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
 
-export default AuthorizeHandler(async function handler(req, res) {
+export default AuthorizeMiddleware(async function handler(req, res) {
   const { collectionId } = req.body;
   const userEmail = req?.context?.user.email;
 

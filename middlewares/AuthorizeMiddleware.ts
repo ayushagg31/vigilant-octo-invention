@@ -8,7 +8,7 @@ interface ExtendedNextRequest extends NextRequest {
   context: Context
 }
 
-export const AuthorizeHandler = function (handler) {
+const AuthorizeMiddleware = function (handler) {
   return async function (req: ExtendedNextRequest, res) {
     const authorization = req.headers['authorization'];
     if (!authorization) {
@@ -36,5 +36,7 @@ export const AuthorizeHandler = function (handler) {
   }
 
 }
+
+export default AuthorizeMiddleware;
 
 
