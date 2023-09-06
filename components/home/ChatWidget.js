@@ -1,13 +1,17 @@
-'use client'
+"use client";
 import { useState, useRef, useEffect } from "react";
 import styles from "../../styles/Home.module.css";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
-import { Spinner } from '@chakra-ui/react'
+import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { HumanChatMessage, AIChatMessage } from "langchain/schema";
-import { Box, Avatar, Stack } from '@chakra-ui/react'
-import { AiFillDingtalkCircle, AiOutlineRobot, AiOutlineSend } from 'react-icons/ai';
+import { Box, Avatar, Stack } from "@chakra-ui/react";
+import {
+  AiFillDingtalkCircle,
+  AiOutlineRobot,
+  AiOutlineSend,
+} from "react-icons/ai";
 import axios from "axios";
 
 export default function ChatWidget() {
@@ -118,33 +122,39 @@ export default function ChatWidget() {
     }
   };
 
-
   return (
     <>
-      <Box h="full" w='full'>
+      <Box h="100vh" w="full">
         <div className={styles.cloud}>
           <div ref={messageListRef} className={styles.messagelist}>
             {messages.map((message, index) => {
               return (
-                <div id='chat-conatiner' className={styles.chatBubbleContainer}>
-                  <Stack direction='row'>
+                <div id="chat-conatiner" className={styles.chatBubbleContainer}>
+                  <Stack direction="row">
                     {message.type === "apiMessage" ? (
-                      <Avatar bg='black' style={{ marginTop: '0.5rem' }} icon={<AiOutlineRobot fontSize='1.5rem' />} />
+                      <Avatar
+                        bg="black"
+                        style={{ marginTop: "0.5rem" }}
+                        icon={<AiOutlineRobot fontSize="1.5rem" />}
+                      />
                     ) : (
-                      <Avatar name='Dan Abrahmov' src='https://bit.ly/dan-abramov' style={{ marginTop: '0.5rem' }} />
+                      <Avatar
+                        name="Dan Abrahmov"
+                        src="https://bit.ly/dan-abramov"
+                        style={{ marginTop: "0.5rem" }}
+                      />
                     )}
 
-
-                    < div
+                    <div
                       key={index}
                       className={
                         message.type === "userMessage" &&
-                          loading &&
-                          index === messages.length - 1
+                        loading &&
+                        index === messages.length - 1
                           ? styles.usermessagewaiting
                           : message.type === "apiMessage"
-                            ? styles.apimessage
-                            : styles.usermessage
+                          ? styles.apimessage
+                          : styles.usermessage
                       }
                     >
                       <div className={styles.markdownanswer}>
@@ -155,12 +165,11 @@ export default function ChatWidget() {
                     </div>
                   </Stack>
                 </div>
-
               );
             })}
           </div>
         </div>
-        <div >
+        <div>
           <div className={styles.cloudform}>
             <form onSubmit={handleSubmit}>
               <textarea
@@ -186,17 +195,16 @@ export default function ChatWidget() {
                 className={styles.generatebutton}
               >
                 {loading ? (
-                  <div className={styles.typingLoader}>
-                  </div>
+                  <div className={styles.typingLoader}></div>
                 ) : (
                   // Send icon SVG in input field
-                  <AiOutlineSend fontSize='1.5rem' />
+                  <AiOutlineSend fontSize="1.5rem" />
                 )}
               </button>
             </form>
           </div>
         </div>
-      </Box >
+      </Box>
     </>
   );
 }

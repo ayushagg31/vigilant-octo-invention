@@ -2,11 +2,7 @@
 import React from "react";
 import { useModal } from "../../store/useModal";
 import { useAuth } from "../../store/useAuth";
-import {
-  useDisclosure,
-  Button,
-  Text
-} from '@chakra-ui/react'
+import { useDisclosure, Button, Text } from "@chakra-ui/react";
 import { LoginModal } from "./LoginModal";
 
 function LoginButton() {
@@ -22,10 +18,11 @@ function LoginButton() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <div className="is-flex is-align-items-center">
+      <div className="is-flex is-align-items-center is-flex-direction-column">
         {user ? (
           <>
             <Text>Hi, {user?.displayName}</Text>
+            <br />
             <button className="button is-info is-light" onClick={logout}>
               Logout
             </button>

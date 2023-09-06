@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import Script from "next/script";
-'use client'
+("use client");
 import NavBar from "../components/layout/NavBar";
 import RootModal from "../components/layout/modals/RootModal";
 import { Providers } from "./_provider";
@@ -14,8 +14,10 @@ export default function App({ Component, pageProps }) {
       <Providers>
         <APIErrorProvider>
           <APILoaderProvider>
-            <NavBar />
-            <Component {...pageProps} />
+            <div className="is-flex is-fullwidth" style={{ height: "100vh" }}>
+              <NavBar />
+              <Component {...pageProps} />
+            </div>
             <RootModal />
             <APIErrorNotificationProvider />
           </APILoaderProvider>

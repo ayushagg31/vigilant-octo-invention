@@ -129,28 +129,6 @@
   margin-top: 1rem;
 }
 
-.usermessage {
-  background: #D1D5DB;
-  padding: 1.5rem;
-  margin: 5px;
-  border-radius: 0px 10px 10px 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4)
-}
-
-.usermessagewaiting {
-  border-radius: 0px 10px 10px 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
-  padding: 1.5rem;
-  margin: 5px;
-  /* Text color: Red */
-  background: linear-gradient(to left, #D1D5DB, #FFFFFF, #D1D5DB);
-  background-size: 200% 200%;
-  background-position: -100% 0;
-  animation: loading-gradient 2s ease-in-out infinite;
-  animation-direction: alternate;
-  animation-name: loading-gradient;
-}
-
 @keyframes loading-gradient {
   0% {
     background-position: -100% 0;
@@ -161,17 +139,35 @@
   }
 }
 
-
+.usermessagewaiting {
+  border-radius: 0px 10px 10px 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+  padding: 0.5rem 1rem;
+  margin: 5px;
+  /* Text color: Red */
+  background: linear-gradient(to left, #d1d5db, #ffffff, #d1d5db);
+  background-size: 200% 200%;
+  background-position: -100% 0;
+  animation: loading-gradient 2s ease-in-out infinite;
+  animation-direction: alternate;
+  animation-name: loading-gradient;
+}
+.usermessage {
+  background: #d1d5db;
+  padding: 0.5rem 1rem;
+  margin: 5px;
+  border-radius: 0px 10px 10px 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
+}
 .apimessage {
   background: #1c1e24;
   color: #ffffff;
-  padding: 1.5rem;
+  padding: 0.5rem 1rem;
   animation: fadein 0.5s;
   margin: 5px;
   border-radius: 0px 10px 10px 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4)
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
 }
-
 
 @keyframes fadein {
   from {
@@ -236,11 +232,12 @@
 
 .cloud {
   width: 100%;
-  height: 100%;
+  height: calc(100% - 60px);
   border: 1px solid rgb(226, 232, 240);
   justify-content: center;
   align-items: center;
   border-radius: 10px 10px 0 0;
+  padding: 10px;
 }
 
 .pointsnormal {
@@ -281,11 +278,6 @@
   margin: 2px 2px 2px 4px;
 }
 
-
-
-
-
-
 /* Mobile optimization */
 @media (max-width: 600px) {
   .main {
@@ -296,7 +288,6 @@
   .cloud {
     height: 30vh;
   }
-
 
   .topnav {
     border: 1px solid black;
@@ -333,14 +324,9 @@
   }
 }
 
-
-
-
-
 /* typing loader */
 
 @keyframes typing {
-
   0% {
     content: "";
     transform: translateY(0);
