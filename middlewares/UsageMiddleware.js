@@ -1,5 +1,6 @@
-import pdfjs from "pdfjs-dist";
-
+import { isToday } from "../utils";
+import { fetchCollections } from "../services/firestore.service";
+import { plans } from "../config/plan.config";
 /************************************************
 TODO: PDF/Video Size Limit, PDF Pages Limit, PDF Count Limit, Video Count Limit
 Computation should be done on a per-day basis until the subscription expires.
@@ -13,37 +14,54 @@ Computation should be done on a per-day basis until the subscription expires.
 // - Max video size: 15MB => implement in /ytTranscribe (usageMiddleware)
 // - 1 video per day => implement in /ytTranscribe (usageMiddleware)
 
-
-const MAX_PDF_PAGE_COUNT = 100;
-const MAX_PDF_SIZE_MB = 30;
-const MAX_DOCUMENT_PER_DAY = 1;
-const MAX_VIDEO_SIZE_MB = 15;
-const MAX_VIDEO_PER_DAY = 2;
-const MAX_QUESTIONS_PER_DAY = 50;
-
 const UsageMiddleware = function (handler) {
   return async function (req, res) {
     try {
-      const file = req.file;
-      const { userEmail } = req.body;
-      const fileType = file.originalname.split(".").pop();
-      if (fileType === "pdf") {
-        const pdfData = new Uint8Array(file.buffer);
-        const pdfDocument = await pdfjs.getDocument({ data: pdfData }).promise;
-        const numPages = pdfDocument.numPages;
-        const fileSizeBytes = file.buffer.length;
-        const fileSizeMB = fileSizeBytes / (1024 * 1024);
-        if (numPages > MAX_PDF_PAGE_COUNT || fileSizeMB > MAX_PDF_SIZE_MB) {
-          return res.status(400).json({
-            error: "PDF exceeds page count or size limits",
-          });
-        }
+      const currentPlan = plans[req.headers["X-Plan-Type"]];
+      const { MAX_DOCUMENT_LIMIT } = currentPlan;
 
-        // check for total pdf collection uploaded today
-        // if count matches/exceed MAX_DOCUMENT_PER_DAY then rejects it
-        
+      const file = req?.file;
+      const { userEmail, pdfUrl = "", ytUrl = "" } = req?.body || {};
+      const fileType = ytUrl
+        ? "mp3"
+        : pdfUrl
+        ? "pdf"
+        : file?.originalname?.split(".")?.pop();
+
+      if (!MAX_DOCUMENT_LIMIT[fileType]) {
+        return res.status(400).json({
+          error: "Filetype not supported yet",
+        });
       }
-    } catch (err) {}
+
+      // check for total pdf collection uploaded today
+      // if count matches/exceed MAX_DOCUMENT_PER_DAY then rejects it
+      const { collections } = await fetchCollections(userEmail);
+      const collectionsCreatedToday = collections.filter((col) =>
+        isToday(col.createdAt)
+      );
+
+      const fileTypeCounts = {};
+      collectionsCreatedToday.forEach((col) => {
+        const fileType = col.fileType;
+        if (fileTypeCounts[fileType]) {
+          fileTypeCounts[fileType]++;
+        } else {
+          fileTypeCounts[fileType] = 1;
+        }
+      });
+
+      if (fileTypeCounts[fileType] >= MAX_DOCUMENT_LIMIT[fileType]) {
+        return res.status(400).json({
+          error: "Max limit exceeds for the day",
+        });
+      }
+    } catch (error) {
+      console.error(`usageMiddleware error: ${error}`);
+      return res
+        .status(500)
+        .json({ message: `Error while verifying usage. Error: ${error}` });
+    }
     // pass back to handler
     return handler(req, res);
   };

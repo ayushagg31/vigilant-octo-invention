@@ -23,13 +23,16 @@ export const createUser = async (user) => {
         uid: user.uid,
         displayName: user.name,
         email: user.email,
+        currentPlan: "free_tier",
         collections: [],
+        queryInfo: {
+          count: 0,
+          lastUpdatedAt: Date.now(),
+        },
       };
       if (!userDoc.exists()) {
         await setDoc(userRef, initialDoc);
         console.log("Document written successfully");
-      } else {
-        console.log("user already exists");
       }
     } catch (e) {
       console.log(e);
@@ -50,39 +53,43 @@ export const addCollection = async ({
   try {
     const userRef = doc(db, `users/${userEmail}`);
     // check if total collection count exceeding the allowed limit
-    const collections = await fetchCollections(userEmail);
+    const { collections } = await fetchCollections(userEmail);
+    const updatedCollections = [...collections];
     if (collections.length >= COLLECTION_LIMIT) {
-      // delete the leastRecentAccessed Collection
+      // set deletedAt the leastRecentAccessed Collection
       const oldestTimestamp = Math.min(
         ...collections.map((col) => col.lastAccessedTimeStamp)
       );
       const indexOfOldest = collections.findIndex(
         (col) => col.lastAccessedTimeStamp === oldestTimestamp
       );
+
       const oldestCollection = collections[indexOfOldest];
       if (indexOfOldest !== -1) {
-        collections.splice(indexOfOldest, 1);
-        await updateDoc(userRef, {
-          collections,
-        });
+        updatedCollections[indexOfOldest] = {
+          ...updatedCollections[indexOfOldest],
+          deletedAt: Date.now(),
+        };
         await removeCollection(oldestCollection.collectionId);
       }
     }
+    const newCollection = {
+      collectionId,
+      collectionName,
+      ytUrl,
+      pdfUrl,
+      fileType,
+      createdAt: Date.now(),
+      lastAccessedTimeStamp: Date.now(),
+    };
+    updatedCollections.push(newCollection);
     await updateDoc(userRef, {
-      collections: arrayUnion({
-        collectionId,
-        collectionName,
-        ytUrl,
-        pdfUrl,
-        fileType,
-        createdAt: Date.now(),
-        lastAccessedTimeStamp: Date.now(),
-      }),
+      collections: updatedCollections,
     });
-    console.log("Document updated successfully");
+    console.log("Document added successfully");
   } catch (e) {
-    console.error("Error updating document: ", e);
-    throw new Error("Failed to update document");
+    console.error("Error adding document: ", e);
+    throw new Error("Failed to add document");
   }
 };
 
@@ -93,7 +100,7 @@ export const updateCollection = async ({
 }) => {
   try {
     const userRef = doc(db, `users/${userEmail}`);
-    const collections = await fetchCollections(userEmail);
+    const { collections } = await fetchCollections(userEmail);
     const collectionIdx = collections.findIndex(
       (col) => col.collectionId === collectionId
     );
@@ -123,16 +130,25 @@ export const deleteCollection = async ({ collectionId, userEmail }) => {
       userEmail,
     });
     if (isVerified) {
-      const updatedCollection = collections.filter(
-        (col) => col.collectionId !== collectionId
-      );
+      const updatedCollections = collections.map((col) => {
+        if (col.collectionId === collectionId) {
+          return {
+            ...col,
+            deletedAt: Date.now(),
+          };
+        }
+        return col;
+      });
       await updateDoc(userRef, {
-        collections: updatedCollection,
+        collections: updatedCollections,
       });
       await removeCollection(collectionId);
-      return updatedCollection;
+      return {
+        collections: updatedCollections,
+        activeCollections: updatedCollections.filter((col) => !col.deletedAt),
+      };
     } else {
-      console.error("Collection doesn't belong to user", e);
+      console.error("Collection doesn't belong to user");
       throw new Error("Collection doesn't belong to user");
     }
   } catch (e) {
@@ -143,18 +159,25 @@ export const deleteCollection = async ({ collectionId, userEmail }) => {
 
 export const verifyCollection = async ({ collectionId, userEmail }) => {
   try {
-    const collections = await fetchCollections(userEmail);
-    let collection = collections.find(
+    const { collections, activeCollections } = await fetchCollections(
+      userEmail
+    );
+    let collection = activeCollections.find(
       (col) => col["collectionId"] === collectionId
     );
-    if (collection) {
+    const isVerified = !!collection;
+    if (isVerified) {
       await updateCollection({
         collectionId: collection.collectionId,
         userEmail,
         updatedValue: { lastAccessedTimeStamp: Date.now() },
       });
     }
-    return { collections, isVerified: !!collection };
+    return {
+      collections,
+      activeCollections,
+      isVerified,
+    };
   } catch (e) {
     console.error("Failed to verify collection: ", e);
     throw new Error("Failed to verify collection");
@@ -165,24 +188,25 @@ export const fetchCollections = async (userEmail) => {
   try {
     const userRef = doc(db, `users/${userEmail}`);
     const userDoc = await getDoc(userRef);
-    let collections;
+    let collections = [];
     if (userDoc.exists()) {
       collections = (await userDoc.data()["collections"]) || [];
-    } else {
-      collections = [];
     }
-    return collections;
+    return {
+      collections,
+      activeCollections: collections.filter((col) => !col.deletedAt),
+    };
   } catch (e) {
     console.error("Failed to fetch collections ", e);
     throw new Error("Failed to fetch collections");
   }
 };
 
-export const updateUser = async ({ userEmail, paymentIntent }) => {
+export const updateUser = async ({ userEmail, ...rest }) => {
   try {
     const userRef = doc(db, `users/${userEmail}`);
     await updateDoc(userRef, {
-      paymentIntent,
+      ...rest,
     });
   } catch (e) {
     console.error("Failed to update user: ", e);
@@ -190,5 +214,32 @@ export const updateUser = async ({ userEmail, paymentIntent }) => {
   }
 };
 
-// Delete
-// customer.subscription.deleted
+export const fetchQueryInfo = async ({ userEmail }) => {
+  try {
+    const userRef = doc(db, `users/${userEmail}`);
+    const userDoc = await getDoc(userRef);
+    let queryInfo = {};
+    if (userDoc.exists()) {
+      queryInfo = (await userDoc.data()["queryInfo"]) || {};
+    }
+    return queryInfo;
+  } catch (e) {
+    console.error("Failed to fetch query Info", e);
+    throw new Error("Failed to fetch query Info");
+  }
+};
+
+export const fetchPlanInfo = async ({ userEmail }) => {
+  try {
+    const userRef = doc(db, `users/${userEmail}`);
+    const userDoc = await getDoc(userRef);
+    let planInfo;
+    if (userDoc.exists()) {
+      planInfo = (await userDoc.data()["currentPlan"]) || {};
+    }
+    return planInfo;
+  } catch (e) {
+    console.error("Failed to fetch planInfo", e);
+    throw new Error("Failed to fetch planInfo");
+  }
+};

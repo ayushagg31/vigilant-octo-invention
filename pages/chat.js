@@ -1,9 +1,9 @@
-'use client'
+"use client";
 import { useState, useRef, useEffect } from "react";
 import styles from "../styles/Home.module.css";
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
-import { Spinner } from '@chakra-ui/react'
+import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { HumanChatMessage, AIChatMessage } from "langchain/schema";
 import axios from "axios";
@@ -73,6 +73,7 @@ export default function ChatWidget() {
       question: userInput,
       history: history.slice(-4),
       collectionId,
+      userEmail: "agg.ayush.1997@gmail.com",
     });
 
     if (!response.statusText === "OK") {
@@ -126,12 +127,12 @@ export default function ChatWidget() {
                   key={index}
                   className={
                     message.type === "userMessage" &&
-                      loading &&
-                      index === messages.length - 1
+                    loading &&
+                    index === messages.length - 1
                       ? styles.usermessagewaiting
                       : message.type === "apiMessage"
-                        ? styles.apimessage
-                        : styles.usermessage
+                      ? styles.apimessage
+                      : styles.usermessage
                   }
                 >
                   {/* Display the correct icon depending on the message type */}
@@ -193,11 +194,11 @@ export default function ChatWidget() {
                 {loading ? (
                   <div className={styles.loadingwheel}>
                     <Spinner
-                      thickness='4px'
-                      speed='0.65s'
-                      emptyColor='gray.200'
-                      color='blue.500'
-                      size='xl'
+                      thickness="4px"
+                      speed="0.65s"
+                      emptyColor="gray.200"
+                      color="blue.500"
+                      size="xl"
                     />
                   </div>
                 ) : (

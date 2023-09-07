@@ -15,10 +15,13 @@ export default AuthorizeMiddleware(async function handler(req, res) {
     return res.status(400).json({ message: "Missing required data" });
   }
   try {
-    const collections = await deleteCollection({ collectionId, userEmail });
-    res.status(200).send({ collections });
+    const { activeCollections } = await deleteCollection({
+      collectionId,
+      userEmail,
+    });
+    res.status(200).send({ collections: activeCollections });
   } catch (error) {
-    console.log("error", error);
+    console.error("error", error);
     res.status(500).json({ error: error.message || "Something went wrong" });
   }
 });

@@ -32,7 +32,6 @@ export const handleWebhookEvents = async (event) => {
 
         const customerId = paymentIntentSucceeded.customer;
         const invoiceId = paymentIntentSucceeded.invoice;
-
         // Retrieve the Customer Info to access customer_email
         const customerInfo = await client.customers.retrieve(customerId);
 
@@ -48,9 +47,11 @@ export const handleWebhookEvents = async (event) => {
 
         await updateUser({
           userEmail: customerInfo.email,
-          paymentIntent: {
+          currentPlan: "plus_tier",
+          paymentInfo: {
             id: paymentIntentSucceeded.id,
             priceId,
+            customerId,
             status: paymentIntentSucceeded.status,
           },
         });
@@ -67,9 +68,10 @@ export const handleWebhookEvents = async (event) => {
 
         await updateUser({
           userEmail: customerInfo.email,
-          paymentIntent: {
+          paymentInfo: {
             id: customerSubscriptionDeleted.id,
             priceId,
+            customerId,
             status: customerSubscriptionDeleted.status,
           },
         });

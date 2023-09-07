@@ -13,8 +13,8 @@ async function handler(req, res) {
   }
 
   try {
-    const collections = await fetchCollections(userEmail);
-    res.status(200).json({ collections });
+    const { activeCollections } = await fetchCollections(userEmail);
+    res.status(200).json({ collections: activeCollections });
   } catch (error) {
     console.log("error", error);
     res.status(500).json({ error: error.message || "Something went wrong" });
