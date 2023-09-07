@@ -40,7 +40,7 @@ export const FileUploadSection = () => {
     if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("userEmail", user.email)
+    formData.append("userEmail", user?.email || "agg.ayush.1997@gmail.com")
     try {
       addLoader();
       const response = await axios.post("/api/upload", formData, {
@@ -53,7 +53,7 @@ export const FileUploadSection = () => {
       router.push({ pathname: 'docinsights', query: { id: collectionId } });
     } catch {
       removeLoader();
-      addError('error in fetching youtube link');
+      addError('Failed to upload document');
       console.error("Error:", error);
     }
 

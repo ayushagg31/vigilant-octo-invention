@@ -32,7 +32,6 @@ export const handleWebhookEvents = async (event) => {
 
         const customerId = paymentIntentSucceeded.customer;
         const invoiceId = paymentIntentSucceeded.invoice;
-
         // Retrieve the Customer Info to access customer_email
         const customerInfo = await client.customers.retrieve(customerId);
 
@@ -48,10 +47,13 @@ export const handleWebhookEvents = async (event) => {
 
         await updateUser({
           userEmail: customerInfo.email,
-          paymentIntent: {
+          currentPlan: "plus_tier",
+          paymentInfo: {
             id: paymentIntentSucceeded.id,
             priceId,
-            status: paymentIntentSucceeded.status,
+            customerId,
+            // https://stripe.com/docs/payments/paymentintents/lifecycle#intent-statuses
+            status: paymentIntentSucceeded.status, // succeeded
           },
         });
       }
@@ -67,9 +69,12 @@ export const handleWebhookEvents = async (event) => {
 
         await updateUser({
           userEmail: customerInfo.email,
-          paymentIntent: {
+          currentPlan: "free_tier",
+          paymentInfo: {
             id: customerSubscriptionDeleted.id,
             priceId,
+            customerId,
+            // https://stripe.com/docs/api/subscriptions/object#subscription_object-status
             status: customerSubscriptionDeleted.status,
           },
         });

@@ -65,7 +65,7 @@ export const ingestData = async ({
       ytUrl,
       pdfUrl,
       fileType,
-      userEmail,
+      userEmail: "agg.ayush.1997@gmail.com",
     });
   } catch (err) {
     console.error("Ingestion failed", err);

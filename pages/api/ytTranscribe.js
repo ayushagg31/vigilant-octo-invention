@@ -3,12 +3,19 @@ import { ingestData } from "../../scripts/ingest-data.mjs";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import ytdl from "ytdl-core";
+import UsageMiddleware from "../../middlewares/UsageMiddleware";
+import PlanMiddleware from "../../middlewares/PlanMiddleware";
+import { plans } from "../../config/plan.config";
 
 const MAX_VIDEO_SIZE_MB = 15;
 
 const ytHandler = async (req, res) => {
   try {
     const { ytUrl, userEmail } = req.body;
+
+    const currentPlan = plans[req.headers["X-Plan-Type"]];
+    const { MAX_VIDEO_SIZE_MB } = currentPlan;
+
     const fileType = "mp3";
     const collectionId = uuidv4();
     const fileName = `${collectionId}.${fileType}`;
@@ -27,7 +34,7 @@ const ytHandler = async (req, res) => {
               .json({ error: `Error reading file stats:', ${err.message}` });
           }
           const fileSizeInBytes = stats.size;
-          const fileSizeMB = fileSizeBytes / (1024 * 1024);
+          const fileSizeMB = fileSizeInBytes / (1024 * 1024);
           if (fileSizeMB < MAX_VIDEO_SIZE_MB) {
             try {
               await ingestData({
@@ -43,7 +50,7 @@ const ytHandler = async (req, res) => {
                 message: "File transcribed and ingested successfully",
                 videoTitle,
                 collectionId,
-                ytUrl
+                ytUrl,
               });
             } catch (error) {
               console.error("Ingestion Failed", error);
@@ -75,14 +82,16 @@ const ytHandler = async (req, res) => {
   }
 };
 
-export default async function handler(req, res) {
-  try {
-    if (req.method === "POST") {
-      return await ytHandler(req, res);
-    } else {
-      res.status(405).json({ error: "Method Not Allowed" });
+export default PlanMiddleware(
+  UsageMiddleware(async function handler(req, res) {
+    try {
+      if (req.method === "POST") {
+        return await ytHandler(req, res);
+      } else {
+        res.status(405).json({ error: "Method Not Allowed" });
+      }
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
     }
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
-}
+  })
+);

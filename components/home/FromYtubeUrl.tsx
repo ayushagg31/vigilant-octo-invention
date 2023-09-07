@@ -24,7 +24,6 @@ export const FromYtubeUrl = () => {
             try {
                 addLoader();
                 const response = await axios.post("/api/ytTranscribe", { ytUrl: url, userEmail: user.email });
-                console.log(response);
                 const { data: { collectionId, ytUrl } } = response;
                 removeLoader()
                 router.push({ pathname: 'docinsights', query: { id: collectionId, yt: btoa(ytUrl) } });
