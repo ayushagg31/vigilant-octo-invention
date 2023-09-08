@@ -2,7 +2,6 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 // import Chat from "./Chat";
 import { TabComponent } from "../common/TabComponent";
 import { PDFObject, ViewMode } from "react-pdfobject";
-import { usePdf } from "@mikecousins/react-pdf";
 import {
   SimpleGrid,
   Box,
@@ -77,12 +76,6 @@ export const AfterUpload = () => {
     const [page, setPage] = useState(1);
     const canvasRef = useRef(null);
 
-    const { pdfDocument, pdfPage } = usePdf({
-      file: `http://localhost:3000/pdfs/${id}.pdf`,
-      page,
-      canvasRef,
-    });
-
     return (
       <>
         <PDFObject
@@ -97,34 +90,6 @@ export const AfterUpload = () => {
           height={"100%"}
           url={`http://localhost:3000/pdfs/${id}.pdf`}
         />
-        {/* <div>
-          {!pdfDocument && <span>Loading...</span>}
-          <canvas ref={canvasRef} />
-          {Boolean(pdfDocument && pdfDocument.numPages) && (
-            <nav>
-              <ul className="pager">
-                <li className="previous">
-                  <button
-                    disabled={page === 1}
-                    onClick={() => setPage(page - 1)}
-                    style={{ color: "#000" }}
-                  >
-                    Previous
-                  </button>
-                </li>
-                <li className="next">
-                  <button
-                    disabled={page === pdfDocument.numPages}
-                    onClick={() => setPage(page + 1)}
-                    style={{ color: "#000" }}
-                  >
-                    Next
-                  </button>
-                </li>
-              </ul>
-            </nav>
-          )}
-        </div> */}
       </>
     );
   };
