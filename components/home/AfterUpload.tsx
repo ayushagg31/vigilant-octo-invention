@@ -40,6 +40,7 @@ export const AfterUpload = () => {
     yt !== undefined && !Array.isArray(yt) ? window.atob(yt) : null;
 
   const [isVerified, setIsVerified] = useState(false);
+
   // ssr-friendly media query with fallback
   const [isMaxWidth600] = useMediaQuery("(max-width: 600px)", {
     ssr: true,
@@ -60,17 +61,14 @@ export const AfterUpload = () => {
         addError("Error in verifying account");
       }
     }
-    const queryString = window.location.search;
-    const params = new URLSearchParams(queryString);
-    const collectionId = params.get("id");
-    if (collectionId) {
+    if (id) {
       // TODO: TEST Email Setup
       verifyCollection({
-        collectionId,
+        collectionId: id,
         userEmail: user?.email || "agg.ayush.1997@gmail.com",
       });
     }
-  }, []);
+  }, [id, user]);
 
   const RenderPdf = () => {
     //if (apiFailure) return <>Error...</>;
@@ -84,8 +82,6 @@ export const AfterUpload = () => {
       page,
       canvasRef,
     });
-
-    console.log({ pdfDocument, pdfPage });
 
     return (
       <>
