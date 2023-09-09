@@ -2,10 +2,11 @@ import { create } from "zustand";
 import { UseAuthType } from "./types/UseAuthType.types";
 import { auth, provider } from "../config/googleAuth.config";
 import { onAuthStateChanged, signInWithPopup, signOut } from "firebase/auth";
-import { createUser } from '../services/client.service'
+import { createUser } from "../services/client.service";
 
 export const useAuth = create<UseAuthType>((set) => ({
   user: null,
+  loadingUser: true,
   userToken: null,
   logout: () => {
     signOut(auth).then(
@@ -19,8 +20,8 @@ export const useAuth = create<UseAuthType>((set) => ({
       }
     );
   },
-  setUser: (userInfo) => set({ user: userInfo }),
-  setUserToken: (userToken) => set({ userToken }),
+  setUser: (userInfo) => set({ user: userInfo, loadingUser: false }),
+  setUserToken: (userToken) => set({ userToken, loadingUser: false }),
   googleLogin: (closeModal) => {
     signInWithPopup(auth, provider).then((data) => {
       createUser();
@@ -40,7 +41,7 @@ const updateUserTokenToState = (user) => {
       setUserToken(token);
     });
   }
-}
+};
 
 onAuthStateChanged(auth, (user) => {
   if (user) {

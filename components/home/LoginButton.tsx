@@ -10,9 +10,10 @@ function LoginButton() {
     openModal: store.openModal,
   }));
 
-  const { user, logout } = useAuth((store) => ({
+  const { user, logout, loadingUser } = useAuth((store) => ({
     user: store.user,
     logout: store.logout,
+    loadingUser: store.loadingUser,
   }));
 
   const { isOpen, onOpen, onClose } = useDisclosure();

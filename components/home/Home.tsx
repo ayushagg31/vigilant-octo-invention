@@ -7,10 +7,8 @@ import { BeforeUpload } from "./BeforeUpload";
 import { useRouter } from "next/router";
 import { useAuth } from "../../store/useAuth";
 import TagDoc from "./TagDoc";
-import { createCheckoutSessionApi } from "../../services/client.service"
-import {
-  fetchCollectionsApi,
-} from "../../services/client.service";
+import { createCheckoutSessionApi } from "../../services/client.service";
+import { fetchCollectionsApi } from "../../services/client.service";
 import { useAPIError } from "../../hooks/useApiHook";
 
 const Home = () => {
@@ -55,7 +53,9 @@ const Home = () => {
     try {
       // https://stripe.com/docs/testing
       // https://stripe.com/docs/india-recurring-payments?integration=paymentIntents-setupIntents#testing
-      const { data } = await createCheckoutSessionApi({ priceId: "price_1NjmwMSHPnNdGnAZe9guNYlQ" })
+      const { data } = await createCheckoutSessionApi({
+        priceId: "price_1NjmwMSHPnNdGnAZe9guNYlQ",
+      });
       console.log(data.url);
       window.location.href = data.url;
     } catch (e) {
