@@ -22,7 +22,7 @@ export const FromUrl = () => {
         const response = await downloadDocApi({ pdfUrl: url });
         const { data: { collectionId } } = response;
         removeLoader()
-        router.push({ pathname: 'docinsights', query: { id: collectionId } });
+        router.push({ pathname: 'dashboard/docinsights', query: { id: collectionId } });
       } catch (error) {
         removeLoader();
         addError('error in downloading document')

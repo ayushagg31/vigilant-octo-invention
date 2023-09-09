@@ -1,16 +1,20 @@
 'use client'
 import React, { useState } from "react";
-import Home from "../components/home/Home";
-import { Container } from '@chakra-ui/react'
+import LandingLayout from "../components/layout/LandingLayout";
 
-const FileUploader = () => {
+
+const LandingPage = () => {
   return (
     <>
-      <Container maxW='4xl'>
-        <Home />
-      </Container>
+      <div>This page has been moved to /dashboard</div>
+      <div>This space will be used to create landing page</div>
     </>
   );
 };
 
-export default FileUploader;
+export default LandingPage;
+
+
+LandingPage.getLayout = (page) => {
+  return <LandingLayout>{page}</LandingLayout>;
+};

@@ -9,15 +9,20 @@ import APIErrorProvider from "../customProviders/apiErrorProvider";
 import APILoaderProvider from "../customProviders/apiLoaderProvider";
 
 export default function App({ Component, pageProps }) {
+
+  const getLayout = Component.getLayout || ((page) => page);
   return (
     <>
       <Providers>
         <APIErrorProvider>
           <APILoaderProvider>
-            <div className="is-flex is-fullwidth" style={{ height: "100vh" }}>
-              <NavBar />
-              <Component {...pageProps} />
-            </div>
+            {
+              getLayout(
+                <>
+                  <Component {...pageProps} />
+
+                </>)
+            }
             <RootModal />
             <APIErrorNotificationProvider />
           </APILoaderProvider>
