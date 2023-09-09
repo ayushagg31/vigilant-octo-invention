@@ -64,7 +64,7 @@ export const config = {
   },
 };
 
-export default AuthorizeHandler(async function handler(req, res) {
+async function handler(req, res) {
   try {
     if (req.method === "POST") {
       return uploadHandler(req, res);
@@ -74,4 +74,6 @@ export default AuthorizeHandler(async function handler(req, res) {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-});
+}
+
+export default AuthorizeHandler(handler);

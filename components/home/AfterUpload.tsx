@@ -15,19 +15,29 @@ import { verifyCollectionsApi } from "../../services/client.service";
 export const AfterUpload = () => {
 
   const { addError } = useAPIError()
-  const router = useRouter()
+  const router = useRouter();
   const {
     asPath,
-    query: { id, yt },
   } = router
 
+  const [id, setId] = useState(null);
+  const [yt, setYt] = useState(null);
+  useEffect(() => {
+    if (!router.isReady) return;
+    const {
+      query: { id, yt },
+    } = router
+    setId(id);
+    setYt(yt);
+
+  }, [router.isReady]);
 
   const { collections } = useCollections((store) => {
     return {
       collections: store.collections,
     };
   });
-  let youtubeUrl = yt !== undefined && !Array.isArray(yt) ? window.atob(yt) : null;
+  let youtubeUrl = !!yt && !Array.isArray(yt) ? window.atob(yt) : null;
 
 
   const [isVerified, setIsVerified] = useState(false);
@@ -41,7 +51,7 @@ export const AfterUpload = () => {
   useEffect(() => {
     async function verifyCollection({ collectionId }) {
       try {
-        const { data: { isVerified } } = await verifyCollectionsApi({ collectionId })
+        const { isVerified } = await verifyCollectionsApi({ collectionId })
         setIsVerified(isVerified);
       }
       catch (err) {
@@ -58,7 +68,9 @@ export const AfterUpload = () => {
 
 
   const RenderPdf = () => {
-    //if (apiFailure) return <>Error...</>;
+    if (!id) {
+      return <>Loading Pdf...</>
+    }
     const viewMode:
       ViewMode = 'FitV';
     let pdfHeight = isMaxWidth600 ? "30vh" : "60vh"
@@ -111,7 +123,7 @@ export const AfterUpload = () => {
       "All Docs": <DocsList />
     }
 
-  }, [asPath]);
+  }, [asPath, id, yt]);
 
   const ChatAndTabJsx = (
     <SimpleGrid height='80vh' columns={{ sm: 1, md: 2 }} spacing={2}>
@@ -130,8 +142,9 @@ export const AfterUpload = () => {
 
   return (
     <div>
+
       {
-        isVerified ? ChatAndTabJsx : NotVerfiedJsx
+        router.isReady ? isVerified ? ChatAndTabJsx : NotVerfiedJsx : null
       }
     </div>
   );

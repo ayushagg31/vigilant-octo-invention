@@ -1,9 +1,10 @@
 import { auth } from "../config/googleAuth.config";
-import { useAuth } from "../store/useAuth";
 import axios from "axios";
+
 
 const getCurrentUserToken = async () => {
   try {
+    await auth.authStateReady();
     const user = auth?.currentUser;
     if (user == null) {
       return null;
@@ -51,14 +52,16 @@ export const verifyCollectionsApi = async ({ collectionId }) => {
   const userToken = await getCurrentUserToken();
   if (userToken) {
     try {
-      const { data } = await axios.post("/api/verifyCollection", {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-        data: {
+      const { data } = await axios.post("/api/verifyCollection",
+        {
           collectionId,
         },
-      });
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        });
+
       return data;
     } catch (e) {
       throw new Error("Error in fetching collection", e.message);
@@ -106,13 +109,12 @@ export const youtubeTranscribeApi = async ({ ytUrl }) => {
   const userToken = await getCurrentUserToken();
   if (userToken) {
     try {
-      const response = await axios.post("/api/ytTranscribe", null, {
+      const response = await axios.post("/api/ytTranscribe", {
+        ytUrl,
+      }, {
         headers: {
           Authorization: `Bearer ${userToken}`,
-        },
-        data: {
-          ytUrl,
-        },
+        }
       });
       return response;
     } catch (e) {
@@ -125,13 +127,12 @@ export const downloadDocApi = async ({ pdfUrl }) => {
   const userToken = await getCurrentUserToken();
   if (userToken) {
     try {
-      const response = await axios.post("/api/download", null, {
+      const response = await axios.post("/api/download",{
+        pdfUrl,
+      }, {
         headers: {
           Authorization: `Bearer ${userToken}`,
-        },
-        data: {
-          pdfUrl,
-        },
+        }
       });
       return response;
     } catch (e) {
