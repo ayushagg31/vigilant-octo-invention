@@ -22,7 +22,7 @@ export const FromYtubeUrl = () => {
                 const response = await youtubeTranscribeApi({ ytUrl: url })
                 const { data: { collectionId, ytUrl } } = response;
                 removeLoader()
-                router.push({ pathname: 'docinsights', query: { id: collectionId, yt: btoa(ytUrl) } });
+                router.push({ pathname: 'dashboard/docinsights', query: { id: collectionId, yt: btoa(ytUrl) } });
             } catch (error) {
                 removeLoader();
                 addError('error in fetching youtube link');
