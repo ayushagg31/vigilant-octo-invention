@@ -9,7 +9,7 @@ const PlanMiddleware = function (handler) {
       const planInfo = await fetchPlanInfo({
         userEmail: userEmail || "agg.ayush.1997@gmail.com",
       });
-      req.headers["X-Plan-Type"] = planInfo;
+      req.headers["X-Plan-Type"] = planInfo; // server side
     } catch (error) {
       console.error(`PlanMiddleware error: ${error}`);
       return res

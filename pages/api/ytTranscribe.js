@@ -7,7 +7,6 @@ import UsageMiddleware from "../../middlewares/UsageMiddleware";
 import PlanMiddleware from "../../middlewares/PlanMiddleware";
 import { plans } from "../../config/plan.config";
 
-const MAX_VIDEO_SIZE_MB = 15;
 
 const ytHandler = async (req, res) => {
   try {

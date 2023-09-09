@@ -69,7 +69,7 @@ export const handleWebhookEvents = async (event) => {
 
         await updateUser({
           userEmail: customerInfo.email,
-          currentPlan: "free_tier",
+          currentPlan: "free_tier", // zero_tier
           paymentInfo: {
             id: customerSubscriptionDeleted.id,
             priceId,
