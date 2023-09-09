@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
-// import Chat from "./Chat";
 import { TabComponent } from "../common/TabComponent";
 import { PDFObject, ViewMode } from "react-pdfobject";
 import {
@@ -11,13 +10,12 @@ import {
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import ChatWidget from "./ChatWidget";
-// import ReactPlayer from "react-player/lazy";
-import styles from "../../styles/Home.module.css";
+import ReactPlayer from "react-player/lazy";
 import { useAuth } from "../../store/useAuth";
-import axios from "axios";
 import { useCollections } from "../../store/useCollections";
 import { useAPIError } from "../../hooks/useApiHook";
 import TagDoc from "./TagDoc";
+import { verifyCollectionsApi } from "../../services/client.service";
 
 export const AfterUpload = () => {
   const { addError } = useAPIError();
@@ -47,24 +45,19 @@ export const AfterUpload = () => {
   });
 
   useEffect(() => {
-    async function verifyCollection({ collectionId, userEmail }) {
+    async function verifyCollection({ collectionId }) {
       try {
         const {
-          data: { isVerified },
-        } = await axios.post("/api/verifyCollection", {
-          collectionId,
-          userEmail,
-        });
+          isVerified
+        } = await verifyCollectionsApi({ collectionId })
         setIsVerified(isVerified);
       } catch (err) {
         addError("Error in verifying account");
       }
     }
     if (id) {
-      // TODO: TEST Email Setup
       verifyCollection({
         collectionId: id,
-        userEmail: user?.email || "agg.ayush.1997@gmail.com",
       });
     }
   }, [id, user]);

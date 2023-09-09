@@ -23,6 +23,7 @@ export const ingestData = async ({
     const filePath = `public/${
       fileType === "mp3" ? "audios" : "pdfs"
     }/${fileName}`;
+    if (!userEmail) throw new Error("User info missing");
     switch (fileType) {
       case "pdf":
         loader = new PDFLoader(filePath);
@@ -58,7 +59,7 @@ export const ingestData = async ({
     const docs = await textSplitter.splitDocuments(rawText);
     // this shit cost money, use frugally
     // await createVectorStore(docs, collectionId);
-    if (!userEmail) throw new Error("User info missing");
+
     await addCollection({
       collectionId,
       collectionName,

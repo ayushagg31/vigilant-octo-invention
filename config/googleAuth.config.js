@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, browserSessionPersistence } from "firebase/auth";
+import { getAuth, GoogleAuthProvider, browserSessionPersistence, inMemoryPersistence, browserLocalPersistence, getIdToken } from "firebase/auth";
 import { getAnalytics, logEvent } from "firebase/analytics";
 // import dotenv from "dotenv";
 // dotenv.config({ path: '.env' })
@@ -20,6 +20,8 @@ const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);
 auth.setPersistence(browserSessionPersistence);
+auth.setPersistence(inMemoryPersistence);
+auth.setPersistence(browserLocalPersistence);
 const provider = new GoogleAuthProvider();
 
-export { app, auth, provider };
+export { app, auth, provider, getIdToken };
