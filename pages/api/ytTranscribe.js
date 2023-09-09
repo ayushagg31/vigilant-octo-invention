@@ -53,7 +53,7 @@ const ytHandler = async (req, res) => {
                 fileType,
                 userEmail,
               });
-              console.log("Ingestion complete");
+              console.log("Transcription and Ingestion complete");
               return res.status(200).json({
                 message: "File transcribed and ingested successfully",
                 videoTitle,

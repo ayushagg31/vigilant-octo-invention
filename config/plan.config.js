@@ -26,7 +26,7 @@ export const plans = {
     },
     MAX_DOCUMENT_LIMIT: {
       mp3: 2,
-      pdf: 1,
+      pdf: 10,
     },
     MAX_PDF_PAGE_COUNT: 5,
     MAX_PDF_SIZE_MB: 10,
