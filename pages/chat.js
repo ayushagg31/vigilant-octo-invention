@@ -73,7 +73,6 @@ export default function ChatWidget() {
       question: userInput,
       history: history.slice(-4),
       collectionId,
-      userEmail: "agg.ayush.1997@gmail.com",
     });
 
     if (!response.statusText === "OK") {

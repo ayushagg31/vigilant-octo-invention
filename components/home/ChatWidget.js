@@ -1,18 +1,12 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import styles from "../../styles/Home.module.css";
-import Image from "next/image";
 import ReactMarkdown from "react-markdown";
-import { Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { HumanChatMessage, AIChatMessage } from "langchain/schema";
 import { Box, Avatar, Stack } from "@chakra-ui/react";
-import {
-  AiFillDingtalkCircle,
-  AiOutlineRobot,
-  AiOutlineSend,
-} from "react-icons/ai";
-import axios from "axios";
+import { AiOutlineRobot, AiOutlineSend } from "react-icons/ai";
+import { chatApi } from "../../services/client.service";
 
 export default function ChatWidget() {
   const [userInput, setUserInput] = useState("");
@@ -73,11 +67,7 @@ export default function ChatWidget() {
 
     const query = new HumanChatMessage(userInput);
 
-    // Send user question and history to API
-    const header = {
-      "Content-Type": "application/json",
-    };
-    const response = await axios.post("/api/chat", {
+    const response = await chatApi({
       question: userInput,
       history: history.slice(-4),
       collectionId,

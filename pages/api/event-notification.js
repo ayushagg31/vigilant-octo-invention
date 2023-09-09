@@ -1,3 +1,5 @@
+// api/event-notification
+
 import stripe from "stripe";
 import { buffer } from "micro";
 import { handleWebhookEvents } from "../../services/stripe.service";
@@ -22,6 +24,7 @@ export default async function handler(req, res) {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
+    console.error("Webhook Error:", err);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 

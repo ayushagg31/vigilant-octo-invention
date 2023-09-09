@@ -149,7 +149,10 @@ export const deleteCollection = async ({ collectionId, userEmail }) => {
       };
     } else {
       console.error("Collection doesn't belong to user");
-      throw new Error("Collection doesn't belong to user");
+      return {
+        collections: collections,
+        activeCollections: collections.filter((col) => !col.deletedAt),
+      };
     }
   } catch (e) {
     console.error("Failed to delete collection", e);

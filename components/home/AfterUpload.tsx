@@ -48,7 +48,7 @@ export const AfterUpload = () => {
     async function verifyCollection({ collectionId }) {
       try {
         const {
-          isVerified
+          data: { isVerified }
         } = await verifyCollectionsApi({ collectionId })
         setIsVerified(isVerified);
       } catch (err) {
@@ -60,7 +60,7 @@ export const AfterUpload = () => {
         collectionId: id,
       });
     }
-  }, [id, user]);
+  }, [id, user?.email]);
 
   const RenderPdf = () => {
     //if (apiFailure) return <>Error...</>;

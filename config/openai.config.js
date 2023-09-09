@@ -8,7 +8,7 @@ export const embeddings = new OpenAIEmbeddings({
 });
 
 export const model = new OpenAI({
-  temperature: 0,
+  temperature: 1,
   modelName: "gpt-3.5-turbo",
   openAIApiKey: process.env.OPEN_AI_API_KEY,
 });

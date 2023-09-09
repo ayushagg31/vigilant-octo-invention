@@ -17,11 +17,17 @@ Computation should be done on a per-day basis until the subscription expires.
 const UsageMiddleware = function (handler) {
   return async function (req, res) {
     try {
+      const userEmail = req?.context?.user?.email;
+      const file = req?.file;
+      const { pdfUrl = "", ytUrl = "" } = req?.body || {};
+
+      if (!userEmail) {
+        return res.status(400).json({ message: "Missing required data" });
+      }
+
       const currentPlan = plans[req.headers["X-Plan-Type"]];
       const { MAX_DOCUMENT_LIMIT } = currentPlan;
 
-      const file = req?.file;
-      const { userEmail, pdfUrl = "", ytUrl = "" } = req?.body || {};
       const fileType = ytUrl
         ? "mp3"
         : pdfUrl
@@ -53,7 +59,7 @@ const UsageMiddleware = function (handler) {
 
       if (fileTypeCounts[fileType] >= MAX_DOCUMENT_LIMIT[fileType]) {
         return res.status(400).json({
-          error: "Max limit exceeds for the day",
+          error: "Subscription Limit Exceeded",
         });
       }
     } catch (error) {

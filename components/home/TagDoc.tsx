@@ -30,14 +30,14 @@ const TagDoc = ({ collectionEl, size }) => {
   useEffect(() => {
     async function fetchCollections() {
       try {
-        const data = await fetchCollectionsApi();
+        const { data } = await fetchCollectionsApi();
         setCollections(data?.collections || []);
       } catch (e) {
         addError("Error in fetching your docs");
       }
     }
     fetchCollections();
-  }, [user?.uid]);
+  }, [user?.email]);
 
   useEffect(() => {
     setMounted(true);
@@ -45,7 +45,7 @@ const TagDoc = ({ collectionEl, size }) => {
 
   const handleCloseCollection = async (collectionId) => {
     try {
-      const data = await deleteCollectionApi({ collectionId });
+      const { data } = await deleteCollectionApi({ collectionId });
       setCollections(data?.collections || []);
     } catch (e) {
       throw new Error("Error in deleting your doc", e);

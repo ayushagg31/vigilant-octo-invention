@@ -3,11 +3,15 @@ import { fetchPlanInfo } from "../services/firestore.service";
 const PlanMiddleware = function (handler) {
   return async function (req, res) {
     try {
-      const { userEmail } = req.body;
       // check which plan user is subscribed to
-      console.log("userEmail", userEmail);
+      const userEmail = req?.context?.user?.email;
+
+      if (!userEmail) {
+        return res.status(400).json({ message: "Missing required data" });
+      }
+
       const planInfo = await fetchPlanInfo({
-        userEmail: userEmail || "agg.ayush.1997@gmail.com",
+        userEmail: userEmail,
       });
       req.headers["X-Plan-Type"] = planInfo; // server side
     } catch (error) {

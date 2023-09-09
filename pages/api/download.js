@@ -7,11 +7,15 @@ import pdfjs from "pdfjs-dist";
 import UsageMiddleware from "../../middlewares/UsageMiddleware";
 import PlanMiddleware from "../../middlewares/PlanMiddleware";
 import { plans } from "../../config/plan.config";
+import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
 
 const downloadHandler = async (req, res) => {
   try {
-    const { pdfUrl, userEmail } = req.body;
-
+    const { pdfUrl } = req.body;
+    const userEmail = req?.context?.user?.email;
+    if (!userEmail) {
+      return res.status(400).json({ message: "Missing required data" });
+    }
     const currentPlan = plans[req.headers["X-Plan-Type"]];
     const { MAX_PDF_PAGE_COUNT, MAX_PDF_SIZE_MB } = currentPlan;
 
@@ -66,16 +70,18 @@ const downloadHandler = async (req, res) => {
   }
 };
 
-export default PlanMiddleware(
-  UsageMiddleware(async function handler(req, res) {
-    try {
-      if (req.method === "POST") {
-        return await downloadHandler(req, res);
-      } else {
-        res.status(405).json({ error: "Method Not Allowed" });
+export default AuthorizeMiddleware(
+  PlanMiddleware(
+    UsageMiddleware(async function handler(req, res) {
+      try {
+        if (req.method === "POST") {
+          return await downloadHandler(req, res);
+        } else {
+          res.status(405).json({ error: "Method Not Allowed" });
+        }
+      } catch (err) {
+        return res.status(500).json({ error: err.message });
       }
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  })
+    })
+  )
 );

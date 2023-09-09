@@ -1,10 +1,6 @@
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { createVectorStore } from "../config/qdrant.config.js";
-import { SRTLoader } from "langchain/document_loaders/fs/srt";
-import { TextLoader } from "langchain/document_loaders/fs/text";
-import { DocxLoader } from "langchain/document_loaders/fs/docx";
-import { EPubLoader } from "langchain/document_loaders/fs/epub";
 import { AudioLoader } from "./transcribe-audio.mjs";
 import { addCollection } from "../services/firestore.service";
 import "dotenv/config";
@@ -23,22 +19,12 @@ export const ingestData = async ({
     const filePath = `public/${
       fileType === "mp3" ? "audios" : "pdfs"
     }/${fileName}`;
+
     if (!userEmail) throw new Error("User info missing");
+
     switch (fileType) {
       case "pdf":
         loader = new PDFLoader(filePath);
-        break;
-      case "srt":
-        loader = new SRTLoader(filePath);
-        break;
-      case "epub":
-        loader = new EPubLoader(filePath, { splitChapters: false });
-        break;
-      case "txt":
-        loader = new TextLoader(filePath);
-        break;
-      case "docx":
-        loader = new DocxLoader(filePath);
         break;
       case "mp3":
         loader = await AudioLoader(filePath);
@@ -66,7 +52,7 @@ export const ingestData = async ({
       ytUrl,
       pdfUrl,
       fileType,
-      userEmail: "agg.ayush.1997@gmail.com",
+      userEmail,
     });
   } catch (err) {
     console.error("Ingestion failed", err);

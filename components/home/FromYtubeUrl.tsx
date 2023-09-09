@@ -1,20 +1,16 @@
 import React, { useState } from "react";
 import { Button, Box, Progress } from '@chakra-ui/react'
 import isUrl from "is-url";
-import axios from "axios";
-import { useAuth } from "../../store/useAuth";
 import { FileUploadWrapper } from "./FileUploadWrapper";
 import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
 import { useRouter } from "next/router";
+import { youtubeTranscribeApi } from "../../services/client.service"
 
 export const FromYtubeUrl = () => {
     const [error, setError] = useState(false);
     const router = useRouter();
     const { addError } = useAPIError();
     const { loader, addLoader, removeLoader } = useAPILoader();
-    const { user } = useAuth((store) => ({
-        user: store.user,
-    }));
 
     const saveAsAudio = async (e) => {
         e.preventDefault();
@@ -23,7 +19,7 @@ export const FromYtubeUrl = () => {
         if (isUrl(url)) {
             try {
                 addLoader();
-                const response = await axios.post("/api/ytTranscribe", { ytUrl: url, userEmail: user.email });
+                const response = await youtubeTranscribeApi({ ytUrl: url })
                 const { data: { collectionId, ytUrl } } = response;
                 removeLoader()
                 router.push({ pathname: 'docinsights', query: { id: collectionId, yt: btoa(ytUrl) } });

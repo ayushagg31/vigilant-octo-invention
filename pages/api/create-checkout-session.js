@@ -1,8 +1,9 @@
 import { createCheckoutSession } from "../../services/stripe.service";
+import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
 
-export default async function handler(req, res) {
-  const { userEmail, priceId } = req.body;
-  //   const userEmail = req?.context?.user.email; ?
+export default AuthorizeMiddleware(async function handler(req, res) {
+  const { priceId } = req.body;
+  const userEmail = req?.context?.user?.email;
 
   // only accept post requests
   if (req.method !== "POST") {
@@ -20,4 +21,4 @@ export default async function handler(req, res) {
     console.log("error", error);
     res.status(500).json({ error: error.message || "Something went wrong" });
   }
-}
+});

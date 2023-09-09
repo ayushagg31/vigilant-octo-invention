@@ -9,7 +9,7 @@ var client = stripe(process.env.STRIPE_SERVICE_KEY);
 export const createCheckoutSession = async ({ priceId, userEmail }) => {
   const session = await client.checkout.sessions.create({
     mode: "subscription",
-    customer_email: userEmail || "example@example.com",
+    customer_email: userEmail,
     line_items: [
       {
         price: priceId,
@@ -18,7 +18,7 @@ export const createCheckoutSession = async ({ priceId, userEmail }) => {
     ],
     success_url: "http://localhost:3000",
     //   "https://example.com/success.html?session_id={CHECKOUT_SESSION_ID}",
-    cancel_url: "https://example.com/canceled.html",
+    cancel_url: "http://localhost:3000",
   });
   return session;
 };
@@ -69,7 +69,7 @@ export const handleWebhookEvents = async (event) => {
 
         await updateUser({
           userEmail: customerInfo.email,
-          currentPlan: "free_tier", // zero_tier
+          currentPlan: "zero_tier", // zero_tier
           paymentInfo: {
             id: customerSubscriptionDeleted.id,
             priceId,

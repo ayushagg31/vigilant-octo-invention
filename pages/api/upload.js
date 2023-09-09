@@ -7,13 +7,18 @@ import UploadMiddleware from "../../middlewares/UploadMiddleware";
 import PlanMiddleware from "../../middlewares/PlanMiddleware";
 import { plans } from "../../config/plan.config";
 import pdfjs from "pdfjs-dist";
+import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
 
 // TODO: Introduce restriction to only support PDF documents, handled in usageMiddleware
 
 const uploadHandler = async (req, res) => {
   try {
     const file = req.file;
-    const { userEmail } = req.body;
+    const userEmail = req?.context?.user?.email;
+
+    if (!userEmail) {
+      return res.status(400).json({ message: "Missing required data" });
+    }
 
     const currentPlan = plans[req.headers["X-Plan-Type"]];
     const { MAX_PDF_PAGE_COUNT, MAX_PDF_SIZE_MB } = currentPlan;
@@ -34,6 +39,10 @@ const uploadHandler = async (req, res) => {
           error: "PDF exceeds page count or size limits",
         });
       }
+    } else {
+      return res.status(400).json({
+        error: "Filetype not supported yet",
+      });
     }
 
     fs.writeFile(`public/pdfs/${fileName}`, file.buffer, async (err) => {
@@ -72,18 +81,20 @@ export const config = {
   },
 };
 
-export default UploadMiddleware(
-  PlanMiddleware(
-    UsageMiddleware(async function handler(req, res) {
-      try {
-        if (req.method === "POST") {
-          return uploadHandler(req, res);
-        } else {
-          res.status(405).json({ error: "Method Not Allowed" });
+export default AuthorizeMiddleware(
+  UploadMiddleware(
+    PlanMiddleware(
+      UsageMiddleware(async function handler(req, res) {
+        try {
+          if (req.method === "POST") {
+            return uploadHandler(req, res);
+          } else {
+            res.status(405).json({ error: "Method Not Allowed" });
+          }
+        } catch (err) {
+          return res.status(500).json({ error: err.message });
         }
-      } catch (err) {
-        return res.status(500).json({ error: err.message });
-      }
-    })
+      })
+    )
   )
 );

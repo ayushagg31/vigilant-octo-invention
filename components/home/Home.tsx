@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import NextLink from "next/link";
 import { Container, Box, Wrap, WrapItem, Text, Center } from "@chakra-ui/react";
 import { useDashboard } from "../../store/useDashboard";
 import { useCollections } from "../../store/useCollections";
@@ -8,12 +7,11 @@ import { BeforeUpload } from "./BeforeUpload";
 import { useRouter } from "next/router";
 import { useAuth } from "../../store/useAuth";
 import TagDoc from "./TagDoc";
+import { createCheckoutSessionApi } from "../../services/client.service"
 import {
   fetchCollectionsApi,
-  deleteCollectionApi,
 } from "../../services/client.service";
 import { useAPIError } from "../../hooks/useApiHook";
-import axios from "axios";
 
 const Home = () => {
   const { addError } = useAPIError();
@@ -40,14 +38,14 @@ const Home = () => {
   useEffect(() => {
     async function fetchCollections() {
       try {
-        const data = await fetchCollectionsApi();
+        const { data } = await fetchCollectionsApi();
         setCollections(data?.collections || []);
       } catch (e) {
         addError("Error in fetching your docs");
       }
     }
     fetchCollections();
-  }, [user?.uid]);
+  }, [user?.email]);
 
   useEffect(() => {
     setMounted(true);
@@ -57,11 +55,7 @@ const Home = () => {
     try {
       // https://stripe.com/docs/testing
       // https://stripe.com/docs/india-recurring-payments?integration=paymentIntents-setupIntents#testing
-      const { data } = await axios.post("/api/create-checkout-session", {
-        userEmail: "agg.ayush.1997@gmail.com",
-        priceId: "price_1NjmwMSHPnNdGnAZe9guNYlQ",
-        // "price_1NjlWRSHPnNdGnAZTWiu6ymm"
-      });
+      const { data } = await createCheckoutSessionApi({ priceId: "price_1NjmwMSHPnNdGnAZe9guNYlQ" })
       console.log(data.url);
       window.location.href = data.url;
     } catch (e) {
