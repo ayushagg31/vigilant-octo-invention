@@ -1,6 +1,7 @@
 import { QdrantVectorStore } from "langchain/vectorstores/qdrant";
 import { embeddings } from "./openai.config.js";
 import { QdrantClient } from "@qdrant/js-client-rest";
+import logger from "../services/logging.service";
 import "dotenv/config";
 
 const client = new QdrantClient({
@@ -15,9 +16,9 @@ export const createVectorStore = async (docs, collectionId) => {
       client,
       collectionName: collectionId,
     });
-    console.log("Qdrant Collection created successfully");
+    logger.info("Qdrant Collection created successfully");
   } catch (error) {
-    console.log("Error creating Qdrant Collection:", error);
+    logger.error(`Error creating Qdrant Collection: ${collectionId}`, error);
     throw new Error("Failed to create Qdrant Collection");
   }
 };
@@ -33,17 +34,17 @@ export const fetchVectorStore = async (collectionId) => {
     );
     return vectorStore;
   } catch (error) {
-    console.log("Error fetching Qdrant Collection:", error);
+    logger.error(`Error fetching Qdrant Collection: ${collectionId}`, error);
     throw new Error("Failed to fetch Qdrant Collection");
   }
 };
 
-// need to verify
+//TODO: need to verify
 export async function removeCollection(collectionId) {
   try {
     const response = await client.deleteCollection(collectionId);
-    console.log("Collection removed:", response);
+    logger.warn(`Collection removed: ${collectionId}`, response);
   } catch (error) {
-    console.error("Error removing collection:", error);
+    logger.error(`Error removing Qdrant Collection: ${collectionId}`, error);
   }
 }

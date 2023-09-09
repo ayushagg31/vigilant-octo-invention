@@ -1,6 +1,7 @@
 import fs from "fs";
 import { openai } from "../config/openai.config";
 import { Document } from "langchain/document";
+import logger from "../services/logging.service";
 
 // Convert audio to text using openAI whisper
 export const AudioLoader = async (filePath) => {
@@ -12,9 +13,9 @@ export const AudioLoader = async (filePath) => {
     if (transcript?.data?.text) {
       fs.unlink(filePath, (err) => {
         if (err) {
-          console.error("Error deleting the file:", err);
+          logger.error("Error deleting the file:", filePath, err);
         } else {
-          console.log("File deleted successfully");
+          logger.info("File deleted successfully", filePath);
         }
       });
     }
@@ -22,7 +23,7 @@ export const AudioLoader = async (filePath) => {
       load: () => [new Document({ pageContent: transcript.data.text })],
     };
   } catch (err) {
-    console.error("Failed to transcribe", err);
+    logger.error("Failed to transcribe", err);
     throw new Error(`Failed to transcribe: ${err.message}`);
   }
 };

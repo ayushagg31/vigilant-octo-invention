@@ -1,4 +1,5 @@
 import multer from "multer";
+import logger from "../services/logging.service";
 
 const upload = multer({
   storage: multer.memoryStorage(), // Use in-memory storage for simplicity
@@ -10,7 +11,7 @@ const UploadMiddleware = function (handler) {
       const uploader = upload.single("file");
       uploader(req, res, async (error) => {
         if (error) {
-          console.error(error);
+          logger.error("Failed to upload file in memory", error);
           return res
             .status(500)
             .json({ error: "Failed to upload file in memory" });
@@ -18,7 +19,7 @@ const UploadMiddleware = function (handler) {
         return handler(req, res);
       });
     } catch (error) {
-      console.error(`UploadMiddleware error: ${error}`);
+      logger.error(`UploadMiddleware error: ${error}`);
       return res
         .status(500)
         .json({ message: `Error while uploading docs. Error: ${error}` });

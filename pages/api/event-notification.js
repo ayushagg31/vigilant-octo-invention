@@ -3,6 +3,7 @@
 import stripe from "stripe";
 import { buffer } from "micro";
 import { handleWebhookEvents } from "../../services/stripe.service";
+import logger from "../../services/logging.service";
 
 var client = stripe(process.env.STRIPE_SERVICE_KEY);
 
@@ -24,7 +25,7 @@ export default async function handler(req, res) {
       process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch (err) {
-    console.error("Webhook Error:", err);
+    logger.error("Webhook Error:", err);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 

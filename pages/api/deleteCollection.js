@@ -1,5 +1,6 @@
 import { deleteCollection } from "../../services/firestore.service";
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
+import logger from "../../services/logging.service";
 
 export default AuthorizeMiddleware(async function handler(req, res) {
   const { collectionId } = req.body;
@@ -21,7 +22,7 @@ export default AuthorizeMiddleware(async function handler(req, res) {
     });
     res.status(200).send({ collections: activeCollections });
   } catch (error) {
-    console.error("error", error);
-    res.status(500).json({ error: error.message || "Something went wrong" });
+    logger.error("/api/deleteCollection", userEmail, collectionId, error);
+    res.status(500).json({ error: "Failed to delete collection" });
   }
 });

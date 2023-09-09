@@ -3,6 +3,7 @@ import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { createVectorStore } from "../config/qdrant.config.js";
 import { AudioLoader } from "./transcribe-audio.mjs";
 import { addCollection } from "../services/firestore.service";
+import logger from "../services/logging.service";
 import "dotenv/config";
 
 export const ingestData = async ({
@@ -30,7 +31,7 @@ export const ingestData = async ({
         loader = await AudioLoader(filePath);
         break;
       default: {
-        console.error(`${fileType} not supported`);
+        logger.error(`${fileType} not supported`);
         throw new Error(`${fileType} not supported`);
       }
     }
@@ -55,7 +56,7 @@ export const ingestData = async ({
       userEmail,
     });
   } catch (err) {
-    console.error("Ingestion failed", err);
+    logger.error("Ingestion failed - inside ingest-data", err);
     throw new Error(err.message);
   }
 };

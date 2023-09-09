@@ -2,12 +2,12 @@ import {
   getFirestore,
   setDoc,
   getDoc,
-  arrayUnion,
   doc,
   updateDoc,
 } from "firebase/firestore";
 import { app } from "../config/googleAuth.config";
 import { removeCollection } from "../config/qdrant.config";
+import logger from "./logging.service";
 
 const COLLECTION_LIMIT = 3;
 
@@ -32,11 +32,9 @@ export const createUser = async (user) => {
       };
       if (!userDoc.exists()) {
         await setDoc(userRef, initialDoc);
-        console.log("Document written successfully");
       }
     } catch (e) {
-      console.log(e);
-      console.error("Failed to create user: ", e);
+      logger.error("Failed to create user: ", e);
       throw new Error("Failed to create user", e.message);
     }
   }
@@ -86,9 +84,8 @@ export const addCollection = async ({
     await updateDoc(userRef, {
       collections: updatedCollections,
     });
-    console.log("Document added successfully");
   } catch (e) {
-    console.error("Error adding document: ", e);
+    logger.error("Error adding document ", userEmail, collectionId, e);
     throw new Error("Failed to add document");
   }
 };
@@ -115,7 +112,7 @@ export const updateCollection = async ({
       });
     }
   } catch (e) {
-    console.error("Failed to update collection: ", e);
+    logger.error("Failed to update collection: ", userEmail, collectionId, e);
     throw new Error("Failed to update collection");
   }
 };
@@ -148,14 +145,18 @@ export const deleteCollection = async ({ collectionId, userEmail }) => {
         activeCollections: updatedCollections.filter((col) => !col.deletedAt),
       };
     } else {
-      console.error("Collection doesn't belong to user");
+      logger.error(
+        "Collection doesn't belong to user",
+        collectionId,
+        userEmail
+      );
       return {
         collections: collections,
         activeCollections: collections.filter((col) => !col.deletedAt),
       };
     }
   } catch (e) {
-    console.error("Failed to delete collection", e);
+    logger.error("Failed to delete collection: ", userEmail, collectionId, e);
     throw new Error("Failed to delete collection");
   }
 };
@@ -182,7 +183,7 @@ export const verifyCollection = async ({ collectionId, userEmail }) => {
       isVerified,
     };
   } catch (e) {
-    console.error("Failed to verify collection: ", e);
+    logger.error("Failed to verify collection: ", userEmail, collectionId, e);
     throw new Error("Failed to verify collection");
   }
 };
@@ -200,7 +201,7 @@ export const fetchCollections = async (userEmail) => {
       activeCollections: collections.filter((col) => !col.deletedAt),
     };
   } catch (e) {
-    console.error("Failed to fetch collections ", e);
+    logger.error("Failed to fetch collections ", userEmail, e);
     throw new Error("Failed to fetch collections");
   }
 };
@@ -212,7 +213,7 @@ export const updateUser = async ({ userEmail, ...rest }) => {
       ...rest,
     });
   } catch (e) {
-    console.error("Failed to update user: ", e);
+    logger.error("Failed to update user ", userEmail, rest, e);
     throw new Error("Failed to update user");
   }
 };
@@ -227,7 +228,7 @@ export const fetchQueryInfo = async ({ userEmail }) => {
     }
     return queryInfo;
   } catch (e) {
-    console.error("Failed to fetch query Info", e);
+    logger.error("Failed to fetch query Info", userEmail, e);
     throw new Error("Failed to fetch query Info");
   }
 };
@@ -242,7 +243,7 @@ export const fetchPlanInfo = async ({ userEmail }) => {
     }
     return planInfo;
   } catch (e) {
-    console.error("Failed to fetch planInfo", e);
+    logger.error("Failed to fetch planInfo", userEmail, e);
     throw new Error("Failed to fetch planInfo");
   }
 };

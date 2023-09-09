@@ -1,22 +1,27 @@
 // pages/api/createUser.js
 import { createUser } from "../../services/firestore.service";
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
+import logger from "../../services/logging.service";
 
 const createUserHandler = async (req, res) => {
+  let user = req?.context?.user;
   try {
-    let user = req?.context?.user;
     if (user == undefined) {
+      logger.error(
+        "Unable to create user due to missing user data",
+        req?.context
+      );
       return res
         .status(400)
         .json({ message: "Unable to create user due to missing user data" });
     }
     await createUser(user);
     return res.status(200).json({
-      message: "user created",
+      message: "User created successfully",
     });
   } catch (err) {
-    console.error("failed to create user", err);
-    return res.status(500).json({ error: err.message });
+    logger.error("/api/createUser", error);
+    return res.status(500).json({ error: "Failed to create user" });
   }
 };
 

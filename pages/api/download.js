@@ -1,4 +1,4 @@
-// pages/api/download.js
+// pages/api/download
 import { ingestData } from "../../scripts/ingest-data.mjs";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
@@ -8,14 +8,15 @@ import UsageMiddleware from "../../middlewares/UsageMiddleware";
 import PlanMiddleware from "../../middlewares/PlanMiddleware";
 import { plans } from "../../config/plan.config";
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
+import logger from "../../services/logging.service";
 
 const downloadHandler = async (req, res) => {
+  const { pdfUrl } = req.body;
+  const userEmail = req?.context?.user?.email;
+  if (!userEmail) {
+    return res.status(400).json({ message: "Missing required data" });
+  }
   try {
-    const { pdfUrl } = req.body;
-    const userEmail = req?.context?.user?.email;
-    if (!userEmail) {
-      return res.status(400).json({ message: "Missing required data" });
-    }
     const currentPlan = plans[req.headers["X-Plan-Type"]];
     const { MAX_PDF_PAGE_COUNT, MAX_PDF_SIZE_MB } = currentPlan;
 
@@ -40,10 +41,10 @@ const downloadHandler = async (req, res) => {
 
     fs.writeFile(`public/pdfs/${fileName}`, pdfContent, async (err) => {
       if (err) {
-        console.error(err);
+        logger.error(`Failed to write file in disk - /api/download ${err}`);
         return res.status(500).json({ error: "Failed to write file in disk" });
       } else {
-        console.log(`PDF saved as ${fileName}`);
+        logger.info(`PDF saved as ${fileName}`);
         try {
           await ingestData({
             collectionId,
@@ -53,20 +54,29 @@ const downloadHandler = async (req, res) => {
             fileType,
             userEmail,
           });
-          console.log("Ingestion complete");
-          return res.status(200).json({
-            message: "File uploaded and ingested successfully",
+          logger.info(`File downloaded and ingested successfully`, {
             collectionId,
+            collectionName: fileOriginalname,
+            pdfUrl,
+            fileName,
+            fileType,
+            userEmail,
+          });
+          return res.status(200).json({
+            message: "File downloaded and ingested successfully",
           });
         } catch (error) {
-          console.error("Ingestion Failed", error);
-          return res.status(500).json({ error: error.message });
+          logger.error(
+            `Ingestion Failed - /api/download - userEmail: ${userEmail}, collectionId: ${collectionId}`,
+            error
+          );
+          return res.status(500).json({ error: "Ingestion Failed" });
         }
       }
     });
   } catch (err) {
-    console.error("Failed to download pdf", err);
-    return res.status(500).json({ error: err.message });
+    logger.error(`Failed to download document - userEmail: $`, err);
+    return res.status(500).json({ error: "Failed to download document" });
   }
 };
 
@@ -80,6 +90,7 @@ export default AuthorizeMiddleware(
           res.status(405).json({ error: "Method Not Allowed" });
         }
       } catch (err) {
+        logger.error("/api/download", error);
         return res.status(500).json({ error: err.message });
       }
     })

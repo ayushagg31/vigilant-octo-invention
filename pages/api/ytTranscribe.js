@@ -8,16 +8,16 @@ import { ingestData } from "../../scripts/ingest-data.mjs";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import ytdl from "ytdl-core";
+import logger from "../../services/logging.service";
 
 const ytHandler = async (req, res) => {
+  const { ytUrl } = req.body;
+  const userEmail = req?.context?.user?.email;
+
+  if (!userEmail) {
+    return res.status(400).json({ message: "Missing required data" });
+  }
   try {
-    const { ytUrl } = req.body;
-    const userEmail = req?.context?.user?.email;
-
-    if (!userEmail) {
-      return res.status(400).json({ message: "Missing required data" });
-    }
-
     const currentPlan = plans[req.headers["X-Plan-Type"]];
     const { MAX_VIDEO_SIZE_MB } = currentPlan;
 
@@ -33,13 +33,11 @@ const ytHandler = async (req, res) => {
     await ytdl(ytUrl, { filter: "audioonly" })
       .pipe(fs.createWriteStream(filePath))
       .on("finish", async () => {
-        console.log("Audio downloaded successfully.");
+        logger.info(`Audio downloaded successfully - ${collectionId}`);
         await fs.stat(filePath, async (err, stats) => {
           if (err) {
-            console.error("Error reading file stats:", err);
-            return res
-              .status(500)
-              .json({ error: `Error reading file stats:', ${err.message}` });
+            logger.error("Error reading file stats:", err);
+            return res.status(500).json({ error: `Error reading file stats` });
           }
           const fileSizeInBytes = stats.size;
           const fileSizeMB = fileSizeInBytes / (1024 * 1024);
@@ -53,7 +51,14 @@ const ytHandler = async (req, res) => {
                 fileType,
                 userEmail,
               });
-              console.log("Transcription and Ingestion complete");
+              logger.info("Transcription and Ingestion complete", {
+                collectionId,
+                collectionName: videoTitle,
+                ytUrl,
+                fileName,
+                fileType,
+                userEmail,
+              });
               return res.status(200).json({
                 message: "File transcribed and ingested successfully",
                 videoTitle,
@@ -61,18 +66,20 @@ const ytHandler = async (req, res) => {
                 ytUrl,
               });
             } catch (error) {
-              console.error("Ingestion Failed", error);
+              logger.error(
+                `Ingestion Failed - /api/ytTranscribe - userEmail: ${userEmail}, collectionId: ${collectionId}`,
+                error
+              );
               return res.status(500).json({ error: error.message });
             }
           } else {
             fs.unlink(filePath, (err) => {
               if (err) {
-                console.error("Error deleting the file:", err);
+                logger.error("Error deleting the file:", collectionId, err);
               } else {
-                console.log("File deleted successfully");
+                logger.info("File deleted successfully", collectionId);
               }
             });
-            console.error("Exceeding maximum allowed file limit", err);
             return res
               .status(400)
               .json({ error: `Exceeding maximum allowed file limit` });
@@ -80,11 +87,17 @@ const ytHandler = async (req, res) => {
         });
       })
       .on("error", (err) => {
-        console.error("Error downloading audio:", err);
+        logger.error(
+          `Error downloading audio - /api/ytTranscribe - userEmail: ${userEmail}, `,
+          err
+        );
         return res.status(500).json({ error: `Error downloading audio` });
       });
   } catch (err) {
-    console.log("Error", err);
+    logger.error(
+      `Failed to transcribe - /api/ytTranscribe - userEmail: ${userEmail}`,
+      err
+    );
     return res
       .status(500)
       .json({ error: `Failed to transcribe: ${err.message}` });
@@ -101,6 +114,7 @@ export default AuthorizeMiddleware(
           res.status(405).json({ error: "Method Not Allowed" });
         }
       } catch (err) {
+        logger.error("/api/ytTranscribe", error);
         return res.status(500).json({ error: err.message });
       }
     })

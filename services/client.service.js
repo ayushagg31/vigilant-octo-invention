@@ -24,7 +24,6 @@ export const createUser = async () => {
       },
     });
   } catch (e) {
-    console.error("Error adding document: ", e);
     throw new Error("Failed to create user", e.message);
   }
 };

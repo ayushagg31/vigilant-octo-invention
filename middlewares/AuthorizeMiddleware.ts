@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 import { admin } from '../config/firebaseAdmin.config'
+import logger from "../services/logging.service"
 
 export interface Context {
   user: any
@@ -14,21 +15,20 @@ const AuthorizeMiddleware = function (handler) {
     if (!authorization) {
       return res.status(401).json({ message: 'Not authenticated. No Auth header.' })
     }
-    const token = authorization.split(' ')[1]
-
-    if (token == null) {
+    const token = authorization?.split(' ')[1]
+    if (token === null || token === 'null') {
       return res.status(401).json({ message: 'Not authenticated. No Auth token.' })
     }
     try {
       const decodedIdToken = await admin.auth().verifyIdToken(token);
-      if (!decodedIdToken || !decodedIdToken.uid) {
+      if (!decodedIdToken || !decodedIdToken.uid || !decodedIdToken.email) {
         return res.status(401).json({ message: 'Not authenticated.' })
       }
       req.context = {
         user: decodedIdToken
       }
     } catch (error) {
-      console.log(`verifyIdToken error: ${error}`)
+      logger.error(`Auth Middleware - verifyIdToken error for authorization: ${authorization} ${error}`)
       return res.status(401).json({ message: `Error while verifying token. Error: ${error}` })
     }
     // pass back to handler

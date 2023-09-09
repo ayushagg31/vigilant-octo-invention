@@ -1,6 +1,8 @@
 import { isToday } from "../utils";
 import { fetchCollections } from "../services/firestore.service";
 import { plans } from "../config/plan.config";
+import logger from "../services/logging.service";
+
 /************************************************
 TODO: PDF/Video Size Limit, PDF Pages Limit, PDF Count Limit, Video Count Limit
 Computation should be done on a per-day basis until the subscription expires.
@@ -16,15 +18,14 @@ Computation should be done on a per-day basis until the subscription expires.
 
 const UsageMiddleware = function (handler) {
   return async function (req, res) {
+    const userEmail = req?.context?.user?.email;
+    const file = req?.file;
+    const { pdfUrl = "", ytUrl = "" } = req?.body || {};
+
+    if (!userEmail) {
+      return res.status(400).json({ message: "Missing required data" });
+    }
     try {
-      const userEmail = req?.context?.user?.email;
-      const file = req?.file;
-      const { pdfUrl = "", ytUrl = "" } = req?.body || {};
-
-      if (!userEmail) {
-        return res.status(400).json({ message: "Missing required data" });
-      }
-
       const currentPlan = plans[req.headers["X-Plan-Type"]];
       const { MAX_DOCUMENT_LIMIT } = currentPlan;
 
@@ -35,8 +36,13 @@ const UsageMiddleware = function (handler) {
         : file?.originalname?.split(".")?.pop();
 
       if (!MAX_DOCUMENT_LIMIT[fileType]) {
+        logger.info(
+          `Filetype not supported yet. fileType: ${fileType} Originalname: ${file.originalname}`,
+          userEmail
+        );
         return res.status(400).json({
           error: "Filetype not supported yet",
+          userEmail,
         });
       }
 
@@ -63,7 +69,9 @@ const UsageMiddleware = function (handler) {
         });
       }
     } catch (error) {
-      console.error(`usageMiddleware error: ${error}`);
+      logger.error(
+        `UsageMiddleware error for userEmail:${userEmail}: ${error}`
+      );
       return res
         .status(500)
         .json({ message: `Error while verifying usage. Error: ${error}` });

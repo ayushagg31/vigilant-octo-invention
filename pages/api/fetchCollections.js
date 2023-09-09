@@ -16,7 +16,7 @@ async function handler(req, res) {
     const { activeCollections } = await fetchCollections(userEmail);
     res.status(200).json({ collections: activeCollections });
   } catch (error) {
-    console.log("error", error);
+    logger.error(`/api/fetchCollections - userEmail:${userEmail}`, err);
     res.status(500).json({ error: error.message || "Something went wrong" });
   }
 }

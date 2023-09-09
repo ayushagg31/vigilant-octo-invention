@@ -1,4 +1,4 @@
-// pages/api/upload.js
+// pages/api/upload
 import { ingestData } from "../../scripts/ingest-data.mjs";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
@@ -8,18 +8,17 @@ import PlanMiddleware from "../../middlewares/PlanMiddleware";
 import { plans } from "../../config/plan.config";
 import pdfjs from "pdfjs-dist";
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
-
-// TODO: Introduce restriction to only support PDF documents, handled in usageMiddleware
+import logger from "../../services/logging.service";
 
 const uploadHandler = async (req, res) => {
+  const file = req.file;
+  const userEmail = req?.context?.user?.email;
+
+  if (!userEmail) {
+    logger.debug("Missing required data", req?.context?.user);
+    return res.status(400).json({ message: "Missing required data" });
+  }
   try {
-    const file = req.file;
-    const userEmail = req?.context?.user?.email;
-
-    if (!userEmail) {
-      return res.status(400).json({ message: "Missing required data" });
-    }
-
     const currentPlan = plans[req.headers["X-Plan-Type"]];
     const { MAX_PDF_PAGE_COUNT, MAX_PDF_SIZE_MB } = currentPlan;
 
@@ -40,6 +39,9 @@ const uploadHandler = async (req, res) => {
         });
       }
     } else {
+      logger.info(
+        `Filetype not supported yet fileType: ${fileType} Originalname: ${file.originalname}`
+      );
       return res.status(400).json({
         error: "Filetype not supported yet",
       });
@@ -47,10 +49,9 @@ const uploadHandler = async (req, res) => {
 
     fs.writeFile(`public/pdfs/${fileName}`, file.buffer, async (err) => {
       if (err) {
-        console.error(err);
+        logger.error(`Failed to write file in disk  - /api/upload ${err}`);
         return res.status(500).json({ error: "Failed to write file in disk" });
       } else {
-        console.log("File written successfully");
         try {
           await ingestData({
             collectionId,
@@ -59,18 +60,31 @@ const uploadHandler = async (req, res) => {
             fileType,
             userEmail,
           });
-          console.log("Ingestion complete");
+          logger.info(`File uploaded and ingested successfully`, {
+            collectionId,
+            collectionName: file.originalname,
+            fileName,
+            fileType,
+            userEmail,
+          });
           return res.status(200).json({
             message: "File uploaded and ingested successfully",
             collectionId,
           });
         } catch (error) {
-          console.error("Ingestion Failed", error);
-          return res.status(500).json({ error: error.message });
+          logger.error(
+            `Ingestion Failed - /api/upload - userEmail: ${userEmail}, collectionId: ${collectionId}`,
+            error
+          );
+          return res.status(500).json({ error: "Ingestion Failed" });
         }
       }
     });
   } catch (err) {
+    logger.error(
+      `Ingestion Failed - /api/upload - userEmail: ${userEmail}, collectionId: ${collectionId}`,
+      error
+    );
     return res.status(500).json({ error: err.message });
   }
 };
@@ -92,6 +106,7 @@ export default AuthorizeMiddleware(
             res.status(405).json({ error: "Method Not Allowed" });
           }
         } catch (err) {
+          logger.error("/api/upload", error);
           return res.status(500).json({ error: err.message });
         }
       })

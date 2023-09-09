@@ -1,5 +1,7 @@
+// /api/verifyCollection
 import { verifyCollection } from "../../services/firestore.service";
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
+import logger from "../../services/logging.service";
 
 async function handler(req, res) {
   const { collectionId } = req.body;
@@ -19,7 +21,7 @@ async function handler(req, res) {
     const { isVerified } = await verifyCollection({ collectionId, userEmail });
     res.status(200).send({ isVerified });
   } catch (error) {
-    console.log("error", error);
+    logger.error("/api/verifyCollection", userEmail, error);
     res.status(500).json({ error: error.message || "Something went wrong" });
   }
 }

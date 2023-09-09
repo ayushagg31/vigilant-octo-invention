@@ -25,63 +25,65 @@ export const createCheckoutSession = async ({ priceId, userEmail }) => {
 
 export const handleWebhookEvents = async (event) => {
   // Handle the event
-  switch (event.type) {
-    case "payment_intent.succeeded":
-      {
-        const paymentIntentSucceeded = event.data.object;
+  try {
+    switch (event.type) {
+      case "payment_intent.succeeded":
+        {
+          const paymentIntentSucceeded = event.data.object;
 
-        const customerId = paymentIntentSucceeded.customer;
-        const invoiceId = paymentIntentSucceeded.invoice;
-        // Retrieve the Customer Info to access customer_email
-        const customerInfo = await client.customers.retrieve(customerId);
+          const customerId = paymentIntentSucceeded.customer;
+          const invoiceId = paymentIntentSucceeded.invoice;
+          // Retrieve the Customer Info to access customer_email
+          const customerInfo = await client.customers.retrieve(customerId);
 
-        // Retrieve the Invoice to access the subscription
-        const invoice = await client.invoices.retrieve(invoiceId);
-        const subscriptionId = invoice.subscription;
+          // Retrieve the Invoice to access the subscription
+          const invoice = await client.invoices.retrieve(invoiceId);
+          const subscriptionId = invoice.subscription;
 
-        // Retrieve the Subscription to access the price ID
-        const subscription = await client.subscriptions.retrieve(
-          subscriptionId
-        );
-        const priceId = subscription.items.data[0].price.id;
+          // Retrieve the Subscription to access the price ID
+          const subscription = await client.subscriptions.retrieve(
+            subscriptionId
+          );
+          const priceId = subscription.items.data[0].price.id;
 
-        await updateUser({
-          userEmail: customerInfo.email,
-          currentPlan: "plus_tier",
-          paymentInfo: {
-            id: paymentIntentSucceeded.id,
-            priceId,
-            customerId,
-            // https://stripe.com/docs/payments/paymentintents/lifecycle#intent-statuses
-            status: paymentIntentSucceeded.status, // succeeded
-          },
-        });
-      }
-      break;
+          await updateUser({
+            userEmail: customerInfo.email,
+            currentPlan: "plus_tier",
+            paymentInfo: {
+              id: paymentIntentSucceeded.id,
+              priceId,
+              customerId,
+              // https://stripe.com/docs/payments/paymentintents/lifecycle#intent-statuses
+              status: paymentIntentSucceeded.status, // succeeded
+            },
+          });
+        }
+        break;
 
-    case "customer.subscription.deleted":
-      {
-        const customerSubscriptionDeleted = event.data.object;
-        const customerId = customerSubscriptionDeleted.customer;
-        const priceId = customerSubscriptionDeleted.plan.id;
-        // Retrieve the Customer Info to access customer_email
-        const customerInfo = await client.customers.retrieve(customerId);
+      case "customer.subscription.deleted":
+        {
+          const customerSubscriptionDeleted = event.data.object;
+          const customerId = customerSubscriptionDeleted.customer;
+          const priceId = customerSubscriptionDeleted.plan.id;
+          // Retrieve the Customer Info to access customer_email
+          const customerInfo = await client.customers.retrieve(customerId);
 
-        await updateUser({
-          userEmail: customerInfo.email,
-          currentPlan: "zero_tier", // zero_tier
-          paymentInfo: {
-            id: customerSubscriptionDeleted.id,
-            priceId,
-            customerId,
-            // https://stripe.com/docs/api/subscriptions/object#subscription_object-status
-            status: customerSubscriptionDeleted.status,
-          },
-        });
-      }
-      break;
+          await updateUser({
+            userEmail: customerInfo.email,
+            currentPlan: "zero_tier", // zero_tier
+            paymentInfo: {
+              id: customerSubscriptionDeleted.id,
+              priceId,
+              customerId,
+              // https://stripe.com/docs/api/subscriptions/object#subscription_object-status
+              status: customerSubscriptionDeleted.status,
+            },
+          });
+        }
+        break;
 
-    default:
-      console.log(`Unhandled event type ${event.type}`);
-  }
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+  } catch (err) {}
 };
