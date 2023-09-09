@@ -1,7 +1,10 @@
-import { verifyCollection } from  "../../services/firestore.service";
+import { verifyCollection } from "../../services/firestore.service";
+import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
 
-export default async function handler(req, res) {
-  const { collectionId, userEmail } = req.body;
+async function handler(req, res) {
+  const { collectionId } = req.body;
+
+  const userEmail = req?.context?.user?.email;
 
   // only accept post requests
   if (req.method !== "POST") {
@@ -20,3 +23,5 @@ export default async function handler(req, res) {
     res.status(500).json({ error: error.message || "Something went wrong" });
   }
 }
+
+export default AuthorizeMiddleware(handler);
