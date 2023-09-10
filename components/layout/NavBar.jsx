@@ -42,9 +42,19 @@ function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
-      <Flex direction="column" fontSize="3xl" bg="black" color="white">
-        <Box p="4">
-          <Flex direction="column" gap="25px" justify="center" align="center">
+      <Flex
+        direction={{ base: "row", md: "column" }}
+        fontSize="3xl"
+        bg="black"
+        color="white"
+      >
+        <Box p={{ base: "2", md: "4" }}>
+          <Flex
+            direction={{ base: "row", md: "column" }}
+            gap="25px"
+            justify="center"
+            align="center"
+          >
             {/* Logo start */}
             <Tooltip
               label="Doc Xpert"
@@ -58,42 +68,49 @@ function NavBar() {
             </Tooltip>
             {/* Logo end */}
 
-            <div className={activePath === "/dashboard" ? style.activeNav : ""}>
-              <Tooltip
-                label="Upload your doc"
-                aria-label="Upload your doc"
-                placement="right-end"
-                shouldWrapChildren
+            <Tooltip
+              label="Upload your doc"
+              aria-label="Upload your doc"
+              placement="right-end"
+              shouldWrapChildren
+            >
+              <div
+                className={activePath === "/dashboard" ? style.activeNav : ""}
               >
                 <BsFillCloudUploadFill
                   className={style.navbarIcons}
                   onClick={() => router.push("/dashboard")}
                 />
-              </Tooltip>
-            </div>
+              </div>
+            </Tooltip>
 
             {/* Chat with pdf start */}
-            <div
-              className={activePath === "/docinsights" ? style.activeNav : ""}
+            <Tooltip
+              label="Chat with PDF"
+              aria-label="Chat with PDF"
+              placement="right-end"
+              shouldWrapChildren
             >
-              <Tooltip
-                label="Chat with PDF"
-                aria-label="Chat with PDF"
-                placement="right-end"
-                shouldWrapChildren
+              <div
+                className={activePath === "/docinsights" ? style.activeNav : ""}
               >
                 <BsFillChatLeftQuoteFill
                   className={style.navbarIcons}
                   onClick={() => router.push("/docinsights")}
                 />
-              </Tooltip>
-            </div>
+              </div>
+            </Tooltip>
             {/* Chat with pdf end */}
           </Flex>
         </Box>
         <Spacer />
         <Box p="4">
-          <Flex direction="column" gap="20px" justify="center" align="center">
+          <Flex
+            direction={{ base: "row", md: "column" }}
+            gap="20px"
+            justify="center"
+            align="center"
+          >
             <Tooltip
               label="Support"
               aria-label="Support"
@@ -108,60 +125,62 @@ function NavBar() {
               </Link>
             </Tooltip>
 
-            <div className={activePath === "/settings" ? style.activeNav : ""}>
-              <Tooltip
-                label="Settings & Plan"
-                aria-label="Settings & Plan"
-                placement="right-end"
-                shouldWrapChildren
+            <Tooltip
+              label="Settings & Plan"
+              aria-label="Settings & Plan"
+              placement="right-end"
+              shouldWrapChildren
+            >
+              <div
+                className={activePath === "/settings" ? style.activeNav : ""}
               >
                 <AiOutlineSetting
                   className={style.navbarIcons}
                   onClick={() => router.push("/settings")}
                 />
-              </Tooltip>
-            </div>
+              </div>
+            </Tooltip>
             {loadingUser ? (
               <AiOutlineLoading3Quarters className={style.loading} />
             ) : (
               <>
                 {user ? (
                   <>
-                    <div
-                      className={
-                        activePath === "/profile" ? style.activeNav : ""
-                      }
+                    <Tooltip
+                      label={`${user?.displayName}`}
+                      aria-label="User"
+                      placement="right-end"
+                      shouldWrapChildren
                     >
-                      <Tooltip
-                        label={`${user?.displayName}`}
-                        aria-label="User"
-                        placement="right-end"
-                        shouldWrapChildren
+                      <div
+                        className={
+                          activePath === "/profile" ? style.activeNav : ""
+                        }
                       >
                         <BiUserCircle
                           className={style.navbarIcons}
                           onClick={() => router.push("/profile")}
                         />
-                      </Tooltip>
-                    </div>
+                      </div>
+                    </Tooltip>
 
-                    <div
-                      className={
-                        activePath === "/settings" ? style.activeNav : ""
-                      }
+                    <Tooltip
+                      label="Logout"
+                      aria-label="Logout"
+                      placement="right-end"
+                      shouldWrapChildren
                     >
-                      <Tooltip
-                        label="Logout"
-                        aria-label="Logout"
-                        placement="right-end"
-                        shouldWrapChildren
+                      <div
+                        className={
+                          activePath === "/settings" ? style.activeNav : ""
+                        }
                       >
                         <AiOutlineLogout
                           className={style.navbarIcons}
                           onClick={logout}
                         />
-                      </Tooltip>
-                    </div>
+                      </div>
+                    </Tooltip>
                   </>
                 ) : (
                   <>

@@ -114,7 +114,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      <Box h="100vh" w="full">
+      <Box h="100%" w="full">
         <div className={styles.cloud}>
           <div ref={messageListRef} className={styles.messagelist}>
             {messages.map((message, index) => {

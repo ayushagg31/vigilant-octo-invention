@@ -7,6 +7,7 @@ import {
   useMediaQuery,
   VStack,
   StackDivider,
+  Show,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import ChatWidget from "./ChatWidget";
@@ -48,8 +49,8 @@ export const AfterUpload = () => {
     async function verifyCollection({ collectionId }) {
       try {
         const {
-          data: { isVerified }
-        } = await verifyCollectionsApi({ collectionId })
+          data: { isVerified },
+        } = await verifyCollectionsApi({ collectionId });
         setIsVerified(isVerified);
       } catch (err) {
         addError("Error in verifying account");
@@ -114,15 +115,16 @@ export const AfterUpload = () => {
 
   const ChatAndTabJsx = (
     <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={2} style={{ flex: 1 }}>
-      <Box borderWidth="1px" borderRadius="lg">
-        <TabComponent tabConfig={memoizedObject} />
-      </Box>
+      <Show above="md">
+        <Box borderWidth="1px" borderRadius="lg" hidd>
+          <TabComponent tabConfig={memoizedObject} />
+        </Box>
+      </Show>
       <Box>
         <ChatWidget />
       </Box>
     </SimpleGrid>
   );
-
   const NotVerfiedJsx = <div>Not Verified</div>;
 
   return <>{isVerified ? ChatAndTabJsx : NotVerfiedJsx}</>;
