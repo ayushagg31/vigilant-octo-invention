@@ -28,3 +28,6 @@
 .loading {
   animation: rotating 0.7s linear infinite;
 }
+.activeNav {
+  color: #ffcc1e;
+}

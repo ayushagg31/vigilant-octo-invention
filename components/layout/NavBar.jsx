@@ -27,8 +27,12 @@ import {
 import style from "../../styles/NavBar.module.css";
 import { LoginModal } from "../home/LoginModal";
 import { useAuth } from "../../store/useAuth";
+import { useRouter } from "next/router";
 
 function NavBar() {
+  const router = useRouter();
+  const activePath = router.pathname;
+  console.log(activePath);
   const { user, logout, loadingUser } = useAuth((store) => ({
     user: store.user,
     logout: store.logout,
@@ -50,33 +54,41 @@ function NavBar() {
               bg="gray.300"
               color="black"
             >
-              <AiFillDingtalkCircle className={style.logo} size="44px" />
+              <AiFillDingtalkCircle size="44px" className={style.logo} />
             </Tooltip>
             {/* Logo end */}
 
-            {/* Chat with pdf start */}
-            <Tooltip
-              label="Chat with PDF"
-              aria-label="Chat with PDF"
-              placement="right-end"
-              shouldWrapChildren
-            >
-              <Link href="/dashboard">
-                <BsFillChatLeftQuoteFill className={style.navbarIcons} />
-              </Link>
-            </Tooltip>
-            {/* Chat with pdf end */}
+            <div className={activePath === "/dashboard" ? style.activeNav : ""}>
+              <Tooltip
+                label="Upload your doc"
+                aria-label="Upload your doc"
+                placement="right-end"
+                shouldWrapChildren
+              >
+                <BsFillCloudUploadFill
+                  className={style.navbarIcons}
+                  onClick={() => router.push("/dashboard")}
+                />
+              </Tooltip>
+            </div>
 
-            {/* <Tooltip
-              label="Upload your doc"
-              aria-label="Upload your doc"
-              placement="right-end"
-              shouldWrapChildren
+            {/* Chat with pdf start */}
+            <div
+              className={activePath === "/docinsights" ? style.activeNav : ""}
             >
-              <Link href="/dashboard">
-                <BsFillCloudUploadFill className={style.navbarIcons} />
-              </Link>
-            </Tooltip> */}
+              <Tooltip
+                label="Chat with PDF"
+                aria-label="Chat with PDF"
+                placement="right-end"
+                shouldWrapChildren
+              >
+                <BsFillChatLeftQuoteFill
+                  className={style.navbarIcons}
+                  onClick={() => router.push("/docinsights")}
+                />
+              </Tooltip>
+            </div>
+            {/* Chat with pdf end */}
           </Flex>
         </Box>
         <Spacer />
@@ -96,39 +108,60 @@ function NavBar() {
               </Link>
             </Tooltip>
 
-            <Tooltip
-              label="Settings & Plan"
-              aria-label="Settings & Plan"
-              placement="right-end"
-              shouldWrapChildren
-            >
-              <AiOutlineSetting className={style.navbarIcons} />
-            </Tooltip>
+            <div className={activePath === "/settings" ? style.activeNav : ""}>
+              <Tooltip
+                label="Settings & Plan"
+                aria-label="Settings & Plan"
+                placement="right-end"
+                shouldWrapChildren
+              >
+                <AiOutlineSetting
+                  className={style.navbarIcons}
+                  onClick={() => router.push("/settings")}
+                />
+              </Tooltip>
+            </div>
             {loadingUser ? (
               <AiOutlineLoading3Quarters className={style.loading} />
             ) : (
               <>
                 {user ? (
                   <>
-                    <Tooltip
-                      label={`${user?.displayName}`}
-                      aria-label="User"
-                      placement="right-end"
-                      shouldWrapChildren
+                    <div
+                      className={
+                        activePath === "/profile" ? style.activeNav : ""
+                      }
                     >
-                      <BiUserCircle className={style.navbarIcons} />
-                    </Tooltip>
-                    <Tooltip
-                      label="Logout"
-                      aria-label="Logout"
-                      placement="right-end"
-                      shouldWrapChildren
+                      <Tooltip
+                        label={`${user?.displayName}`}
+                        aria-label="User"
+                        placement="right-end"
+                        shouldWrapChildren
+                      >
+                        <BiUserCircle
+                          className={style.navbarIcons}
+                          onClick={() => router.push("/profile")}
+                        />
+                      </Tooltip>
+                    </div>
+
+                    <div
+                      className={
+                        activePath === "/settings" ? style.activeNav : ""
+                      }
                     >
-                      <AiOutlineLogout
-                        className={style.navbarIcons}
-                        onClick={logout}
-                      />
-                    </Tooltip>
+                      <Tooltip
+                        label="Logout"
+                        aria-label="Logout"
+                        placement="right-end"
+                        shouldWrapChildren
+                      >
+                        <AiOutlineLogout
+                          className={style.navbarIcons}
+                          onClick={logout}
+                        />
+                      </Tooltip>
+                    </div>
                   </>
                 ) : (
                   <>
