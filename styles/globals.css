@@ -1,4 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Inconsolata');
+
+
 
 * {
   box-sizing: border-box;
@@ -39,4 +41,73 @@ a:hover {
 .pdfobject-container {
   height: 90vh;
   box-shadow: 0px -1px 10px #ccc;
+}
+
+
+.hero-text {
+  text-indent: 8px;
+}
+
+.hero-text::after {
+  content: "";
+  position: absolute;
+  /* Initially hide the pseudo-element */
+  transition: opacity 0.3s ease-out;
+  /* Add a transition for smoother opacity change */
+}
+
+
+/* Apply the animation only to the pseudo-element */
+.hero-text::after {
+  animation: spin 6s linear infinite;
+}
+
+
+@keyframes spin {
+  0% {
+    content: "Documents";
+    color: #051E3E;
+  }
+
+  20% {
+    color: white;
+  }
+
+  40% {
+    content: "PDF";
+    color: #051E3E;
+  }
+
+  60% {
+    color: white;
+  }
+
+  80% {
+    content: "Youtube Videos";
+    color: #051E3E;
+  }
+
+  100% {
+    color: white;
+  }
+}
+
+
+.typewriter-holder {
+  width: 280px;
+  position: relative;
+  display: block;
+  margin: auto;
+}
+
+.typewriter-holder p {
+  position: absolute;
+  left: 0;
+
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.hero-heading {
+  font-family: 'Inconsolata';
 }

@@ -2,20 +2,13 @@
 import React, { useState } from "react";
 import LandingLayout from "../components/layout/LandingLayout";
 import Nav from "../components/landing/Nav";
-import Hero from "../components/landing/Hero";
+import Hero from "../components/landingComponents/LandingHero";
 import Features from "../components/landing/Features";
 import Pricing from "../components/landing/Pricing";
-import Footer from "../components/landing/Footer";
+import Footer from "../components/landingComponents/Footer"
 
 const LandingPage = () => {
   return (
-    // <>
-    //   <div>
-    //     This page has been moved to /dashboard
-    //     <Link href={"/dashboard"}> Click here to redirect</Link>
-    //   </div>
-    //   <div>This space will be used to create landing page</div>
-    // </>
     <>
       <Nav />
       <Hero />
