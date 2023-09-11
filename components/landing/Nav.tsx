@@ -1,3 +1,4 @@
+"use client";
 import {
   Box,
   Flex,
@@ -18,6 +19,7 @@ import { AiFillDingtalkCircle } from "react-icons/ai";
 import { useAuth } from "../../store/useAuth";
 import { LoginModal } from "../home/LoginModal";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 interface Props {
   children: React.ReactNode;
@@ -57,10 +59,15 @@ export default function Simple() {
     await logout();
     router.replace("/");
   };
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
+  const [mounted, setMounted] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const termConditionText = `By creating an account you agree with our Terms of Service, Privacy Policy, and our default Notification Settings.`;
 
+  if (!mounted) return <></>;
   return (
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 // import dynamic from "next/dynamic";
 import {
   Link,
@@ -33,13 +33,21 @@ function NavBar() {
   const router = useRouter();
   const activePath = router.pathname;
 
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const { user, logout, loadingUser } = useAuth((store) => ({
     user: store.user,
     logout: store.logout,
     loadingUser: store.loadingUser,
   }));
-
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  if (!mounted) return <></>;
+
   return (
     <>
       <Flex
