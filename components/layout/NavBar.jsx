@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 // import dynamic from "next/dynamic";
 import {
@@ -8,7 +9,6 @@ import {
   Button,
   Stack,
   Spacer,
-  Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import {
@@ -32,7 +32,7 @@ import { useRouter } from "next/router";
 function NavBar() {
   const router = useRouter();
   const activePath = router.pathname;
-  console.log(activePath);
+
   const { user, logout, loadingUser } = useAuth((store) => ({
     user: store.user,
     logout: store.logout,
@@ -48,159 +48,93 @@ function NavBar() {
         bg="black"
         color="white"
       >
-        <Box p={{ base: "2", md: "4" }}>
-          <Flex
-            direction={{ base: "row", md: "column" }}
-            gap="25px"
-            justify="center"
-            align="center"
-          >
-            {/* Logo start */}
-            <Tooltip
-              label="Doc Xpert"
-              aria-label="Doc Xpert"
-              placement="right-end"
-              shouldWrapChildren
-              bg="gray.300"
-              color="black"
-            >
-              <AiFillDingtalkCircle size="44px" className={style.logo} />
-            </Tooltip>
-            {/* Logo end */}
+        <Flex
+          direction={{ base: "row", md: "column" }}
+          gap="25px"
+          justify="center"
+          align="center"
+          p={{ base: "2", md: "4" }}
+        >
+          {/* Logo start */}
+          <AiFillDingtalkCircle
+            size="44px"
+            className={style.logo}
+            title="Doc Xpert"
+          />
 
-            <Tooltip
-              label="Upload your doc"
-              aria-label="Upload your doc"
-              placement="right-end"
-              shouldWrapChildren
-            >
-              <div
-                className={activePath === "/dashboard" ? style.activeNav : ""}
-              >
-                <BsFillCloudUploadFill
-                  className={style.navbarIcons}
-                  onClick={() => router.push("/dashboard")}
-                />
-              </div>
-            </Tooltip>
+          {/* Logo end */}
 
-            {/* Chat with pdf start */}
-            <Tooltip
-              label="Chat with PDF"
-              aria-label="Chat with PDF"
-              placement="right-end"
-              shouldWrapChildren
-            >
-              <div
-                className={activePath === "/docinsights" ? style.activeNav : ""}
-              >
-                <BsFillChatLeftQuoteFill
-                  className={style.navbarIcons}
-                  onClick={() => router.push("/docinsights")}
-                />
-              </div>
-            </Tooltip>
-            {/* Chat with pdf end */}
-          </Flex>
-        </Box>
+          <BsFillCloudUploadFill
+            className={`${style.navbarIcons} ${
+              activePath === "/dashboard" ? style.activeNav : ""
+            }`}
+            onClick={() => router.push("/dashboard")}
+            title="Upload your doc"
+          />
+
+          {/* Chat with pdf start */}
+          <BsFillChatLeftQuoteFill
+            className={`${style.navbarIcons} ${
+              activePath === "/docinsights" ? style.activeNav : ""
+            }`}
+            onClick={() => router.push("/docinsights")}
+            title="Chat with PDF"
+          />
+          {/* Chat with pdf end */}
+        </Flex>
+
         <Spacer />
-        <Box p="4">
-          <Flex
-            direction={{ base: "row", md: "column" }}
-            gap="20px"
-            justify="center"
-            align="center"
-          >
-            <Tooltip
-              label="Support"
-              aria-label="Support"
-              placement="right-end"
-              shouldWrapChildren
-            >
-              <Link
-                href="mailto:support@docxpert.com"
-                className={style.hoverLink}
-              >
-                <MdContactSupport className={style.navbarIcons} />
-              </Link>
-            </Tooltip>
 
-            <Tooltip
-              label="Settings & Plan"
-              aria-label="Settings & Plan"
-              placement="right-end"
-              shouldWrapChildren
-            >
-              <div
-                className={activePath === "/settings" ? style.activeNav : ""}
-              >
-                <AiOutlineSetting
-                  className={style.navbarIcons}
-                  onClick={() => router.push("/settings")}
-                />
-              </div>
-            </Tooltip>
-            {loadingUser ? (
-              <AiOutlineLoading3Quarters className={style.loading} />
-            ) : (
-              <>
-                {user ? (
-                  <>
-                    <Tooltip
-                      label={`${user?.displayName}`}
-                      aria-label="User"
-                      placement="right-end"
-                      shouldWrapChildren
-                    >
-                      <div
-                        className={
-                          activePath === "/profile" ? style.activeNav : ""
-                        }
-                      >
-                        <BiUserCircle
-                          className={style.navbarIcons}
-                          onClick={() => router.push("/profile")}
-                        />
-                      </div>
-                    </Tooltip>
+        <Flex
+          direction={{ base: "row", md: "column" }}
+          gap="20px"
+          justify="center"
+          align="center"
+          p="4"
+        >
+          <Link href="mailto:support@docxpert.com" className={style.hoverLink}>
+            <MdContactSupport className={style.navbarIcons} title="Support" />
+          </Link>
 
-                    <Tooltip
-                      label="Logout"
-                      aria-label="Logout"
-                      placement="right-end"
-                      shouldWrapChildren
-                    >
-                      <div
-                        className={
-                          activePath === "/settings" ? style.activeNav : ""
-                        }
-                      >
-                        <AiOutlineLogout
-                          className={style.navbarIcons}
-                          onClick={logout}
-                        />
-                      </div>
-                    </Tooltip>
-                  </>
-                ) : (
-                  <>
-                    <Tooltip
-                      label="Login"
-                      aria-label="Login"
-                      placement="right-end"
-                      shouldWrapChildren
-                    >
-                      <BiUserCircle
-                        className={style.navbarIcons}
-                        onClick={onOpen}
-                      />
-                    </Tooltip>
-                  </>
-                )}
-              </>
-            )}
-          </Flex>
-        </Box>
+          <AiOutlineSetting
+            className={`${style.navbarIcons} activePath === "/settings" ? style.activeNav : ""`}
+            onClick={() => router.push("/settings")}
+            title="Settings & Plan"
+          />
+          {loadingUser ? (
+            <AiOutlineLoading3Quarters className={style.loading} />
+          ) : (
+            <>
+              {user ? (
+                <>
+                  <BiUserCircle
+                    className={`${style.navbarIcons} ${
+                      activePath === "/profile" ? style.activeNav : ""
+                    }`}
+                    onClick={() => router.push("/profile")}
+                    title={`${user?.displayName}`}
+                  />
+
+                  <AiOutlineLogout
+                    className={`${style.navbarIcons} ${
+                      activePath === "/settings" ? style.activeNav : ""
+                    }`}
+                    onClick={logout}
+                    title="Logout"
+                  />
+                </>
+              ) : (
+                <>
+                  <BiUserCircle
+                    className={style.navbarIcons}
+                    onClick={onOpen}
+                    title="Login"
+                  />
+                </>
+              )}
+            </>
+          )}
+        </Flex>
       </Flex>
       <LoginModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
     </>
