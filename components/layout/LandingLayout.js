@@ -1,3 +1,5 @@
+import SimpleNavbar from "../landingComponents/LandingNavBar";
+
 ("use client");
 
 export default function LandingLayout({ children }) {
@@ -9,3 +11,6 @@ export default function LandingLayout({ children }) {
     </>
   );
 }
+
+
+//import { AiOutlineClose as CloseIcon, AiOutlineMenu as HamburgerIcon } from "react-icons/ai"

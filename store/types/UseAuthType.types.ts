@@ -5,5 +5,5 @@ export type UseAuthType = {
   setUser: (user) => void;
   setUserToken: (userToken) => void;
   logout: () => void;
-  googleLogin: (closeModal: () => void) => void;
+  googleLogin: (closeModal: () => void, fn:() => void) => void;
 };

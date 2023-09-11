@@ -20,14 +20,14 @@ import { FaGoogle } from "react-icons/fa";
 // import { useModal } from "../../store/useModal";
 import { useAuth } from "../../store/useAuth";
 
-export function LoginModal({ isOpen, onOpen, onClose }) {
+export function LoginModal({ isOpen, onOpen, onClose, fn = null }) {
   const termConditionText = `By creating an account you agree with our Terms of Service, Privacy Policy, and our default Notification Settings.`;
   const { googleLogin } = useAuth((store) => ({
     googleLogin: store.googleLogin,
   }));
 
   const handleSignInClick = () => {
-    googleLogin(onClose);
+    googleLogin(onClose, fn);
   };
 
   const OverlayTwo = () => (
