@@ -38,6 +38,7 @@ export const AfterUpload = () => {
     yt !== undefined && !Array.isArray(yt) ? window.atob(yt) : null;
 
   const [isVerified, setIsVerified] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // ssr-friendly media query with fallback
   const [isMaxWidth600] = useMediaQuery("(max-width: 600px)", {
@@ -69,6 +70,7 @@ export const AfterUpload = () => {
     let pdfHeight = isMaxWidth600 ? "30vh" : "100%";
     const [page, setPage] = useState(1);
     const canvasRef = useRef(null);
+    const hostUrl = window.location.origin;
 
     return (
       <>
@@ -82,7 +84,7 @@ export const AfterUpload = () => {
             page: 2,
           }}
           height={"100%"}
-          url={`http://localhost:3000/pdfs/${id}.pdf`}
+          url={`${hostUrl}/pdfs/${id}.pdf`}
         />
       </>
     );
