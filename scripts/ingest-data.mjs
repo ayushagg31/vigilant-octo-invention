@@ -45,7 +45,7 @@ export const ingestData = async ({
     // split text into chunks
     const docs = await textSplitter.splitDocuments(rawText);
     // this shit cost money, use frugally
-    // await createVectorStore(docs, collectionId);
+    await createVectorStore(docs, collectionId);
 
     await addCollection({
       collectionId,

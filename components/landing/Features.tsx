@@ -1,62 +1,77 @@
-"use client";
+'use client'
 
-import { ReactElement } from "react";
-import { Box, SimpleGrid, Icon, Text, Stack, Flex } from "@chakra-ui/react";
-import { FcAssistant, FcDonate, FcInTransit } from "react-icons/fc";
+import {
+  Container,
+  SimpleGrid,
+  Image,
+  Flex,
+  Heading,
+  Text,
+  Stack,
+  StackDivider,
+  Icon,
+  useColorModeValue,
+} from '@chakra-ui/react'
+import { ReactElement } from 'react';
+import { FiUploadCloud, } from 'react-icons/fi'
+import { BsFillChatLeftTextFill, } from 'react-icons/bs'
 
 interface FeatureProps {
-  title: string;
-  text: string;
-  icon: ReactElement;
+  text: string
+  iconBg: string
+  icon?: ReactElement
 }
 
-const Feature = ({ title, text, icon }: FeatureProps) => {
+const Feature = ({ text, icon, iconBg }: FeatureProps) => {
   return (
-    <Stack>
-      <Flex
-        w={16}
-        h={16}
-        align={"center"}
-        justify={"center"}
-        color={"white"}
-        rounded={"full"}
-        bg={"gray.100"}
-        mb={1}
-      >
+    <Stack direction={'row'} align={'center'}>
+      <Flex w={8} h={8} align={'center'} justify={'center'} rounded={'full'} bg={iconBg}>
         {icon}
       </Flex>
-      <Text fontWeight={600}>{title}</Text>
-      <Text color={"gray.600"}>{text}</Text>
+      <Text fontWeight={600}>{text}</Text>
     </Stack>
-  );
-};
+  )
+}
 
-export default function SimpleThreeColumns() {
+export default function SplitWithImage() {
   return (
-    <Box p={4} mx={{ sm: "10", md: 28 }}>
-      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-        <Feature
-          icon={<Icon as={FcAssistant} w={10} h={10} />}
-          title={"Lifetime Support"}
-          text={
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore..."
-          }
-        />
-        <Feature
-          icon={<Icon as={FcDonate} w={10} h={10} />}
-          title={"Unlimited Donations"}
-          text={
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore..."
-          }
-        />
-        <Feature
-          icon={<Icon as={FcInTransit} w={10} h={10} />}
-          title={"Instant Delivery"}
-          text={
-            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore..."
-          }
-        />
-      </SimpleGrid>
-    </Box>
-  );
+    <div id="how-it-works">
+      <Container maxW={'5xl'} py={12}>
+        <div className='demo-video'>
+          <Stack spacing={2}>
+            <Text as='b' fontSize={'xl'}>
+              Get insights in 2 simple steps
+            </Text>
+            <Stack
+              spacing={4}
+              divider={
+                <StackDivider borderColor={useColorModeValue('gray.100', 'gray.700')} />
+              }>
+              <Feature
+                icon={<Icon as={FiUploadCloud} w={5} h={5} />}
+                iconBg={useColorModeValue('yellow.100', 'yellow.900')}
+                text={'Upload or link your PDFs and videos.'}
+              />
+              <Feature
+                icon={<Icon as={BsFillChatLeftTextFill} w={5} h={5} />}
+                iconBg={useColorModeValue('green.100', 'green.900')}
+                text={'Chat with our AI-powered chatbot.'}
+              />
+            </Stack>
+          </Stack>
+          <Flex>
+            <Image
+              boxShadow={'xl'}
+              border={'1px'}
+              rounded={'md'}
+              alt={'feature image'}
+              src={'/sitegpt.gif'}
+              objectFit={'scale-down'}
+            />
+          </Flex>
+        </div>
+      </Container>
+    </div>
+
+  )
 }
