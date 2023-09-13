@@ -14,18 +14,18 @@ import {
   useDisclosure,
   useColorModeValue,
   Stack,
+  color,
 } from "@chakra-ui/react";
 import { AiFillDingtalkCircle, AiOutlineClose as CloseIcon, AiOutlineMenu as HamburgerIcon, AiFillFileAdd as AddIcon } from "react-icons/ai";
 import { useAuth } from "../../store/useAuth";
 import { LoginModal } from "../home/LoginModal";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 
 interface Props {
   children: React.ReactNode;
 }
 
-const Links = ["Dashboard", "Projects", "Team"];
 
 const NavLink = (props: Props) => {
   const { children } = props;
@@ -53,6 +53,16 @@ export default function Simple() {
     logout: store.logout,
   }));
 
+
+  const jumpToReleventDiv = useCallback((id) => {
+    const releventDiv = document.getElementById(id);
+    // behavior: "smooth" parameter for smooth movement
+    releventDiv.scrollIntoView({ behavior: "smooth", block: 'center' });
+  }, [])
+
+  const Links = useMemo(() => {
+    return [{ name: "How it works", fn: () => jumpToReleventDiv('how-it-works') }, { name: "Demo", fn: () => jumpToReleventDiv('how-it-works') }, { name: "Pricing", fn: () => jumpToReleventDiv('pricing-section') }]
+  }, [jumpToReleventDiv]);
   const router = useRouter();
 
   const onLogout = async () => {
@@ -76,7 +86,7 @@ export default function Simple() {
   if (!mounted) return <></>;
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+      <Box bg={'black'} color={'#fff'} boxShadow={'lg'} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={'md'}
@@ -84,16 +94,21 @@ export default function Simple() {
             aria-label={'Open Menu'}
             display={{ md: 'none' }}
             onClick={isOpen ? onClose : onOpen}
+            bg={'black'} color={'#fff'}
+            _active={{ color: '#fff', borderColor: '#fff' }}
+            _hover={{ color: '#fff', borderColor: '#fff' }}
           />
           <HStack spacing={8} alignItems={"center"}>
             <Box>
               <AiFillDingtalkCircle size="44px" title="Doc Xpert" />
             </Box>
             <HStack spacing={8} alignItems={'center'}>
-              <Box>Logo</Box>
+              <Box>Doc Xpert</Box>
               <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
                 {Links.map((link) => (
-                  <NavLink key={link}>{link}</NavLink>
+                  <Button color='#fff' onClick={link.fn} _hover={{ color: '#fff', borderColor: '#fff', borderWidth: '1px' }} variant='ghost'>
+                    {link.name}
+                  </Button>
                 ))}
               </HStack>
             </HStack>
@@ -113,7 +128,7 @@ export default function Simple() {
                   >
                     <Avatar size={"sm"} src={user.photoURL} />
                   </MenuButton>
-                  <MenuList>
+                  <MenuList color={'black'}>
                     <MenuItem onClick={() => router.push("/dashboard")}>
                       Dashboard
                     </MenuItem>
@@ -128,10 +143,6 @@ export default function Simple() {
                 px={2}
                 py={1}
                 rounded={"md"}
-                _hover={{
-                  textDecoration: "none",
-                  bg: useColorModeValue("gray.200", "gray.700"),
-                }}
                 onClick={() => {
                   onOpenLoginModal();
                 }}
@@ -145,12 +156,14 @@ export default function Simple() {
           <Box pb={4} display={{ md: 'none' }}>
             <Stack as={'nav'} spacing={4}>
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <Button color='#fff' onClick={link.fn} _active={{ color: '#fff', bg: "black" }} _hover={{ color: '#fff', borderColor: '#fff', borderWidth: '1px' }} variant='ghost'>
+                  {link.name}
+                </Button>
               ))}
             </Stack>
           </Box>
         ) : null}
-      </Box>
+      </Box >
 
       <LoginModal isOpen={isOpenLoginModal} onOpen={onOpenLoginModal} onClose={onCloseLoginModal} fn={() => router.push('/dashboard')} />
     </>

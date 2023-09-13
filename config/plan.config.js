@@ -28,7 +28,7 @@ export const plans = {
       mp3: 2,
       pdf: 10,
     },
-    MAX_PDF_PAGE_COUNT: 5,
+    MAX_PDF_PAGE_COUNT: 12,
     MAX_PDF_SIZE_MB: 10,
     MAX_QUESTIONS_PER_DAY: 20,
     MAX_VIDEO_SIZE_MB: 15,

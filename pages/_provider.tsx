@@ -38,12 +38,7 @@ const colors = {
     },
 }
 
-const config = {
-    initialColorMode: 'light',
-    useSystemColorMode: false,
-}
-
-export const theme = extendTheme({ colors, config })
+export const theme = extendTheme({ colors })
 
 export default function Providers({
     children
