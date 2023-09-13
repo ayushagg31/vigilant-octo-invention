@@ -1,4 +1,6 @@
 import winston from "winston";
+import "winston-daily-rotate-file";
+import path from "path";
 
 // Define the log format
 const logFormat = winston.format.combine(
@@ -17,30 +19,36 @@ const logger = winston.createLogger({
   level: "info", // Set the default log level
   format: logFormat,
   transports: [
-    new winston.transports.File({
-      filename: "combined.log",
+    new winston.transports.DailyRotateFile({
+      filename: path.join("logs", "combined-%DATE%.log"),
+      datePattern: "DD-MM-YYYY",
+      maxSize: "20m",
     }),
-    new winston.transports.File({
-      filename: "error.log",
+    new winston.transports.DailyRotateFile({
+      filename: path.join("logs", "error-%DATE%.log"),
       level: "error",
-    }),
-    new winston.transports.File({
-      filename: "info.log",
-      level: "info",
+      datePattern: "DD-MM-YYYY",
+      maxSize: "20m",
     }),
   ],
   exceptionHandlers: [
-    new winston.transports.File({ filename: "exception.log" }),
+    new winston.transports.DailyRotateFile({
+      filename: path.join("logs", "exceptions-%DATE%.log"),
+      datePattern: "DD-MM-YYYY",
+      maxSize: "20m",
+    }),
   ],
   rejectionHandlers: [
-    new winston.transports.File({ filename: "rejections.log" }),
+    new winston.transports.DailyRotateFile({
+      filename: path.join("logs", "rejections-%DATE%.log"),
+      datePattern: "DD-MM-YYYY",
+      maxSize: "20m",
+    }),
   ],
 });
 
 if (process.env.NODE_ENV !== "production") {
-  logger.add(
-    new winston.transports.Console()
-  );
+  logger.add(new winston.transports.Console());
 }
 
 export default logger;

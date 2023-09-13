@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+public/pdfs
+public/audios
+
 # testing
 /coverage
 
@@ -37,4 +40,4 @@ docs/*
 
 serviceKey*
 
-*.log
+/logs

@@ -13,15 +13,18 @@ const AuthorizeMiddleware = function (handler) {
   return async function (req: ExtendedNextRequest, res) {
     const authorization = req.headers['authorization'];
     if (!authorization) {
+      logger.info(`Auth Middleware - Not authenticated. No Auth header.: ${authorization}`)
       return res.status(401).json({ message: 'Not authenticated. No Auth header.' })
     }
     const token = authorization?.split(' ')[1]
     if (token === null || token === 'null') {
+      logger.info(`Auth Middleware - Not authenticated. No Auth token.: ${authorization}`)
       return res.status(401).json({ message: 'Not authenticated. No Auth token.' })
     }
     try {
       const decodedIdToken = await admin.auth().verifyIdToken(token);
       if (!decodedIdToken || !decodedIdToken.uid || !decodedIdToken.email) {
+        logger.info(`Auth Middleware - Not authenticated.: ${decodedIdToken}`)
         return res.status(401).json({ message: 'Not authenticated.' })
       }
       req.context = {
