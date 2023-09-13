@@ -66,7 +66,7 @@ export const AfterUpload = () => {
 
   const RenderPdf = () => {
     //if (apiFailure) return <>Error...</>;
-    const viewMode: ViewMode = "FitV";
+    const viewMode = "FitV";
     let pdfHeight = isMaxWidth600 ? "30vh" : "100%";
     const [page, setPage] = useState(1);
     const canvasRef = useRef(null);

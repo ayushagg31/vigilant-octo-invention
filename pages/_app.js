@@ -3,26 +3,23 @@ import Script from "next/script";
 ("use client");
 import NavBar from "../components/layout/NavBar";
 import RootModal from "../components/layout/modals/RootModal";
-import { Providers } from "./_provider";
+import Providers from "./_provider";
 import APIErrorNotificationProvider from "../customProviders/apiNotificationProvider";
 import APIErrorProvider from "../customProviders/apiErrorProvider";
 import APILoaderProvider from "../customProviders/apiLoaderProvider";
 
 export default function App({ Component, pageProps }) {
-
   const getLayout = Component.getLayout || ((page) => page);
   return (
     <>
       <Providers>
         <APIErrorProvider>
           <APILoaderProvider>
-            {
-              getLayout(
-                <>
-                  <Component {...pageProps} />
-
-                </>)
-            }
+            {getLayout(
+              <>
+                <Component {...pageProps} />
+              </>
+            )}
             <RootModal />
             <APIErrorNotificationProvider />
           </APILoaderProvider>

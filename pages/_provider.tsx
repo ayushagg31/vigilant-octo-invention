@@ -45,7 +45,7 @@ const config = {
 
 export const theme = extendTheme({ colors, config })
 
-export function Providers({
+export default function Providers({
     children
 }: {
     children: React.ReactNode
