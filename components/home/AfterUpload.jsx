@@ -45,7 +45,10 @@ export const AfterUpload = () => {
     } else {
       router.replace("dashboard");
     }
-  }, [id, user?.email]);
+    if (!user) {
+      router.replace("dashboard");
+    }
+  }, [id, user?.email, user]);
 
   const RenderPdf = () => {
     const [page, setPage] = useState(1);
