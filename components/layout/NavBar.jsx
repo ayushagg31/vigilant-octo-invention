@@ -161,14 +161,16 @@ function NavBar() {
                     placement="right"
                     shouldWrapChildren
                   >
-                    <Avatar
-                      size={"sm"}
-                      src={user.photoURL}
-                      className={`${style.navbarIcons} ${
-                        activePath === "/profile" ? style.activeNav : ""
-                      }`}
-                      onClick={() => router.push("/profile")}
-                    />
+                    <Flex>
+                      <Avatar
+                        size={"sm"}
+                        src={user.photoURL}
+                        className={`${style.navbarIcons} ${
+                          activePath === "/profile" ? style.activeNav : ""
+                        }`}
+                        onClick={() => router.push("/profile")}
+                      />
+                    </Flex>
                   </Tooltip>
 
                   <Tooltip label="Logout" placement="right" shouldWrapChildren>
