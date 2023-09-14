@@ -29,22 +29,12 @@ export const AfterUpload = () => {
   const { user } = useAuth((store) => ({
     user: store.user,
   }));
-  const { collections } = useCollections((store) => {
-    return {
-      collections: store.collections,
-    };
-  });
+
   let youtubeUrl =
     yt !== undefined && !Array.isArray(yt) ? window.atob(yt) : null;
 
   const [isVerified, setIsVerified] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  // ssr-friendly media query with fallback
-  const [isMaxWidth600] = useMediaQuery("(max-width: 600px)", {
-    ssr: true,
-    fallback: false, // return false on the server, and re-evaluate on the client side
-  });
 
   useEffect(() => {
     async function verifyCollection({ collectionId }) {
@@ -67,7 +57,6 @@ export const AfterUpload = () => {
   const RenderPdf = () => {
     //if (apiFailure) return <>Error...</>;
     const viewMode = "FitV";
-    let pdfHeight = isMaxWidth600 ? "30vh" : "100%";
     const [page, setPage] = useState(1);
     const canvasRef = useRef(null);
     const hostUrl = window.location.origin;
@@ -80,8 +69,7 @@ export const AfterUpload = () => {
             navpanes: 0,
             statusbar: 0,
             view: ViewMode,
-            pagemode: "thumbs",
-            page: 2,
+            pagemode: "none",
           }}
           height={"100%"}
           url={`${hostUrl}/pdfs/${id}.pdf`}
@@ -96,30 +84,34 @@ export const AfterUpload = () => {
     return <>Get detailed summary of the doc</>;
   };
 
-  const DocsList = () => {
-    return collections.map((collectionEl, index) => (
-      <VStack divider={<StackDivider borderColor="gray.200" />} spacing={4}>
-        <Box h="full" p={2}>
-          <TagDoc key={index} collectionEl={collectionEl} size="lg" />
-        </Box>
-      </VStack>
-    ));
-  };
+  // const DocsList = () => {
+  //   return collections.map((collectionEl, index) => (
+  //     <VStack divider={<StackDivider borderColor="gray.200" />} spacing={4}>
+  //       <Box h="full" p={2}>
+  //         <TagDoc key={index} collectionEl={collectionEl} size="lg" />
+  //       </Box>
+  //     </VStack>
+  //   ));
+  // };
 
-  const memoizedObject = useMemo(() => {
-    return {
-      "Actual document":
-        youtubeUrl !== null ? <ReactPlayer url={youtubeUrl} /> : <RenderPdf />,
-      Summary: <DetailedSummary />,
-      "All Docs": <DocsList />,
-    };
-  }, [asPath]);
+  // const memoizedObject = useMemo(() => {
+  //   return {
+  //     "Actual document":
+  //       youtubeUrl !== null ? <ReactPlayer url={youtubeUrl} /> : <RenderPdf />,
+  //     Summary: <DetailedSummary />,
+  //     "All Docs": <DocsList />,
+  //   };
+  // }, [asPath]);
 
   const ChatAndTabJsx = (
-    <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={2} style={{ flex: 1 }}>
+    <SimpleGrid columns={{ sm: 1, md: 2 }} w="100%">
       <Show above="md">
-        <Box borderWidth="1px" borderRadius="lg" hidd>
-          <TabComponent tabConfig={memoizedObject} />
+        <Box borderWidth="1px" borderRadius="lg" h="100%">
+          {youtubeUrl !== null ? (
+            <ReactPlayer url={youtubeUrl} />
+          ) : (
+            <RenderPdf />
+          )}
         </Box>
       </Show>
       <Box>

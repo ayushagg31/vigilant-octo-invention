@@ -7,6 +7,7 @@ import { HumanChatMessage, AIChatMessage } from "langchain/schema";
 import { Box, Avatar, Stack } from "@chakra-ui/react";
 import { AiOutlineRobot, AiOutlineSend } from "react-icons/ai";
 import { chatApi } from "../../services/client.service";
+import { useAuth } from "../../store/useAuth";
 
 export default function ChatWidget() {
   const [userInput, setUserInput] = useState("");
@@ -23,6 +24,10 @@ export default function ChatWidget() {
       type: "apiMessage",
     },
   ]);
+
+  const { user } = useAuth((store) => ({
+    user: store.user,
+  }));
 
   const messageListRef = useRef(null);
   const textAreaRef = useRef(null);
@@ -129,8 +134,8 @@ export default function ChatWidget() {
                       />
                     ) : (
                       <Avatar
-                        name="Dan Abrahmov"
-                        src="https://bit.ly/dan-abramov"
+                        name={user.displayName}
+                        src={user.photoURL}
                         style={{ marginTop: "0.5rem" }}
                       />
                     )}
