@@ -8,6 +8,7 @@ import { Box, Avatar, Stack } from "@chakra-ui/react";
 import { AiOutlineRobot, AiOutlineSend } from "react-icons/ai";
 import { chatApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
+import TypeEffect from "./TypeEffect";
 
 const initalMessage = [
   {
@@ -50,10 +51,6 @@ export default function ChatWidget() {
 
   // Handle errors
   const handleError = (error) => {
-    console.log(error.response);
-    let message;
-    switch (error) {
-    }
     setMessages((prevMessages) => [
       ...prevMessages,
       {
@@ -102,6 +99,13 @@ export default function ChatWidget() {
         query,
         new AIChatMessage(data.message),
       ]);
+      let count = 0;
+      let maxCount = 100;
+      let interval = setInterval(() => {
+        if (count >= maxCount) clearInterval(interval);
+        const messageList = messageListRef.current;
+        messageList.scrollTop = messageList.scrollHeight;
+      }, 500);
     } catch (error) {
       handleError(error);
       setLoading(false);
@@ -154,9 +158,18 @@ export default function ChatWidget() {
                     }
                   >
                     <div className={styles.markdownanswer}>
-                      <ReactMarkdown linkTarget={"_blank"}>
-                        {message.message}
-                      </ReactMarkdown>
+                      {message.type === "apiMessage" ? (
+                        <TypeEffect message={message.message} />
+                      ) : (
+                        <Box
+                          onDoubleClick={() => setUserInput(message.message)}
+                          cursor="pointer"
+                        >
+                          <ReactMarkdown linkTarget={"_blank"}>
+                            {message.message}
+                          </ReactMarkdown>
+                        </Box>
+                      )}
                     </div>
                   </div>
                 </Stack>
