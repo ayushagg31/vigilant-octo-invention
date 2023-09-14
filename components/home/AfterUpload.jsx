@@ -32,6 +32,7 @@ const AfterUpload = () => {
         setIsVerified(isVerified);
       } catch (err) {
         addError("Error in verifying account");
+        router.replace("dashboard");
       }
     }
     if (id) {
@@ -102,4 +103,4 @@ const AfterUpload = () => {
 };
 
 
-export default AfterUpload
+export default AfterUpload;
