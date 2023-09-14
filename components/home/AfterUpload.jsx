@@ -1,22 +1,12 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
-import { TabComponent } from "../common/TabComponent";
+import React, { useState, useEffect } from "react";
 import { PDFObject, ViewMode } from "react-pdfobject";
-import {
-  SimpleGrid,
-  Box,
-  useMediaQuery,
-  VStack,
-  StackDivider,
-  Flex,
-  Show,
-} from "@chakra-ui/react";
+import { Box, Flex, Show, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import ChatWidget from "./ChatWidget";
 import ReactPlayer from "react-player/lazy";
 import { useAuth } from "../../store/useAuth";
-import { useCollections } from "../../store/useCollections";
+// import { useCollections } from "../../store/useCollections";
 import { useAPIError } from "../../hooks/useApiHook";
-import TagDoc from "./TagDoc";
 import { verifyCollectionsApi } from "../../services/client.service";
 
 export const AfterUpload = () => {
@@ -35,7 +25,6 @@ export const AfterUpload = () => {
     yt !== undefined && !Array.isArray(yt) ? window.atob(yt) : null;
 
   const [isVerified, setIsVerified] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function verifyCollection({ collectionId }) {
@@ -96,7 +85,24 @@ export const AfterUpload = () => {
       </Box>
     </Flex>
   );
-  const NotVerfiedJsx = <div>Not Verified</div>;
+  const NotVerfiedJsx = (
+    <Flex
+      h="100%"
+      w="100%"
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <Spinner
+        thickness="4px"
+        speed="0.65s"
+        emptyColor="gray.200"
+        color="blue.500"
+        size="xl"
+      />
+      <Text mt={4}>Loading your doc</Text>
+    </Flex>
+  );
 
   return <>{isVerified ? ChatAndTabJsx : NotVerfiedJsx}</>;
 };
