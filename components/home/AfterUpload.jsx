@@ -42,7 +42,10 @@ const AfterUpload = () => {
     } else {
       router.replace("dashboard");
     }
+
   }, [id]);
+
+
 
   const RenderPdf = () => {
     const hostUrl = window.location.origin;
