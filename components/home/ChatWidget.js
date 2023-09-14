@@ -12,7 +12,8 @@ import TypeEffect from "./TypeEffect";
 
 const initalMessage = [
   {
-    message: "Hi, what would you like to learn about this document?",
+    message:
+      "Hi, what would you like to learn about this document? what would you like to learn about this document?what would you like to learn about this document?what would you like to learn about this document to learn about this document? what would you like to learn about this document?what would you like to learn about this document?what would you like to learn about this document?",
     type: "apiMessage",
   },
 ];
@@ -99,13 +100,6 @@ export default function ChatWidget() {
         query,
         new AIChatMessage(data.message),
       ]);
-      let count = 0;
-      let maxCount = 100;
-      let interval = setInterval(() => {
-        if (count >= maxCount) clearInterval(interval);
-        const messageList = messageListRef.current;
-        messageList.scrollTop = messageList.scrollHeight;
-      }, 500);
     } catch (error) {
       handleError(error);
       setLoading(false);

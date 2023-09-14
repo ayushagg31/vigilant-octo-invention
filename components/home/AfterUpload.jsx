@@ -69,11 +69,7 @@ export const AfterUpload = () => {
   };
 
   const ChatAndTabJsx = (
-    <Flex
-      columns={{ sm: 1, md: 2 }}
-      w="100%"
-      h={{ lg: "100%", sm: "calc(100% - 73px)" }}
-    >
+    <Flex columns={{ sm: 1, md: 2 }} w="100%" className="main-container">
       <Show above="md">
         <Box borderWidth="1px" borderRadius="lg" h="100%" flex={1}>
           {youtubeUrl !== null ? (
