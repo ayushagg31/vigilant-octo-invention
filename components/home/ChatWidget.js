@@ -12,8 +12,7 @@ import TypeEffect from "./TypeEffect";
 
 const initalMessage = [
   {
-    message:
-      "Hi, what would you like to learn about this document? what would you like to learn about this document?what would you like to learn about this document?what would you like to learn about this document to learn about this document? what would you like to learn about this document?what would you like to learn about this document?what would you like to learn about this document?",
+    message: "Hi, what would you like to learn about this document?",
     type: "apiMessage",
   },
 ];
