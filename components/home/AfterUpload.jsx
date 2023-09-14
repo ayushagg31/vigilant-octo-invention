@@ -28,6 +28,7 @@ export const AfterUpload = () => {
 
   useEffect(() => {
     async function verifyCollection({ collectionId }) {
+      setIsVerified(false);
       try {
         const {
           data: { isVerified },
