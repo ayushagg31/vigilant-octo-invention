@@ -3,11 +3,8 @@ import React, { useState, useEffect } from "react";
 // import dynamic from "next/dynamic";
 import {
   Link,
-  Box,
   Flex,
-  Text,
   Button,
-  Stack,
   Spacer,
   useDisclosure,
   Tooltip,
@@ -28,6 +25,7 @@ import {
 } from "react-icons/ai";
 import { SiReadthedocs } from "react-icons/si";
 import { BiUserCircle } from "react-icons/bi";
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdContactSupport } from "react-icons/md";
 import { BsFillChatLeftQuoteFill, BsFillCloudUploadFill } from "react-icons/bs";
 import style from "../../styles/NavBar.module.css";
@@ -84,6 +82,17 @@ function NavBar() {
             onClick={() => router.push("/")}
           />
           {/* Logo end */}
+          {/* Chat with pdf start */}
+          {activePath === "/docinsights" && (
+            <Tooltip label="Go to dashboard" placement="right" shouldWrapChildren>
+              <IoMdArrowRoundBack style={{ cursor: 'pointer' }}
+                className={` ${activePath === "/dashboard" ? style.activeNav : ""
+                  }`}
+                onClick={() => router.push("/dashboard")}
+                title="Upload your doc"
+              />
+            </Tooltip>
+          )}
 
           {user && (
             <Tooltip
@@ -100,28 +109,8 @@ function NavBar() {
             </Tooltip>
           )}
 
-          <Tooltip label="Upload your doc" placement="right" shouldWrapChildren>
-            <BsFillCloudUploadFill
-              className={`${style.navbarIcons} ${
-                activePath === "/dashboard" ? style.activeNav : ""
-              }`}
-              onClick={() => router.push("/dashboard")}
-              title="Upload your doc"
-            />
-          </Tooltip>
 
-          {/* Chat with pdf start */}
-          {activePath === "/docinsights" && (
-            <Tooltip label="Chat with PDF" placement="right" shouldWrapChildren>
-              <BsFillChatLeftQuoteFill
-                className={`${style.navbarIcons} ${
-                  activePath === "/docinsights" ? style.activeNav : ""
-                }`}
-                onClick={() => router.push("/docinsights")}
-                title="Chat with PDF"
-              />
-            </Tooltip>
-          )}
+
           {/* Chat with pdf end */}
         </Flex>
 
@@ -165,9 +154,8 @@ function NavBar() {
                       <Avatar
                         size={"sm"}
                         src={user?.photoURL}
-                        className={`${style.navbarIcons} ${
-                          activePath === "/profile" ? style.activeNav : ""
-                        }`}
+                        className={`${style.navbarIcons} ${activePath === "/profile" ? style.activeNav : ""
+                          }`}
                         onClick={() => router.push("/profile")}
                       />
                     </Flex>
@@ -175,9 +163,8 @@ function NavBar() {
 
                   <Tooltip label="Logout" placement="right" shouldWrapChildren>
                     <AiOutlineLogout
-                      className={`${style.navbarIcons} ${
-                        activePath === "/settings" ? style.activeNav : ""
-                      }`}
+                      className={`${style.navbarIcons} ${activePath === "/settings" ? style.activeNav : ""
+                        }`}
                       onClick={async () => {
                         router.push("/");
                         await logout(router);

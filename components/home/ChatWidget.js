@@ -8,7 +8,6 @@ import { Box, Avatar, Stack } from "@chakra-ui/react";
 import { AiOutlineRobot, AiOutlineSend } from "react-icons/ai";
 import { chatApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
-import TypeEffect from "./TypeEffect";
 
 const initalMessage = [
   {
@@ -142,27 +141,18 @@ export default function ChatWidget() {
                     key={index}
                     className={
                       message.type === "userMessage" &&
-                      loading &&
-                      index === messages.length - 1
+                        loading &&
+                        index === messages.length - 1
                         ? styles.usermessagewaiting
                         : message.type === "apiMessage"
-                        ? styles.apimessage
-                        : styles.usermessage
+                          ? styles.apimessage
+                          : styles.usermessage
                     }
                   >
                     <div className={styles.markdownanswer}>
-                      {message.type === "apiMessage" ? (
-                        <TypeEffect message={message.message} />
-                      ) : (
-                        <Box
-                          onDoubleClick={() => setUserInput(message.message)}
-                          cursor="pointer"
-                        >
-                          <ReactMarkdown linkTarget={"_blank"}>
-                            {message.message}
-                          </ReactMarkdown>
-                        </Box>
-                      )}
+                      <ReactMarkdown linkTarget={"_blank"}>
+                        {message.message}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 </Stack>
