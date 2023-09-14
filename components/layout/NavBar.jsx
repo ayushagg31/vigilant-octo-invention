@@ -18,6 +18,7 @@ import {
   DrawerHeader,
   DrawerBody,
   DrawerFooter,
+  Avatar,
 } from "@chakra-ui/react";
 import {
   AiOutlineSetting,
@@ -160,12 +161,13 @@ function NavBar() {
                     placement="right"
                     shouldWrapChildren
                   >
-                    <BiUserCircle
+                    <Avatar
+                      size={"sm"}
+                      src={user.photoURL}
                       className={`${style.navbarIcons} ${
                         activePath === "/profile" ? style.activeNav : ""
                       }`}
                       onClick={() => router.push("/profile")}
-                      title={`${user?.displayName}`}
                     />
                   </Tooltip>
 
