@@ -9,6 +9,12 @@ import { AiOutlineRobot, AiOutlineSend } from "react-icons/ai";
 import { chatApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
 
+const initalMessage = [
+  {
+    message: "Hi, what would you like to learn about this document?",
+    type: "apiMessage",
+  },
+];
 export default function ChatWidget() {
   const [userInput, setUserInput] = useState("");
   const [history, setHistory] = useState([]);
@@ -18,12 +24,7 @@ export default function ChatWidget() {
     query: { id: collectionId },
   } = router;
 
-  const [messages, setMessages] = useState([
-    {
-      message: "Hi, what would you like to learn about this document?",
-      type: "apiMessage",
-    },
-  ]);
+  const [messages, setMessages] = useState([...initalMessage]);
 
   const { user } = useAuth((store) => ({
     user: store.user,
@@ -42,6 +43,10 @@ export default function ChatWidget() {
   useEffect(() => {
     textAreaRef.current.focus();
   }, []);
+
+  useEffect(() => {
+    setMessages([...initalMessage]);
+  }, [collectionId]);
 
   // Handle errors
   const handleError = (error) => {
