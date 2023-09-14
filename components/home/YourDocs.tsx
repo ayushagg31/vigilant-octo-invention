@@ -22,10 +22,11 @@ import { useRouter } from "next/router";
 import { useAuth } from "../../store/useAuth";
 import TagDoc from "./TagDoc";
 import { MdSettings } from "react-icons/md";
-import { AiOutlineLink } from "react-icons/ai";
+import { AiOutlineLink, AiOutlineFilePdf } from "react-icons/ai";
 
 let selectedCollection;
-const YourDocs = () => {
+const YourDocs = ({ closeDrawer }) => {
+  console.log();
   const toast = useToast();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
@@ -66,6 +67,8 @@ const YourDocs = () => {
   const renderFileIcon = (fileType) => {
     switch (fileType) {
       case "pdf":
+        return AiOutlineFilePdf;
+      case "mp3":
         return AiOutlineLink;
       default:
         return MdSettings;
@@ -117,7 +120,11 @@ const YourDocs = () => {
                 color="green.500"
                 mr={2}
               />
-              <TagDoc collectionEl={collectionEl} size="sm" />
+              <TagDoc
+                collectionEl={collectionEl}
+                closeDrawer={closeDrawer}
+                size="sm"
+              />
 
               <CloseButton
                 ml="auto"

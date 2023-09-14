@@ -1,7 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import NextLink from "next/link";
-import { Tag, TagLabel, TagCloseButton, Link, Flex } from "@chakra-ui/react";
+import {
+  Tag,
+  TagLabel,
+  TagCloseButton,
+  Link,
+  Flex,
+  Text,
+} from "@chakra-ui/react";
 import { useCollections } from "../../store/useCollections";
 import { useRouter } from "next/router";
 import { useAuth } from "../../store/useAuth";
@@ -9,39 +16,13 @@ import { deleteCollectionApi } from "../../services/client.service";
 import { AiOutlineLink } from "react-icons/ai";
 import { useAPIError } from "../../hooks/useApiHook";
 
-const TagDoc = ({ collectionEl, size }) => {
-  const { addError } = useAPIError();
+const TagDoc = ({ collectionEl, size, closeDrawer }) => {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
-
-  const { user } = useAuth((store) => ({
-    user: store.user,
-  }));
-
-  // useEffect(() => {
-  //   async function fetchCollections() {
-  //     try {
-  //       const { data } = await fetchCollectionsApi();
-  //       setCollections(data?.collections || []);
-  //     } catch (e) {
-  //       addError("Error in fetching your docs");
-  //     }
-  //   }
-  //   fetchCollections();
-  // }, [user?.email]);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // const handleCloseCollection = async (collectionId) => {
-  //   try {
-  //     const { data } = await deleteCollectionApi({ collectionId });
-  //     setCollections(data?.collections || []);
-  //   } catch (e) {
-  //     throw new Error("Error in deleting your doc", e);
-  //   }
-  // };
 
   const creatLink = ({ collectionId, fileType, ytUrl }) => {
     if (fileType == "mp3") {
@@ -52,30 +33,19 @@ const TagDoc = ({ collectionEl, size }) => {
 
   if (!mounted) return <></>;
   return (
-    <>
-      <Link as={NextLink} href={creatLink(collectionEl)}>
-        {collectionEl.collectionName}
-      </Link>
-
-      {/* <Tag
-        size={size}
-        border="2px"
-        borderColor={"black"}
-        colorScheme="gray"
-        variant="subtle"
-      >
-        <TagLabel>
-          <Link as={NextLink} href={creatLink(collectionEl)}>
-            {collectionEl.collectionName}
-          </Link>
-        </TagLabel>
-        <AiOutlineLink />
-        <TagCloseButton
-          style={{ cursor: "pointer" }}
-          onClick={() => handleCloseCollection(collectionEl.collectionId)}
-        /> 
-      </Tag> */}
-    </>
+    <Text
+      as={NextLink}
+      href="#"
+      onClick={(e) => {
+        e.preventDefault();
+        closeDrawer();
+        setTimeout(() => {
+          router.push(creatLink(collectionEl));
+        }, 200);
+      }}
+    >
+      {collectionEl.collectionName}
+    </Text>
   );
 };
 

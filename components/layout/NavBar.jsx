@@ -212,7 +212,7 @@ function NavBar() {
           </DrawerHeader>
 
           <DrawerBody p={3}>
-            <YourDocs />
+            <YourDocs closeDrawer={onCloseDrawer} />
           </DrawerBody>
 
           <DrawerFooter shadow={"inner"}>
