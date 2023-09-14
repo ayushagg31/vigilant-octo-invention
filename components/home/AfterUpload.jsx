@@ -9,17 +9,13 @@ import { useAuth } from "../../store/useAuth";
 import { useAPIError } from "../../hooks/useApiHook";
 import { verifyCollectionsApi } from "../../services/client.service";
 
-export const AfterUpload = () => {
+const AfterUpload = () => {
   const { addError } = useAPIError();
   const router = useRouter();
   const {
-    asPath,
     query: { id, yt },
   } = router;
 
-  const { user } = useAuth((store) => ({
-    user: store.user,
-  }));
 
   let youtubeUrl =
     yt !== undefined && !Array.isArray(yt) ? window.atob(yt) : null;
@@ -36,6 +32,7 @@ export const AfterUpload = () => {
         setIsVerified(isVerified);
       } catch (err) {
         addError("Error in verifying account");
+        router.replace("dashboard");
       }
     }
     if (id) {
@@ -45,13 +42,12 @@ export const AfterUpload = () => {
     } else {
       router.replace("dashboard");
     }
-    if (!user) {
-      router.replace("dashboard");
-    }
-  }, [id, user?.email, user]);
+
+  }, [id]);
+
+
 
   const RenderPdf = () => {
-    const [page, setPage] = useState(1);
     const hostUrl = window.location.origin;
 
     return (
@@ -108,3 +104,6 @@ export const AfterUpload = () => {
 
   return <>{isVerified ? ChatAndTabJsx : NotVerfiedJsx}</>;
 };
+
+
+export default AfterUpload;
