@@ -6,9 +6,9 @@ import { FromYtubeUrl } from "./FromYtubeUrl";
 
 const tabsObject = {
   "Upload File": <FileUploadSection />,
-  "From Url": <FromUrl />,
+  "PDF from URL": <FromUrl />,
   // 'From Text': <FromText />,
-  "From Youtube": <FromYtubeUrl />,
+  "Chat with Youtube video": <FromYtubeUrl />,
 };
 export const BeforeUpload = () => {
   return <TabComponent tabConfig={tabsObject} />;

@@ -31,3 +31,9 @@
 .activeNav {
   color: #ffcc1e;
 }
+
+@media screen and (max-width: 767px) {
+  .navbarIcons {
+    font-size: 22px;
+  }
+}

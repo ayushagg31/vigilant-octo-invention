@@ -6,6 +6,7 @@ import {
   Tab,
   TabPanel,
   useTabsStyles,
+  TabIndicator,
 } from "@chakra-ui/react";
 
 export const TabComponent = ({ tabConfig }) => {
@@ -21,14 +22,13 @@ export const TabComponent = ({ tabConfig }) => {
 
   return (
     <>
-      <Tabs variant="soft-rounded" pt={4} px={4}>
+      <Tabs position="relative" isFitted variant="unstyled" p={4}>
         <TabList>
           {tabKeys.map((el, index) => (
-            <Tab key={index} _selected={tabStyle}>
-              {el}
-            </Tab>
+            <Tab key={index}>{el}</Tab>
           ))}
         </TabList>
+        <TabIndicator height="2px" bg="blue.500" mt="-1.5px" />
         <TabPanels>
           {tabComponents.map((component, index) => (
             <TabPanel key={index}>{component}</TabPanel>
