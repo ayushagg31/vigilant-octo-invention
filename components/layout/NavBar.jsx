@@ -80,6 +80,7 @@ function NavBar() {
             size="44px"
             className={style.logo}
             title="Doc Xpert"
+            onClick={() => router.push("/")}
           />
           {/* Logo end */}
 
@@ -90,12 +91,14 @@ function NavBar() {
               shouldWrapChildren
             >
               <SiReadthedocs
+                className={style.navbarIcons}
                 ref={btnDrawerRef}
                 onClick={onOpenDrawer}
                 cursor="pointer"
               />
             </Tooltip>
           )}
+
           <Tooltip label="Upload your doc" placement="right" shouldWrapChildren>
             <BsFillCloudUploadFill
               className={`${style.navbarIcons} ${
@@ -107,15 +110,17 @@ function NavBar() {
           </Tooltip>
 
           {/* Chat with pdf start */}
-          <Tooltip label="Chat with PDF" placement="right" shouldWrapChildren>
-            <BsFillChatLeftQuoteFill
-              className={`${style.navbarIcons} ${
-                activePath === "/docinsights" ? style.activeNav : ""
-              }`}
-              onClick={() => router.push("/docinsights")}
-              title="Chat with PDF"
-            />
-          </Tooltip>
+          {activePath === "/docinsights" && (
+            <Tooltip label="Chat with PDF" placement="right" shouldWrapChildren>
+              <BsFillChatLeftQuoteFill
+                className={`${style.navbarIcons} ${
+                  activePath === "/docinsights" ? style.activeNav : ""
+                }`}
+                onClick={() => router.push("/docinsights")}
+                title="Chat with PDF"
+              />
+            </Tooltip>
+          )}
           {/* Chat with pdf end */}
         </Flex>
 
