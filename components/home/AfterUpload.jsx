@@ -41,6 +41,8 @@ export const AfterUpload = () => {
       verifyCollection({
         collectionId: id,
       });
+    } else {
+      router.replace("dashboard");
     }
   }, [id, user?.email]);
 
