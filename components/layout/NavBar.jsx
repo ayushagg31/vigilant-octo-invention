@@ -164,7 +164,7 @@ function NavBar() {
                     <Flex>
                       <Avatar
                         size={"sm"}
-                        src={user.photoURL}
+                        src={user?.photoURL}
                         className={`${style.navbarIcons} ${
                           activePath === "/profile" ? style.activeNav : ""
                         }`}

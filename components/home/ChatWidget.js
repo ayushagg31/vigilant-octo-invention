@@ -132,8 +132,8 @@ export default function ChatWidget() {
                     />
                   ) : (
                     <Avatar
-                      name={user.displayName}
-                      src={user.photoURL}
+                      name={user?.displayName}
+                      src={user?.photoURL}
                       style={{ marginTop: "0.5rem" }}
                     />
                   )}
