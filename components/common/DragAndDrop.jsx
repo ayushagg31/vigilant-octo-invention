@@ -1,5 +1,13 @@
 import React from "react";
-import { Card, CardBody, Icon, Text, Center, Circle, Stack } from '@chakra-ui/react'
+import {
+  Card,
+  CardBody,
+  Icon,
+  Text,
+  Center,
+  Circle,
+  Stack,
+} from "@chakra-ui/react";
 import style from "../../styles/DragAndDrop.module.css";
 import { AiOutlineCloudUpload } from "react-icons/ai";
 
@@ -23,14 +31,14 @@ const DragAndDrop = ({ onFileSelect }) => {
     e.stopPropagation();
     setDragActive(false);
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      onFileSelect?.(e.dataTransfer.files)
+      onFileSelect?.(e.dataTransfer.files);
     }
   };
 
   const handleChange = function (e) {
     e.preventDefault();
     if (e.target.files && e.target.files[0]) {
-      onFileSelect?.(e.target.files)
+      onFileSelect?.(e.target.files);
     }
   };
 
@@ -39,8 +47,14 @@ const DragAndDrop = ({ onFileSelect }) => {
   };
 
   return (
-    <form onDragEnter={handleDrag} onSubmit={(e) => { e.preventDefault(); e.stopPropagation() }}>
-      <Card variant={"outline"}>
+    <form
+      onDragEnter={handleDrag}
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+    >
+      <Card variant={"outline"} h="300px">
         <CardBody>
           <input
             ref={fileInput}
@@ -54,22 +68,32 @@ const DragAndDrop = ({ onFileSelect }) => {
           <label
             id="label-file-upload"
             htmlFor="input-file-upload"
-            className={`${style.fileInputLabel} ${dragActive ? style.dragActive : ""}`}
+            className={`${style.fileInputLabel} ${
+              dragActive ? style.dragActive : ""
+            }`}
           >
             <div>
               <Center p={2}>
-                <Circle size='40px' bg='black' color='white'>
-                  <AiOutlineCloudUpload size='30px' />
+                <Circle size="40px" bg="black" color="white">
+                  <AiOutlineCloudUpload size="30px" />
                 </Circle>
               </Center>
               <Stack spacing={2}>
                 <Center>
-                  <Text fontSize='sm' as='b'>Click to upload </Text>  <Text fontSize='sm'>{`\u00A0\ or drag and drop`}</Text>
+                  <Text fontSize="sm" as="b">
+                    Click to upload{" "}
+                  </Text>{" "}
+                  <Text fontSize="sm">{`\u00A0\ or drag and drop`}</Text>
                 </Center>
 
-                <Text fontSize='xs'>Supported formats: .pdf', '.txt', '.epub', '.rtf</Text>
+                <Text fontSize="xs">
+                  Supported formats: .pdf', '.txt', '.epub', '.rtf
+                </Text>
               </Stack>
-              <button className={style.uploadButton} onClick={triggerFileUpload}></button>
+              <button
+                className={style.uploadButton}
+                onClick={triggerFileUpload}
+              ></button>
             </div>
           </label>
           {dragActive && (

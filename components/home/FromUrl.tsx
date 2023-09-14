@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Button, Box, Progress } from '@chakra-ui/react'
+import { Button, Box, Progress } from "@chakra-ui/react";
 import isUrl from "is-url";
 import { FileUploadWrapper } from "./FileUploadWrapper";
 import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
 import { useRouter } from "next/router";
-import { downloadDocApi } from "../../services/client.service"
+import { downloadDocApi } from "../../services/client.service";
 
 export const FromUrl = () => {
   const [error, setError] = useState(false);
@@ -20,12 +20,17 @@ export const FromUrl = () => {
       try {
         addLoader();
         const response = await downloadDocApi({ pdfUrl: url });
-        const { data: { collectionId } } = response;
-        removeLoader()
-        router.push({ pathname: 'dashboard/docinsights', query: { id: collectionId } });
+        const {
+          data: { collectionId },
+        } = response;
+        removeLoader();
+        router.push({
+          pathname: "dashboard/docinsights",
+          query: { id: collectionId },
+        });
       } catch (error) {
         removeLoader();
-        addError('error in downloading document')
+        addError("error in downloading document");
       }
     } else {
       setError(true);
@@ -50,21 +55,19 @@ export const FromUrl = () => {
               <Button
                 isLoading={loader}
                 type="submit"
-                border='2px'
-                borderColor='black'
-                variant='outline'>
+                border="2px"
+                borderColor="black"
+                variant="outline"
+              >
                 Upload
               </Button>
             </div>
           </div>
         </form>
         <Box p={5}>
-          {
-            loader && <Progress size='xs' colorScheme="gray" isIndeterminate />
-          }
+          {loader && <Progress size="xs" colorScheme="gray" isIndeterminate />}
         </Box>
       </FileUploadWrapper>
-
     </>
   );
 };

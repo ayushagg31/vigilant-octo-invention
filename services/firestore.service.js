@@ -239,7 +239,7 @@ export const fetchPlanInfo = async ({ userEmail }) => {
     const userDoc = await getDoc(userRef);
     let planInfo;
     if (userDoc.exists()) {
-      planInfo = (await userDoc.data()["currentPlan"]) || "free_tire";
+      planInfo = (await userDoc.data()["currentPlan"]) || "free_tier";
     }
     return planInfo;
   } catch (e) {

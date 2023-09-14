@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { Text, VStack, Box, Flex, Button, Progress } from '@chakra-ui/react';
+import { Text, VStack, Box, Flex, Button, Progress } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import DragAndDrop from "../common/DragAndDrop";
 import { useDashboard } from "../../store/useDashboard";
-import { uploadDocumentApi } from "../../services/client.service"
+import { uploadDocumentApi } from "../../services/client.service";
 import { FileUploadWrapper } from "./FileUploadWrapper";
 import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
 
@@ -23,7 +23,6 @@ export const FileUploadSection = () => {
       };
     });
 
-
   const [file, setFile] = useState(null);
 
   const handleFileChange = (files) => {
@@ -38,17 +37,21 @@ export const FileUploadSection = () => {
     formData.append("file", file);
     try {
       addLoader();
-      const response = await uploadDocumentApi({ formData })
-      const { data: { collectionId } } = response;
-      removeLoader()
-      router.push({ pathname: 'dashboard/docinsights', query: { id: collectionId } });
+      const response = await uploadDocumentApi({ formData });
+      const {
+        data: { collectionId },
+      } = response;
+      removeLoader();
+      router.push({
+        pathname: "dashboard/docinsights",
+        query: { id: collectionId },
+      });
     } catch (err) {
       removeLoader();
-      console.log(err, "Err")
-      addError('Failed to upload document');
+      console.log(err, "Err");
+      addError("Failed to upload document");
       console.error("Error:", error);
     }
-
   };
 
   const removeFile = () => {
@@ -70,37 +73,36 @@ export const FileUploadSection = () => {
         <DragAndDrop onFileSelect={handleFileChange} />
       ) : (
         <FileUploadWrapper>
-          <VStack
-            spacing={4}
-            align='stretch'
-          >
+          <VStack spacing={4} align="stretch">
             <Box>
               <Flex>
                 <div className="mr-5">
-                  <Text as='b' fontSize='sm'>{file?.name}</Text>
+                  <Text as="b" fontSize="sm">
+                    {file?.name}
+                  </Text>
                 </div>
                 <div onClick={removeFile}>
                   <i className="fa fa-trash"></i>
                 </div>
               </Flex>
-
             </Box>
             <Box>
               <Button
-                border='2px'
-                borderColor='black'
-                variant='outline'
+                border="2px"
+                borderColor="black"
+                variant="outline"
                 onClick={handleSubmit}
                 isLoading={loader}
-                loadingText='processing your file..'
-                disabled={!file}>
+                loadingText="processing your file.."
+                disabled={!file}
+              >
                 Upload
               </Button>
             </Box>
             <Box>
-              {
-                loader && <Progress size='xs' colorScheme="gray" isIndeterminate />
-              }
+              {loader && (
+                <Progress size="xs" colorScheme="gray" isIndeterminate />
+              )}
             </Box>
           </VStack>
         </FileUploadWrapper>
