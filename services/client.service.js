@@ -173,6 +173,7 @@ export const chatApi = async ({ question, history, collectionId }) => {
     );
     return response;
   } catch (e) {
-    throw new Error("Error in processing the user query", e.message);
+    // console.log(e.response.data.error);
+    throw new Error(e.response.data.error);
   }
 };

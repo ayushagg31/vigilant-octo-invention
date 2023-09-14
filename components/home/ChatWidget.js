@@ -44,11 +44,17 @@ export default function ChatWidget() {
   }, []);
 
   // Handle errors
-  const handleError = () => {
+  const handleError = (error) => {
+    console.log(error.response);
+    let message;
+    switch (error) {
+    }
     setMessages((prevMessages) => [
       ...prevMessages,
       {
-        message: "Oops! There seems to be an error. Please try again.",
+        message:
+          error?.message ||
+          "Oops! There seems to be an error. Please try again.",
         type: "apiMessage",
       },
     ]);
@@ -72,38 +78,29 @@ export default function ChatWidget() {
 
     const query = new HumanChatMessage(userInput);
 
-    const response = await chatApi({
-      question: userInput,
-      history: history.slice(-4),
-      collectionId,
-    });
-
-    if (!response.statusText === "OK") {
-      handleError();
-      return;
+    try {
+      const response = await chatApi({
+        question: userInput,
+        history: history.slice(-4),
+        collectionId,
+      });
+      setUserInput("");
+      const data = await response.data;
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { message: data.message, type: "apiMessage" },
+      ]);
+      setLoading(false);
+      setUserInput("");
+      setHistory((prevHistory) => [
+        ...prevHistory,
+        query,
+        new AIChatMessage(data.message),
+      ]);
+    } catch (error) {
+      handleError(error);
+      setLoading(false);
     }
-
-    // Reset user input
-    setUserInput("");
-    const data = await response.data;
-
-    if (data.error) {
-      handleError();
-      return;
-    }
-
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { message: data.message, type: "apiMessage" },
-    ]);
-
-    setHistory((prevHistory) => [
-      ...prevHistory,
-      query,
-      new AIChatMessage(data.message),
-    ]);
-
-    setLoading(false);
   };
 
   // Prevent blank submissions and allow for multiline input
@@ -119,87 +116,85 @@ export default function ChatWidget() {
 
   return (
     <>
-      <Box h="100%" w="full">
-        <div className={styles.cloud}>
-          <div ref={messageListRef} className={styles.messagelist}>
-            {messages.map((message, index) => {
-              return (
-                <div id="chat-conatiner" className={styles.chatBubbleContainer}>
-                  <Stack direction="row">
-                    {message.type === "apiMessage" ? (
-                      <Avatar
-                        bg="black"
-                        style={{ marginTop: "0.5rem" }}
-                        icon={<AiOutlineRobot fontSize="1.5rem" />}
-                      />
-                    ) : (
-                      <Avatar
-                        name={user.displayName}
-                        src={user.photoURL}
-                        style={{ marginTop: "0.5rem" }}
-                      />
-                    )}
+      <Box className={styles.cloud}>
+        <div ref={messageListRef} className={styles.messagelist}>
+          {messages.map((message, index) => {
+            return (
+              <div id="chat-conatiner" className={styles.chatBubbleContainer}>
+                <Stack direction="row">
+                  {message.type === "apiMessage" ? (
+                    <Avatar
+                      bg="black"
+                      style={{ marginTop: "0.5rem" }}
+                      icon={<AiOutlineRobot fontSize="1.5rem" />}
+                    />
+                  ) : (
+                    <Avatar
+                      name={user.displayName}
+                      src={user.photoURL}
+                      style={{ marginTop: "0.5rem" }}
+                    />
+                  )}
 
-                    <div
-                      key={index}
-                      className={
-                        message.type === "userMessage" &&
-                        loading &&
-                        index === messages.length - 1
-                          ? styles.usermessagewaiting
-                          : message.type === "apiMessage"
-                          ? styles.apimessage
-                          : styles.usermessage
-                      }
-                    >
-                      <div className={styles.markdownanswer}>
-                        <ReactMarkdown linkTarget={"_blank"}>
-                          {message.message}
-                        </ReactMarkdown>
-                      </div>
+                  <div
+                    key={index}
+                    className={
+                      message.type === "userMessage" &&
+                      loading &&
+                      index === messages.length - 1
+                        ? styles.usermessagewaiting
+                        : message.type === "apiMessage"
+                        ? styles.apimessage
+                        : styles.usermessage
+                    }
+                  >
+                    <div className={styles.markdownanswer}>
+                      <ReactMarkdown linkTarget={"_blank"}>
+                        {message.message}
+                      </ReactMarkdown>
                     </div>
-                  </Stack>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div>
-          <div className={styles.cloudform}>
-            <form onSubmit={handleSubmit}>
-              <textarea
-                disabled={loading}
-                onKeyDown={handleEnter}
-                ref={textAreaRef}
-                autoFocus={false}
-                rows={1}
-                maxLength={512}
-                type="text"
-                id="userInput"
-                name="userInput"
-                placeholder={
-                  loading ? "Waiting for response..." : "Type your question..."
-                }
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                className={styles.textarea}
-              />
-              <button
-                type="submit"
-                disabled={loading}
-                className={styles.generatebutton}
-              >
-                {loading ? (
-                  <div className={styles.typingLoader}></div>
-                ) : (
-                  // Send icon SVG in input field
-                  <AiOutlineSend fontSize="1.5rem" />
-                )}
-              </button>
-            </form>
-          </div>
+                  </div>
+                </Stack>
+              </div>
+            );
+          })}
         </div>
       </Box>
+      <div>
+        <div className={styles.cloudform}>
+          <form onSubmit={handleSubmit}>
+            <textarea
+              disabled={loading}
+              onKeyDown={handleEnter}
+              ref={textAreaRef}
+              autoFocus={false}
+              rows={1}
+              maxLength={512}
+              type="text"
+              id="userInput"
+              name="userInput"
+              placeholder={
+                loading ? "Waiting for response..." : "Type your question..."
+              }
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              className={styles.textarea}
+            />
+            <button
+              type="submit"
+              disabled={loading}
+              className={styles.generatebutton}
+            >
+              {loading ? (
+                <div className={styles.typingLoader}></div>
+              ) : (
+                // Send icon SVG in input field
+                <AiOutlineSend fontSize="1.5rem" />
+              )}
+            </button>
+          </form>
+        </div>
+      </div>
     </>
   );
 }

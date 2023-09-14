@@ -7,6 +7,7 @@ import {
   useMediaQuery,
   VStack,
   StackDivider,
+  Flex,
   Show,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -55,10 +56,7 @@ export const AfterUpload = () => {
   }, [id, user?.email]);
 
   const RenderPdf = () => {
-    //if (apiFailure) return <>Error...</>;
-    const viewMode = "FitV";
     const [page, setPage] = useState(1);
-    const canvasRef = useRef(null);
     const hostUrl = window.location.origin;
 
     return (
@@ -69,7 +67,7 @@ export const AfterUpload = () => {
             navpanes: 0,
             statusbar: 0,
             view: ViewMode,
-            pagemode: "none",
+            pagemode: "thumbs",
           }}
           height={"100%"}
           url={`${hostUrl}/pdfs/${id}.pdf`}
@@ -78,35 +76,14 @@ export const AfterUpload = () => {
     );
   };
 
-  //Get detailed summary of the doc
-
-  const DetailedSummary = () => {
-    return <>Get detailed summary of the doc</>;
-  };
-
-  // const DocsList = () => {
-  //   return collections.map((collectionEl, index) => (
-  //     <VStack divider={<StackDivider borderColor="gray.200" />} spacing={4}>
-  //       <Box h="full" p={2}>
-  //         <TagDoc key={index} collectionEl={collectionEl} size="lg" />
-  //       </Box>
-  //     </VStack>
-  //   ));
-  // };
-
-  // const memoizedObject = useMemo(() => {
-  //   return {
-  //     "Actual document":
-  //       youtubeUrl !== null ? <ReactPlayer url={youtubeUrl} /> : <RenderPdf />,
-  //     Summary: <DetailedSummary />,
-  //     "All Docs": <DocsList />,
-  //   };
-  // }, [asPath]);
-
   const ChatAndTabJsx = (
-    <SimpleGrid columns={{ sm: 1, md: 2 }} w="100%">
+    <Flex
+      columns={{ sm: 1, md: 2 }}
+      w="100%"
+      h={{ lg: "100%", sm: "calc(100% - 73px)" }}
+    >
       <Show above="md">
-        <Box borderWidth="1px" borderRadius="lg" h="100%">
+        <Box borderWidth="1px" borderRadius="lg" h="100%" flex={1}>
           {youtubeUrl !== null ? (
             <ReactPlayer url={youtubeUrl} />
           ) : (
@@ -114,10 +91,10 @@ export const AfterUpload = () => {
           )}
         </Box>
       </Show>
-      <Box>
+      <Box h="100%" flex={1}>
         <ChatWidget />
       </Box>
-    </SimpleGrid>
+    </Flex>
   );
   const NotVerfiedJsx = <div>Not Verified</div>;
 
