@@ -125,6 +125,6 @@ a:hover {
 
 @media screen and (max-width: 767px) {
   .main-container {
-    height: calc(100vh - 70px);
+    height: calc(100vh - 60px);
   }
 }

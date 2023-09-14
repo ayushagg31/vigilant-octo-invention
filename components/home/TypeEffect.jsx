@@ -7,7 +7,7 @@ const TypeEffect = ({ message }) => {
         // Same substring at the start will only be typed once, initially
         message,
       ]}
-      speed={50}
+      speed={10}
       cursor={false}
       onCom
     />
