@@ -164,7 +164,7 @@ function NavBar() {
                     <Flex>
                       <Avatar
                         size={"sm"}
-                        src={user.photoURL}
+                        src={user?.photoURL}
                         className={`${style.navbarIcons} ${
                           activePath === "/profile" ? style.activeNav : ""
                         }`}
@@ -178,7 +178,10 @@ function NavBar() {
                       className={`${style.navbarIcons} ${
                         activePath === "/settings" ? style.activeNav : ""
                       }`}
-                      onClick={logout}
+                      onClick={async () => {
+                        router.push("/");
+                        await logout(router);
+                      }}
                       title="Logout"
                     />
                   </Tooltip>

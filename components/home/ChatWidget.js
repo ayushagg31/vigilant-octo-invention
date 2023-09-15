@@ -12,8 +12,7 @@ import TypeEffect from "./TypeEffect";
 
 const initalMessage = [
   {
-    message:
-      "Hi, what would you like to learn about this document? what would you like to learn about this document?what would you like to learn about this document?what would you like to learn about this document to learn about this document? what would you like to learn about this document?what would you like to learn about this document?what would you like to learn about this document?",
+    message: "Hi, what would you like to learn about this document?",
     type: "apiMessage",
   },
 ];
@@ -133,8 +132,8 @@ export default function ChatWidget() {
                     />
                   ) : (
                     <Avatar
-                      name={user.displayName}
-                      src={user.photoURL}
+                      name={user?.displayName}
+                      src={user?.photoURL}
                       style={{ marginTop: "0.5rem" }}
                     />
                   )}

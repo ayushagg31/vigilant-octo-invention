@@ -16,7 +16,12 @@ import {
   Stack,
   color,
 } from "@chakra-ui/react";
-import { AiFillDingtalkCircle, AiOutlineClose as CloseIcon, AiOutlineMenu as HamburgerIcon, AiFillFileAdd as AddIcon } from "react-icons/ai";
+import {
+  AiFillDingtalkCircle,
+  AiOutlineClose as CloseIcon,
+  AiOutlineMenu as HamburgerIcon,
+  AiFillFileAdd as AddIcon,
+} from "react-icons/ai";
 import { useAuth } from "../../store/useAuth";
 import { LoginModal } from "../home/LoginModal";
 import { useRouter } from "next/router";
@@ -25,7 +30,6 @@ import { useEffect, useState, useMemo, useCallback } from "react";
 interface Props {
   children: React.ReactNode;
 }
-
 
 const NavLink = (props: Props) => {
   const { children } = props;
@@ -53,15 +57,18 @@ export default function Simple() {
     logout: store.logout,
   }));
 
-
   const jumpToReleventDiv = useCallback((id) => {
     const releventDiv = document.getElementById(id);
     // behavior: "smooth" parameter for smooth movement
-    releventDiv.scrollIntoView({ behavior: "smooth", block: 'center' });
-  }, [])
+    releventDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, []);
 
   const Links = useMemo(() => {
-    return [{ name: "How it works", fn: () => jumpToReleventDiv('how-it-works') }, { name: "Demo", fn: () => jumpToReleventDiv('how-it-works') }, { name: "Pricing", fn: () => jumpToReleventDiv('pricing-section') }]
+    return [
+      { name: "How it works", fn: () => jumpToReleventDiv("how-it-works") },
+      { name: "Demo", fn: () => jumpToReleventDiv("how-it-works") },
+      { name: "Pricing", fn: () => jumpToReleventDiv("pricing-section") },
+    ];
   }, [jumpToReleventDiv]);
   const router = useRouter();
 
@@ -78,35 +85,49 @@ export default function Simple() {
   const {
     isOpen: isOpenLoginModal,
     onOpen: onOpenLoginModal,
-    onClose: onCloseLoginModal
-  } = useDisclosure()
+    onClose: onCloseLoginModal,
+  } = useDisclosure();
 
   const termConditionText = `By creating an account you agree with our Terms of Service, Privacy Policy, and our default Notification Settings.`;
 
   if (!mounted) return <></>;
   return (
     <>
-      <Box bg={'black'} color={'#fff'} boxShadow={'lg'} px={4}>
+      <Box bg={"black"} color={"#fff"} boxShadow={"lg"} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
-            size={'md'}
+            size={"md"}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-            aria-label={'Open Menu'}
-            display={{ md: 'none' }}
+            aria-label={"Open Menu"}
+            display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
-            bg={'black'} color={'#fff'}
-            _active={{ color: '#fff', borderColor: '#fff' }}
-            _hover={{ color: '#fff', borderColor: '#fff' }}
+            bg={"black"}
+            color={"#fff"}
+            _active={{ color: "#fff", borderColor: "#fff" }}
+            _hover={{ color: "#fff", borderColor: "#fff" }}
           />
           <HStack spacing={8} alignItems={"center"}>
             <Box>
               <AiFillDingtalkCircle size="44px" title="Doc Xpert" />
             </Box>
-            <HStack spacing={8} alignItems={'center'}>
+            <HStack spacing={8} alignItems={"center"}>
               <Box>Doc Xpert</Box>
-              <HStack as={'nav'} spacing={4} display={{ base: 'none', md: 'flex' }}>
+              <HStack
+                as={"nav"}
+                spacing={4}
+                display={{ base: "none", md: "flex" }}
+              >
                 {Links.map((link) => (
-                  <Button color='#fff' onClick={link.fn} _hover={{ color: '#fff', borderColor: '#fff', borderWidth: '1px' }} variant='ghost'>
+                  <Button
+                    color="#fff"
+                    onClick={link.fn}
+                    _hover={{
+                      color: "#fff",
+                      borderColor: "#fff",
+                      borderWidth: "1px",
+                    }}
+                    variant="ghost"
+                  >
                     {link.name}
                   </Button>
                 ))}
@@ -126,9 +147,9 @@ export default function Simple() {
                     cursor={"pointer"}
                     minW={0}
                   >
-                    <Avatar size={"sm"} src={user.photoURL} />
+                    <Avatar size={"sm"} src={user?.photoURL} />
                   </MenuButton>
-                  <MenuList color={'black'}>
+                  <MenuList color={"black"}>
                     <MenuItem onClick={() => router.push("/dashboard")}>
                       Dashboard
                     </MenuItem>
@@ -153,19 +174,34 @@ export default function Simple() {
           </Flex>
         </Flex>
         {isOpen ? (
-          <Box pb={4} display={{ md: 'none' }}>
-            <Stack as={'nav'} spacing={4}>
+          <Box pb={4} display={{ md: "none" }}>
+            <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
-                <Button color='#fff' onClick={link.fn} _active={{ color: '#fff', bg: "black" }} _hover={{ color: '#fff', borderColor: '#fff', borderWidth: '1px' }} variant='ghost'>
+                <Button
+                  color="#fff"
+                  onClick={link.fn}
+                  _active={{ color: "#fff", bg: "black" }}
+                  _hover={{
+                    color: "#fff",
+                    borderColor: "#fff",
+                    borderWidth: "1px",
+                  }}
+                  variant="ghost"
+                >
                   {link.name}
                 </Button>
               ))}
             </Stack>
           </Box>
         ) : null}
-      </Box >
+      </Box>
 
-      <LoginModal isOpen={isOpenLoginModal} onOpen={onOpenLoginModal} onClose={onCloseLoginModal} fn={() => router.push('/dashboard')} />
+      <LoginModal
+        isOpen={isOpenLoginModal}
+        onOpen={onOpenLoginModal}
+        onClose={onCloseLoginModal}
+        fn={() => router.push("/dashboard")}
+      />
     </>
   );
 }
