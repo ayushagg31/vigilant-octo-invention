@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { AfterUpload } from "../../components/home/AfterUpload";
+import AfterUpload  from "../../components/home/AfterUpload";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 
 
