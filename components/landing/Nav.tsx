@@ -118,20 +118,20 @@ export default function Simple() {
                 spacing={4}
                 display={{ base: "none", md: "flex" }}
               >
-                {React.Children.toArray(Links.map((link) => (
-                  <Button
-                    color="#fff"
-                    onClick={link.fn}
-                    _hover={{
-                      color: "#fff",
-                      borderColor: "#fff",
-                      borderWidth: "1px",
-                    }}
-                    variant="ghost"
-                  >
-                    {link.name}
-                  </Button>
-                )))}
+                {React.Children.toArray(
+                  Links.map((link) => (
+                    <Button
+                      color="#fff"
+                      onClick={link.fn}
+                      _hover={{
+                        backgroundColor: "#777",
+                      }}
+                      variant="ghost"
+                    >
+                      {link.name}
+                    </Button>
+                  ))
+                )}
               </HStack>
             </HStack>
           </HStack>
