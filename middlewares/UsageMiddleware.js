@@ -37,8 +37,7 @@ const UsageMiddleware = function (handler) {
 
       if (!MAX_DOCUMENT_LIMIT[fileType]) {
         logger.info(
-          `Filetype not supported yet. fileType: ${fileType} Originalname: ${file.originalname}`,
-          userEmail
+          `Filetype not supported yet. fileType: ${fileType} Originalname: ${file.originalname} ${userEmail}`
         );
         return res.status(400).json({
           error: "Filetype not supported yet",

@@ -8,8 +8,9 @@ const logFormat = winston.format.combine(
   winston.format.timestamp({
     format: "DD-MM-YYYY hh:mm:ss.SSS A",
   }),
-  winston.format.printf(({ timestamp, level, message }) => {
-    return `[${timestamp}] ${level}: ${message}`;
+  winston.format.printf(({ timestamp, level, message, metadata }) => {
+    const metaString = metadata ? JSON.stringify(metadata) : "";
+    return `[${timestamp}] ${level}: ${message}${metaString}`;
   })
 );
 
@@ -46,6 +47,10 @@ const logger = winston.createLogger({
     }),
   ],
 });
+
+winston.add(
+  new winston.transports.Console({ format: winston.format.simple() })
+);
 
 if (process.env.NODE_ENV !== "production") {
   logger.add(new winston.transports.Console());

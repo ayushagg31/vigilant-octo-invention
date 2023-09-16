@@ -16,7 +16,7 @@ export const createVectorStore = async (docs, collectionId) => {
       client,
       collectionName: collectionId,
     });
-    logger.info("Qdrant Collection created successfully");
+    logger.info(`Qdrant Collection created successfully ${collectionId}`);
   } catch (error) {
     logger.error(`Error creating Qdrant Collection: ${collectionId}`, error);
     throw new Error("Failed to create Qdrant Collection");
@@ -43,7 +43,7 @@ export const fetchVectorStore = async (collectionId) => {
 export async function removeCollection(collectionId) {
   try {
     const response = await client.deleteCollection(collectionId);
-    logger.warn(`Collection removed: ${collectionId}`, response);
+    logger.warn(`Collection removed: ${collectionId} ${response}`);
   } catch (error) {
     logger.error(`Error removing Qdrant Collection: ${collectionId}`, error);
   }

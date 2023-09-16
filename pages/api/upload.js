@@ -16,7 +16,7 @@ const uploadHandler = async (req, res) => {
   const userEmail = req?.context?.user?.email;
 
   if (!userEmail) {
-    logger.debug("Missing required data", req?.context?.user);
+    logger.info(`Missing required data ${req?.context?.user}`);
     return res.status(400).json({ message: "Missing required data" });
   }
   try {
@@ -68,12 +68,10 @@ const uploadHandler = async (req, res) => {
             fileType,
             userEmail,
           });
-          logger.info(`File uploaded and ingested successfully`, {
-            collectionId,
-            collectionName,
-            fileType,
-            userEmail,
-          });
+
+          logger.info(
+            `File uploaded and ingested successfully  ${collectionId} ${pdfUrl} ${userEmail}`
+          );
 
           return res.status(200).json({
             message: "File uploaded and ingested successfully",
@@ -92,7 +90,7 @@ const uploadHandler = async (req, res) => {
   } catch (err) {
     logger.error(
       `Ingestion Failed - /api/upload - userEmail: ${userEmail}, collectionId: ${collectionId}`,
-      error
+      err
     );
     return res.status(500).json({ error: "Internal server error" });
   }

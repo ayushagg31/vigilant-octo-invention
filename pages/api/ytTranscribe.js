@@ -50,13 +50,11 @@ const ytHandler = async (req, res) => {
                 fileType,
                 userEmail,
               });
-              logger.info("Transcription and Ingestion complete", {
-                collectionId,
-                collectionName: videoTitle,
-                ytUrl,
-                fileType,
-                userEmail,
-              });
+
+              logger.info(
+                `Transcription and Ingestion complete - ${collectionId}, ${ytUrl}, ${userEmail}`
+              );
+
               return res.status(200).json({
                 message: "File transcribed and ingested successfully",
                 videoTitle,
@@ -75,7 +73,7 @@ const ytHandler = async (req, res) => {
               if (err) {
                 logger.error("Error deleting the file:", collectionId, err);
               } else {
-                logger.info("File deleted successfully", collectionId);
+                logger.info(`File deleted successfully ${collectionId}`);
               }
             });
             return res

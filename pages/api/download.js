@@ -60,13 +60,9 @@ const downloadHandler = async (req, res) => {
             fileType,
             userEmail,
           });
-          logger.info(`File downloaded and ingested successfully`, {
-            collectionId,
-            collectionName,
-            pdfUrl,
-            fileType,
-            userEmail,
-          });
+          logger.info(
+            `File downloaded and ingested successfully  ${collectionId} ${pdfUrl} ${userEmail}`
+          );
           return res.status(200).json({
             message: "File downloaded and ingested successfully",
             collectionName,

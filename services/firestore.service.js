@@ -8,6 +8,7 @@ import {
 import { app } from "../config/googleAuth.config";
 import { removeCollection } from "../config/qdrant.config";
 import logger from "./logging.service";
+import { deleteObject } from "./r2.service";
 
 const COLLECTION_LIMIT = 3;
 
@@ -69,6 +70,11 @@ export const addCollection = async ({
           deletedAt: Date.now(),
         };
         await removeCollection(oldestCollection.collectionId);
+        oldestCollection.fileType === "pdf" &&
+          (await deleteObject({
+            bucketName: "pdfs",
+            objectKey: oldestCollection.collectionId,
+          }));
       }
     }
     const newCollection = {
@@ -140,6 +146,13 @@ export const deleteCollection = async ({ collectionId, userEmail }) => {
         collections: updatedCollections,
       });
       await removeCollection(collectionId);
+
+      const isPDF =
+        updatedCollections.find((col) => col.collectionId === collectionId)
+          .fileType === "pdf";
+
+      isPDF &&
+        (await deleteObject({ bucketName: "pdfs", objectKey: collectionId }));
       return {
         collections: updatedCollections,
         activeCollections: updatedCollections.filter((col) => !col.deletedAt),

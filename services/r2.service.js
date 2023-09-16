@@ -1,6 +1,7 @@
 import {
   S3Client,
   GetObjectCommand,
+  DeleteObjectCommand,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
 import logger from "./logging.service";
@@ -44,5 +45,18 @@ export const fetchObject = async ({ bucketName, objectKey }) => {
   } catch (error) {
     logger.error(`Error fetching object - ${objectKey} from R2 bucket`, error);
     throw new Error(`Error fetching object - ${objectKey} from R2 bucket`);
+  }
+};
+
+export const deleteObject = async ({ bucketName, objectKey }) => {
+  const params = {
+    Bucket: bucketName,
+    Key: objectKey,
+  };
+  try {
+    await s3Client.send(new DeleteObjectCommand(params));
+    logger.warn(`Object deleted successfully: ${objectKey}`);
+  } catch (error) {
+    logger.error(`Error deleting object - ${objectKey} from R2 bucket`, error);
   }
 };

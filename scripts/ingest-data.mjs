@@ -58,7 +58,7 @@ export const ingestData = async ({
       if (err) {
         logger.error("Error deleting the file:", filePath, err);
       } else {
-        logger.info("File deleted successfully", filePath);
+        logger.warn(`Uploded file deleted successfully ${collectionId}`);
       }
     });
   } catch (err) {
