@@ -106,12 +106,12 @@ export default function Simple() {
             _active={{ color: "#fff", borderColor: "#fff" }}
             _hover={{ color: "#fff", borderColor: "#fff" }}
           />
+          <Flex alignItems={"center"} gap={2}>
+            <AiFillDingtalkCircle size="44px" title="Doc Xpert" />
+            <Box>Doc Xpert</Box>
+          </Flex>
           <HStack spacing={8} alignItems={"center"}>
-            <Box>
-              <AiFillDingtalkCircle size="44px" title="Doc Xpert" />
-            </Box>
             <HStack spacing={8} alignItems={"center"}>
-              <Box>Doc Xpert</Box>
               <HStack
                 as={"nav"}
                 spacing={4}

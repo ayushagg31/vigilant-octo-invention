@@ -23,11 +23,10 @@ import {
   AiFillDingtalkCircle,
   AiOutlineLoading3Quarters,
 } from "react-icons/ai";
-import { SiReadthedocs } from "react-icons/si";
+import { BsFiletypeDoc } from "react-icons/bs";
 import { BiUserCircle } from "react-icons/bi";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdContactSupport } from "react-icons/md";
-import { BsFillChatLeftQuoteFill, BsFillCloudUploadFill } from "react-icons/bs";
 import style from "../../styles/NavBar.module.css";
 import { LoginModal } from "../home/LoginModal";
 import { useAuth } from "../../store/useAuth";
@@ -84,10 +83,16 @@ function NavBar() {
           {/* Logo end */}
           {/* Chat with pdf start */}
           {activePath === "/docinsights" && (
-            <Tooltip label="Go to dashboard" placement="right" shouldWrapChildren>
-              <IoMdArrowRoundBack style={{ cursor: 'pointer' }}
-                className={` ${activePath === "/dashboard" ? style.activeNav : ""
-                  }`}
+            <Tooltip
+              label="Go to dashboard"
+              placement="right"
+              shouldWrapChildren
+            >
+              <IoMdArrowRoundBack
+                style={{ cursor: "pointer" }}
+                className={` ${
+                  activePath === "/dashboard" ? style.activeNav : ""
+                }`}
                 onClick={() => router.push("/dashboard")}
                 title="Upload your doc"
               />
@@ -100,7 +105,7 @@ function NavBar() {
               placement="right"
               shouldWrapChildren
             >
-              <SiReadthedocs
+              <BsFiletypeDoc
                 className={style.navbarIcons}
                 ref={btnDrawerRef}
                 onClick={onOpenDrawer}
@@ -108,8 +113,6 @@ function NavBar() {
               />
             </Tooltip>
           )}
-
-
 
           {/* Chat with pdf end */}
         </Flex>
@@ -154,8 +157,9 @@ function NavBar() {
                       <Avatar
                         size={"sm"}
                         src={user?.photoURL}
-                        className={`${style.navbarIcons} ${activePath === "/profile" ? style.activeNav : ""
-                          }`}
+                        className={`${style.navbarIcons} ${
+                          activePath === "/profile" ? style.activeNav : ""
+                        }`}
                         onClick={() => router.push("/profile")}
                       />
                     </Flex>
@@ -163,8 +167,9 @@ function NavBar() {
 
                   <Tooltip label="Logout" placement="right" shouldWrapChildren>
                     <AiOutlineLogout
-                      className={`${style.navbarIcons} ${activePath === "/settings" ? style.activeNav : ""
-                        }`}
+                      className={`${style.navbarIcons} ${
+                        activePath === "/settings" ? style.activeNav : ""
+                      }`}
                       onClick={async () => {
                         router.push("/");
                         await logout(router);
