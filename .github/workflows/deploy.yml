@@ -13,10 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Service Key
-        run: |
-          echo "${{ secrets.FIREBASE_SERVICE_KEY }}" | base64 --decode | jq > servicekey.json
-
       - name: Setup build cache
         uses: actions/cache@v3
         with:
