@@ -23,6 +23,10 @@ import {
   AiFillDingtalkCircle,
   AiOutlineLoading3Quarters,
 } from "react-icons/ai";
+import {
+  BsFiletypeDoc
+} from "react-icons/bs";
+
 import { SiReadthedocs } from "react-icons/si";
 import { BiUserCircle } from "react-icons/bi";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -100,7 +104,7 @@ function NavBar() {
               placement="right"
               shouldWrapChildren
             >
-              <SiReadthedocs
+              <BsFiletypeDoc
                 className={style.navbarIcons}
                 ref={btnDrawerRef}
                 onClick={onOpenDrawer}
