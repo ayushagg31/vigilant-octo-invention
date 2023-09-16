@@ -1,4 +1,5 @@
 "use client";
+import React from "react";
 import {
   Box,
   Flex,
@@ -117,7 +118,7 @@ export default function Simple() {
                 spacing={4}
                 display={{ base: "none", md: "flex" }}
               >
-                {Links.map((link) => (
+                {React.Children.toArray(Links.map((link) => (
                   <Button
                     color="#fff"
                     onClick={link.fn}
@@ -130,7 +131,7 @@ export default function Simple() {
                   >
                     {link.name}
                   </Button>
-                ))}
+                )))}
               </HStack>
             </HStack>
           </HStack>
