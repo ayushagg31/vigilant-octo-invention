@@ -40,25 +40,12 @@ const YourDocs = ({ closeDrawer }) => {
     };
   });
 
-  const { collections, fetchCollections, deleteCollection } = useCollections(
-    (store) => {
-      return {
-        collections: store.collections,
-        fetchCollections: store.fetchCollections,
-        deleteCollection: store.deleteCollection,
-      };
-    }
-  );
-
-  const { user } = useAuth((store) => ({
-    user: store.user,
-  }));
-
-  useEffect(() => {
-    try {
-      fetchCollections();
-    } catch (error) {}
-  }, [user?.email]);
+  const { collections, deleteCollection } = useCollections((store) => {
+    return {
+      collections: store.collections,
+      deleteCollection: store.deleteCollection,
+    };
+  });
 
   useEffect(() => {
     setMounted(true);
