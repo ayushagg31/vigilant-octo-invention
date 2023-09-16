@@ -112,28 +112,26 @@ export default function Simple() {
             <AiFillDingtalkCircle size="44px" title="Doc Xpert" />
             <Box>Doc Xpert</Box>
           </Flex>
-          <HStack spacing={8} alignItems={"center"}>
-            <HStack spacing={8} alignItems={"center"}>
-              <HStack
-                as={"nav"}
-                spacing={4}
-                display={{ base: "none", md: "flex" }}
-              >
-                {React.Children.toArray(
-                  Links.map((link) => (
-                    <Button
-                      color="#fff"
-                      onClick={link.fn}
-                      _hover={{
-                        backgroundColor: "#777",
-                      }}
-                      variant="ghost"
-                    >
-                      {link.name}
-                    </Button>
-                  ))
-                )}
-              </HStack>
+          <HStack
+            spacing={8}
+            alignItems={"center"}
+            display={{ base: "none", md: "flex" }}
+          >
+            <HStack as={"nav"} spacing={4}>
+              {React.Children.toArray(
+                Links.map((link) => (
+                  <Button
+                    color="#fff"
+                    onClick={link.fn}
+                    _hover={{
+                      backgroundColor: "#777",
+                    }}
+                    variant="ghost"
+                  >
+                    {link.name}
+                  </Button>
+                ))
+              )}
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
