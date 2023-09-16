@@ -41,7 +41,7 @@ export const FromUrl = () => {
     <>
       <FileUploadWrapper>
         <form onSubmit={saveAsPDF}>
-          <div className="field has-addons">
+          <div className="field has-addons" style={{ gap: "20px" }}>
             <div className="control is-expanded">
               <input
                 className={`input is-fullwidth ${error ? "is-danger" : ""}`}

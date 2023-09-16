@@ -14,7 +14,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { FaCheckCircle } from "react-icons/fa";
-import { pricingPlanConfig } from "../../config/pricing.plan"
+import { pricingPlanConfig } from "../../config/pricing.plan";
 
 interface Props {
   children: React.ReactNode;
@@ -36,7 +36,6 @@ function PriceWrapper(props: Props) {
     </Box>
   );
 }
-
 
 function PricePlan({ plan }) {
   const { planName, priceDetails, features } = plan;
@@ -64,14 +63,17 @@ function PricePlan({ plan }) {
         borderBottomRadius={"xl"}
       >
         <List spacing={3} textAlign="start" px={12}>
-          {
-            features.map((feature) => (
-              <ListItem>
-                <ListIcon as={FaCheckCircle} rounded={100} color="#fff" bg="black" />
-                {feature}
-              </ListItem>
-            ))
-          }
+          {features.map((feature) => (
+            <ListItem>
+              <ListIcon
+                as={FaCheckCircle}
+                rounded={100}
+                color="#fff"
+                bg="black"
+              />
+              {feature}
+            </ListItem>
+          ))}
         </List>
         <Box w="80%" pt={7}>
           <Button w="full" rounded={100} colorScheme="black" variant="outline">
@@ -80,7 +82,7 @@ function PricePlan({ plan }) {
         </Box>
       </VStack>
     </>
-  )
+  );
 }
 
 export default function ThreeTierPricing() {
@@ -96,7 +98,6 @@ export default function ThreeTierPricing() {
           </Text>
         </VStack>
 
-
         <Stack
           direction={{ base: "column", md: "row" }}
           textAlign="center"
@@ -104,13 +105,11 @@ export default function ThreeTierPricing() {
           spacing={{ base: 4, lg: 10 }}
           py={10}
         >
-          {
-            pricingPlanConfig.map((plan) => (
-              <PriceWrapper>
-                <PricePlan plan={plan} />
-              </PriceWrapper>
-            ))
-          }
+          {pricingPlanConfig.map((plan, i) => (
+            <PriceWrapper key={i}>
+              <PricePlan plan={plan} />
+            </PriceWrapper>
+          ))}
         </Stack>
       </Box>
     </div>
