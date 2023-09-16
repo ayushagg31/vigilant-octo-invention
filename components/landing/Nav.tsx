@@ -67,7 +67,7 @@ export default function Simple() {
   const Links = useMemo(() => {
     return [
       { name: "How it works", fn: () => jumpToReleventDiv("how-it-works") },
-      { name: "Demo", fn: () => jumpToReleventDiv("demo-section") },
+      { name: "Demo", fn: () => jumpToReleventDiv("how-it-works") },
       { name: "Pricing", fn: () => jumpToReleventDiv("pricing-section") },
     ];
   }, [jumpToReleventDiv]);
@@ -96,42 +96,43 @@ export default function Simple() {
     <>
       <Box bg={"black"} color={"#fff"} boxShadow={"lg"} px={4}>
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
-          <Box display={{ md: "none" }}>
-            <Menu>
-              <MenuButton rounded={"full"} cursor={"pointer"} minW={0}>
-                <HamburgerIcon />
-              </MenuButton>
-              <MenuList color={"black"}>
-                {Links.map((link) => {
-                  return <MenuItem onClick={link.fn}>{link.name}</MenuItem>;
-                })}
-              </MenuList>
-            </Menu>
-          </Box>
+          <IconButton
+            size={"md"}
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            aria-label={"Open Menu"}
+            display={{ md: "none" }}
+            onClick={isOpen ? onClose : onOpen}
+            bg={"black"}
+            color={"#fff"}
+            _active={{ color: "#fff", borderColor: "#fff" }}
+            _hover={{ color: "#fff", borderColor: "#fff" }}
+          />
           <Flex alignItems={"center"} gap={2}>
             <AiFillDingtalkCircle size="44px" title="Doc Xpert" />
             <Box>Doc Xpert</Box>
           </Flex>
-          <HStack
-            spacing={8}
-            alignItems={"center"}
-            display={{ base: "none", md: "flex" }}
-          >
-            <HStack as={"nav"} spacing={4}>
-              {React.Children.toArray(
-                Links.map((link) => (
-                  <Button
-                    color="#fff"
-                    onClick={link.fn}
-                    _hover={{
-                      backgroundColor: "#777",
-                    }}
-                    variant="ghost"
-                  >
-                    {link.name}
-                  </Button>
-                ))
-              )}
+          <HStack spacing={8} alignItems={"center"}>
+            <HStack spacing={8} alignItems={"center"}>
+              <HStack
+                as={"nav"}
+                spacing={4}
+                display={{ base: "none", md: "flex" }}
+              >
+                {React.Children.toArray(
+                  Links.map((link) => (
+                    <Button
+                      color="#fff"
+                      onClick={link.fn}
+                      _hover={{
+                        backgroundColor: "#777",
+                      }}
+                      variant="ghost"
+                    >
+                      {link.name}
+                    </Button>
+                  ))
+                )}
+              </HStack>
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
@@ -173,6 +174,27 @@ export default function Simple() {
             )}
           </Flex>
         </Flex>
+        {isOpen ? (
+          <Box pb={4} display={{ md: "none" }}>
+            <Stack as={"nav"} spacing={4}>
+              {Links.map((link) => (
+                <Button
+                  color="#fff"
+                  onClick={link.fn}
+                  _active={{ color: "#fff", bg: "black" }}
+                  _hover={{
+                    color: "#fff",
+                    borderColor: "#fff",
+                    borderWidth: "1px",
+                  }}
+                  variant="ghost"
+                >
+                  {link.name}
+                </Button>
+              ))}
+            </Stack>
+          </Box>
+        ) : null}
       </Box>
 
       <LoginModal
