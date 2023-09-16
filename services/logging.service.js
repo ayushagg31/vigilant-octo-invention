@@ -4,7 +4,7 @@ import path from "path";
 
 // Define the log format
 const logFormat = winston.format.combine(
-  winston.format.errors({ stack: true }),
+  winston.format.errors({ stack: true }), // Include error trace
   winston.format.timestamp({
     format: "DD-MM-YYYY hh:mm:ss.SSS A",
   }),
