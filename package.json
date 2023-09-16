@@ -7,8 +7,9 @@
     "node": ">=18"
   },
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
+    "setup": "node scripts/setup-service-key.mjs",
+    "dev": "npm run setup && next dev",
+    "build": "npm run setup && next build",
     "start": "next start",
     "lint": "next lint",
     "ingest": "node scripts/ingest-data.mjs",
