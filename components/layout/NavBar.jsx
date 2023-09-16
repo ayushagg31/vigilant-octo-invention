@@ -32,6 +32,7 @@ import { LoginModal } from "../home/LoginModal";
 import { useAuth } from "../../store/useAuth";
 import { useRouter } from "next/router";
 import YourDocs from "../home/YourDocs";
+import { useCollections } from "../../store/useCollections";
 
 function NavBar() {
   const router = useRouter();
@@ -39,22 +40,36 @@ function NavBar() {
 
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const { user, logout, loadingUser } = useAuth((store) => ({
     user: store.user,
     logout: store.logout,
     loadingUser: store.loadingUser,
   }));
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenDrawer,
     onOpen: onOpenDrawer,
     onClose: onCloseDrawer,
   } = useDisclosure();
+
+  const { fetchCollections } = useCollections((store) => {
+    return {
+      fetchCollections: store.fetchCollections,
+    };
+  });
+
   const btnDrawerRef = React.useRef();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    try {
+      fetchCollections();
+    } catch (error) {}
+  }, [user?.email]);
 
   if (!mounted) return <></>;
 
