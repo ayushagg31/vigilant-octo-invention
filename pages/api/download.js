@@ -6,6 +6,7 @@ import fs from "fs";
 import pdfjs from "pdfjs-dist";
 import UsageMiddleware from "../../middlewares/UsageMiddleware";
 import PlanMiddleware from "../../middlewares/PlanMiddleware";
+import { uploadObject } from "../../services/r2.service";
 import { plans } from "../../config/plan.config";
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
 import logger from "../../services/logging.service";
@@ -22,8 +23,8 @@ const downloadHandler = async (req, res) => {
 
     const fileType = "pdf";
     const collectionId = uuidv4();
-    const fileName = `${collectionId}.${fileType}`;
-    const fileOriginalname = pdfUrl.substring(pdfUrl.lastIndexOf("/") + 1);
+    const collectionName = pdfUrl.substring(pdfUrl.lastIndexOf("/") + 1);
+    const filePath = `uploads/${collectionId}.${fileType}`;
 
     const response = await axios.get(pdfUrl, { responseType: "arraybuffer" });
     const pdfContent = Buffer.from(response.data, "binary");
@@ -39,31 +40,37 @@ const downloadHandler = async (req, res) => {
       });
     }
 
-    fs.writeFile(`public/pdfs/${fileName}`, pdfContent, async (err) => {
+    await uploadObject({
+      bucketName: "pdfs",
+      objectKey: collectionId,
+      buffer: pdfContent,
+    });
+
+    fs.writeFile(filePath, pdfContent, async (err) => {
       if (err) {
         logger.error(`Failed to write file in disk - /api/download ${err}`);
         return res.status(500).json({ error: "Failed to write file in disk" });
       } else {
-        logger.info(`PDF saved as ${fileName}`);
         try {
           await ingestData({
             collectionId,
-            collectionName: fileOriginalname,
+            collectionName,
             pdfUrl,
-            fileName,
+            filePath,
             fileType,
             userEmail,
           });
           logger.info(`File downloaded and ingested successfully`, {
             collectionId,
-            collectionName: fileOriginalname,
+            collectionName,
             pdfUrl,
-            fileName,
             fileType,
             userEmail,
           });
           return res.status(200).json({
             message: "File downloaded and ingested successfully",
+            collectionName,
+            collectionId,
           });
         } catch (error) {
           logger.error(

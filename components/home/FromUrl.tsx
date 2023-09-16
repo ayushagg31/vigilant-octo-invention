@@ -21,12 +21,12 @@ export const FromUrl = () => {
         addLoader();
         const response = await downloadDocApi({ pdfUrl: url });
         const {
-          data: { collectionId },
+          data: { collectionId, collectionName },
         } = response;
         removeLoader();
         router.push({
           pathname: "dashboard/docinsights",
-          query: { id: collectionId },
+          query: { id: collectionId, name: collectionName },
         });
       } catch (error) {
         removeLoader();

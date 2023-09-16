@@ -173,7 +173,6 @@ export const chatApi = async ({ question, history, collectionId }) => {
     );
     return response;
   } catch (e) {
-    // console.log(e.response.data.error);
     throw new Error(e.response.data.error);
   }
 };

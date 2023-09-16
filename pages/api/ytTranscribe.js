@@ -24,8 +24,7 @@ const ytHandler = async (req, res) => {
     const fileType = "mp3";
     const collectionId = uuidv4();
 
-    const fileName = `${collectionId}.${fileType}`;
-    const filePath = `public/audios/${fileName}`;
+    const filePath = `uploads/${collectionId}.${fileType}`;
 
     const videoInfo = await ytdl.getInfo(ytUrl);
     const videoTitle = videoInfo?.videoDetails?.title;
@@ -47,7 +46,7 @@ const ytHandler = async (req, res) => {
                 collectionId,
                 collectionName: videoTitle,
                 ytUrl,
-                fileName,
+                filePath,
                 fileType,
                 userEmail,
               });
@@ -55,7 +54,6 @@ const ytHandler = async (req, res) => {
                 collectionId,
                 collectionName: videoTitle,
                 ytUrl,
-                fileName,
                 fileType,
                 userEmail,
               });

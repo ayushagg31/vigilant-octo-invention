@@ -5,6 +5,7 @@ import fs from "fs";
 import UsageMiddleware from "../../middlewares/UsageMiddleware";
 import UploadMiddleware from "../../middlewares/UploadMiddleware";
 import PlanMiddleware from "../../middlewares/PlanMiddleware";
+import { uploadObject } from "../../services/r2.service";
 import { plans } from "../../config/plan.config";
 import pdfjs from "pdfjs-dist";
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
@@ -22,9 +23,10 @@ const uploadHandler = async (req, res) => {
     const currentPlan = plans[req.headers["X-Plan-Type"]];
     const { MAX_PDF_PAGE_COUNT, MAX_PDF_SIZE_MB } = currentPlan;
 
-    const fileType = file.originalname.split(".").pop();
+    const fileType = file?.originalname?.split(".").pop();
     const collectionId = uuidv4();
-    const fileName = `${collectionId}.${fileType}`;
+    const collectionName = file?.originalname;
+    const filePath = `uploads/${collectionId}.${fileType}`;
 
     if (fileType === "pdf") {
       const pdfData = new Uint8Array(file.buffer);
@@ -47,7 +49,13 @@ const uploadHandler = async (req, res) => {
       });
     }
 
-    fs.writeFile(`public/pdfs/${fileName}`, file.buffer, async (err) => {
+    await uploadObject({
+      bucketName: "pdfs",
+      objectKey: collectionId,
+      buffer: file.buffer,
+    });
+
+    fs.writeFile(filePath, file.buffer, async (err) => {
       if (err) {
         logger.error(`Failed to write file in disk  - /api/upload ${err}`);
         return res.status(500).json({ error: "Failed to write file in disk" });
@@ -55,21 +63,22 @@ const uploadHandler = async (req, res) => {
         try {
           await ingestData({
             collectionId,
-            collectionName: file.originalname,
-            fileName,
+            collectionName,
+            filePath,
             fileType,
             userEmail,
           });
           logger.info(`File uploaded and ingested successfully`, {
             collectionId,
-            collectionName: file.originalname,
-            fileName,
+            collectionName,
             fileType,
             userEmail,
           });
+
           return res.status(200).json({
             message: "File uploaded and ingested successfully",
             collectionId,
+            collectionName,
           });
         } catch (error) {
           logger.error(
@@ -85,7 +94,7 @@ const uploadHandler = async (req, res) => {
       `Ingestion Failed - /api/upload - userEmail: ${userEmail}, collectionId: ${collectionId}`,
       error
     );
-    return res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
 

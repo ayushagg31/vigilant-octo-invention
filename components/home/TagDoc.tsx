@@ -24,11 +24,11 @@ const TagDoc = ({ collectionEl, size, closeDrawer }) => {
     setMounted(true);
   }, []);
 
-  const creatLink = ({ collectionId, fileType, ytUrl }) => {
+  const creatLink = ({ collectionId, fileType, ytUrl, collectionName }) => {
     if (fileType == "mp3") {
       return `/docinsights?id=${collectionId}&yt=${btoa(ytUrl)}`;
     }
-    return `/docinsights?id=${collectionId}`;
+    return `/docinsights?id=${collectionId}&name=${(collectionName)}`;
   };
 
   if (!mounted) return <></>;

@@ -39,12 +39,12 @@ export const FileUploadSection = () => {
       addLoader();
       const response = await uploadDocumentApi({ formData });
       const {
-        data: { collectionId },
+        data: { collectionId, collectionName },
       } = response;
       removeLoader();
       router.push({
         pathname: "dashboard/docinsights",
-        query: { id: collectionId },
+        query: { id: collectionId, name: collectionName },
       });
     } catch (err) {
       removeLoader();

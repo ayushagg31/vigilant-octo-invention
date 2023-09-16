@@ -5,9 +5,6 @@
 /.pnp
 .pnp.js
 
-public/pdfs
-public/audios
-
 # testing
 /coverage
 
@@ -41,3 +38,7 @@ docs/*
 servicekey*
 
 /logs
+
+/uploads/*
+
+!/uploads/.gitkeep

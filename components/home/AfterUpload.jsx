@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { PDFObject, ViewMode } from "react-pdfobject";
 import { Box, Flex, Show, Spinner, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import ChatWidget from "./ChatWidget";
@@ -13,9 +12,8 @@ const AfterUpload = () => {
   const { addError } = useAPIError();
   const router = useRouter();
   const {
-    query: { id, yt },
+    query: { id, name, yt },
   } = router;
-
 
   let youtubeUrl =
     yt !== undefined && !Array.isArray(yt) ? window.atob(yt) : null;
@@ -40,29 +38,16 @@ const AfterUpload = () => {
         collectionId: id,
       });
     } else {
+
       router.replace("dashboard");
     }
-
   }, [id]);
 
-
-
   const RenderPdf = () => {
-    const hostUrl = window.location.origin;
-
     return (
       <>
-        <PDFObject
-          forcePDFJS
-          pdfOpenParams={{
-            navpanes: 0,
-            statusbar: 0,
-            view: ViewMode,
-            pagemode: "thumbs",
-          }}
-          height={"100%"}
-          url={`${hostUrl}/pdfs/${id}.pdf`}
-        />
+        <Text fontSize="xl">{`${name}`}</Text>
+        <iframe src={`/api/view/${id}`} width="100%" height="100%"></iframe>
       </>
     );
   };
@@ -104,6 +89,5 @@ const AfterUpload = () => {
 
   return <>{isVerified ? ChatAndTabJsx : NotVerfiedJsx}</>;
 };
-
 
 export default AfterUpload;
