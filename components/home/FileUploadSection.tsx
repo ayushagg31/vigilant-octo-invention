@@ -70,42 +70,47 @@ export const FileUploadSection = () => {
         </div>
       )}
       {!file ? (
-        <DragAndDrop onFileSelect={handleFileChange} />
+        <Box boxShadow={'md'}>
+          <DragAndDrop onFileSelect={handleFileChange} />
+        </Box>
+
       ) : (
-        <FileUploadWrapper>
-          <VStack spacing={4} align="stretch">
-            <Box>
-              <Flex>
-                <div className="mr-5">
-                  <Text as="b" fontSize="sm">
-                    {file?.name}
-                  </Text>
-                </div>
-                <div onClick={removeFile}>
-                  <i className="fa fa-trash"></i>
-                </div>
-              </Flex>
-            </Box>
-            <Box>
-              <Button
-                border="2px"
-                borderColor="black"
-                variant="outline"
-                onClick={handleSubmit}
-                isLoading={loader}
-                loadingText="processing your file.."
-                disabled={!file}
-              >
-                Upload
-              </Button>
-            </Box>
-            <Box>
-              {loader && (
-                <Progress size="xs" colorScheme="gray" isIndeterminate />
-              )}
-            </Box>
-          </VStack>
-        </FileUploadWrapper>
+        <Box boxShadow={'md'}>
+          <FileUploadWrapper>
+            <VStack spacing={4} align="stretch">
+              <Box>
+                <Flex>
+                  <div className="mr-5">
+                    <Text as="b" fontSize="sm">
+                      {file?.name}
+                    </Text>
+                  </div>
+                  <div onClick={removeFile}>
+                    <i className="fa fa-trash"></i>
+                  </div>
+                </Flex>
+              </Box>
+              <Box>
+                <Button
+                  border="2px"
+                  borderColor="black"
+                  variant="outline"
+                  onClick={handleSubmit}
+                  isLoading={loader}
+                  loadingText="processing your file.."
+                  disabled={!file}
+                >
+                  Upload
+                </Button>
+              </Box>
+              <Box>
+                {loader && (
+                  <Progress size="xs" colorScheme="gray" isIndeterminate />
+                )}
+              </Box>
+            </VStack>
+          </FileUploadWrapper>
+        </Box>
       )}
       <div className="buttons is-right"></div>
     </>
