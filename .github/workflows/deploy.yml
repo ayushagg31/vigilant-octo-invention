@@ -13,11 +13,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18
-
       - name: SSH into server and run commands
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -25,7 +20,12 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            source ~/.nvm/nvm.sh
+            nvm use 18
+            cd /var/www/vigilant-octo-invention
+            npm install
             npm run build
+            pm2 restart docXpert
 
       - name: Notify Deployment Success
         if: success() 
