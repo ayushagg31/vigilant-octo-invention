@@ -60,3 +60,7 @@ export const plans = {
     MAX_VIDEO_SIZE_MB: 25,
   },
 };
+
+export const FREE_TIER = "free_tier";
+export const PLUS_TIER = "plus_tier";
+export const ZERO_TIER = "zero_tier";

@@ -9,6 +9,7 @@ import { app } from "../config/googleAuth.config";
 import { removeCollection } from "../config/qdrant.config";
 import logger from "./logging.service";
 import { deleteObject } from "./r2.service";
+import { FREE_TIER } from "../config/plan.config";
 
 const COLLECTION_LIMIT = 3;
 
@@ -24,7 +25,7 @@ export const createUser = async (user) => {
         uid: user.uid,
         displayName: user.name,
         email: user.email,
-        currentPlan: "free_tier",
+        currentPlan: FREE_TIER,
         collections: [],
         queryInfo: {
           count: 0,
@@ -207,16 +208,27 @@ export const fetchCollections = async (userEmail) => {
     const userDoc = await getDoc(userRef);
     let collections = [];
     if (userDoc.exists()) {
-      collections = (await userDoc.data()["collections"]) || [];
+      const data = await userDoc.data();
+      collections = data["collections"] || [];
+      return {
+        collections,
+        activeCollections: collections.filter((col) => !col.deletedAt),
+        currentPlan: data.currentPlan || FREE_TIER,
+        queryInfo: data.queryInfo,
+      };
     }
-    return {
-      collections,
-      activeCollections: collections.filter((col) => !col.deletedAt),
-    };
+    throw new Error("No collection found for the user");
   } catch (e) {
     logger.error("Failed to fetch collections ", userEmail, e);
     throw new Error("Failed to fetch collections");
   }
+};
+
+export const fetchDashboardStatistics = async (userEmail) => {
+  try {
+    const userRef = doc(db, `users/${userEmail}`);
+    const userDoc = await get;
+  } catch (error) {}
 };
 
 export const updateUser = async ({ userEmail, ...rest }) => {
@@ -252,7 +264,7 @@ export const fetchPlanInfo = async ({ userEmail }) => {
     const userDoc = await getDoc(userRef);
     let planInfo;
     if (userDoc.exists()) {
-      planInfo = (await userDoc.data()["currentPlan"]) || "free_tier";
+      planInfo = (await userDoc.data()["currentPlan"]) || FREE_TIER;
     }
     return planInfo;
   } catch (e) {

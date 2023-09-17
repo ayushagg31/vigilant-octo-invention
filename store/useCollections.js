@@ -4,14 +4,25 @@ import {
   deleteCollectionApi,
   fetchCollectionsApi,
 } from "../services/client.service";
+import { FREE_TIER } from "../config/plan.config";
 
 export const useCollections = create(
   persist(
     (set, get) => ({
+      isLoading: true,
       collections: [],
+      currentPlan: FREE_TIER,
+      queryInfo: {
+        query: 0,
+      },
       fetchCollections: async () => {
         const { data } = await fetchCollectionsApi();
-        set({ collections: data?.collections || [] });
+        set({
+          collections: data?.collections || [],
+          currentPlan: data?.currentPlan,
+          queryInfo: data?.queryInfo || {},
+          isLoading: false,
+        });
       },
       deleteCollection: async (collectionId) => {
         try {

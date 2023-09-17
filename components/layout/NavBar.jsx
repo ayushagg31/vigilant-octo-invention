@@ -16,6 +16,8 @@ import {
   DrawerBody,
   DrawerFooter,
   Avatar,
+  Tag,
+  Box,
 } from "@chakra-ui/react";
 import {
   AiOutlineSetting,
@@ -24,6 +26,7 @@ import {
   AiOutlineLoading3Quarters,
 } from "react-icons/ai";
 import { BsFiletypeDoc } from "react-icons/bs";
+import { FcApproval } from "react-icons/fc";
 import { BiUserCircle } from "react-icons/bi";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdContactSupport } from "react-icons/md";
@@ -33,6 +36,7 @@ import { useAuth } from "../../store/useAuth";
 import { useRouter } from "next/router";
 import YourDocs from "../home/YourDocs";
 import { useCollections } from "../../store/useCollections";
+import { FREE_TIER, PLUS_TIER } from "../../config/plan.config";
 
 function NavBar() {
   const router = useRouter();
@@ -53,11 +57,28 @@ function NavBar() {
     onClose: onCloseDrawer,
   } = useDisclosure();
 
-  const { fetchCollections } = useCollections((store) => {
+  const { fetchCollections, currentPlan } = useCollections((store) => {
     return {
       fetchCollections: store.fetchCollections,
+      currentPlan: store.currentPlan,
     };
   });
+
+  const renderPlan = () => {
+    let plan;
+    switch (currentPlan) {
+      case FREE_TIER:
+        plan = <FcApproval />;
+        break;
+
+      case PLUS_TIER:
+        plan = FcApproval;
+        break;
+      default:
+        plan = "Free tier";
+    }
+    return <div>{plan}</div>;
+  };
 
   const btnDrawerRef = React.useRef();
 
@@ -150,13 +171,20 @@ function NavBar() {
             </Link>
           </Tooltip>
 
-          <Tooltip label="Settings & Plan" placement="right" shouldWrapChildren>
-            <AiOutlineSetting
-              className={`${style.navbarIcons} activePath === "/settings" ? style.activeNav : ""`}
-              onClick={() => router.push("/settings")}
-              title="Settings & Plan"
-            />
-          </Tooltip>
+          <Box position={"relative"}>
+            {renderPlan()}
+            <Tooltip
+              label="Settings & Plan"
+              placement="right"
+              shouldWrapChildren
+            >
+              <AiOutlineSetting
+                className={`${style.navbarIcons} activePath === "/settings" ? style.activeNav : ""`}
+                onClick={() => router.push("/settings")}
+                title="Settings & Plan"
+              />
+            </Tooltip>
+          </Box>
           {loadingUser ? (
             <AiOutlineLoading3Quarters className={style.loading} />
           ) : (
