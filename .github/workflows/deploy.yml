@@ -25,11 +25,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd /var/www/vigilant-octo-invention
-            git pull
-            npm install
             npm run build
-            pm2 restart docXpert
 
       - name: Notify Deployment Success
         if: success() 
