@@ -42,3 +42,6 @@ servicekey*
 /uploads/*
 
 !/uploads/.gitkeep
+
+
+deploy.secrets
