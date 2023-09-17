@@ -20,6 +20,7 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            nvm use 18
             cd /var/www/vigilant-octo-invention
             git pull
             npm install
