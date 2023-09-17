@@ -1,4 +1,4 @@
-name: build and deploy to server
+name: Build and Deploy to Server
 
 on:
   push:
@@ -13,11 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup SSH key
-        uses: webfactory/ssh-agent@v0.5
-        with:
-          ssh-private-key: ${{ secrets.SERVER_SSH_KEY }}
-
       - name: SSH into server and run commands
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SERVER_SSH_KEY }} ${{ secrets.SERVER_USERNAME }}@${{ secrets.SERVER_IP }} "cd /var/www/vigilant-octo-invention && git pull && npm install && npm run build && pm2 restart docXpert"
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /var/www/vigilant-octo-invention
+            git pull
+            npm install
+            npm run build
+            pm2 restart docXpert
