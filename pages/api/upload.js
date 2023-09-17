@@ -70,7 +70,7 @@ const uploadHandler = async (req, res) => {
           });
 
           logger.info(
-            `File uploaded and ingested successfully  ${collectionId} ${pdfUrl} ${userEmail}`
+            `File uploaded and ingested successfully  ${collectionId} ${userEmail}`
           );
 
           return res.status(200).json({
