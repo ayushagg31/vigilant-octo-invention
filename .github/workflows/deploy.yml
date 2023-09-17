@@ -19,7 +19,7 @@ jobs:
           node-version: 18
 
       - name: SSH into server and run commands
-        uses: appleboy/ssh-action@v1
+        uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
@@ -27,14 +27,14 @@ jobs:
           script: |
             cd /var/www/vigilant-octo-invention
             git pull
-            npm ci --production
+            npm install
             npm run build
             pm2 restart docXpert
 
-      - name: Notify Deployment Status
-        if: success()
+      - name: Notify Deployment Success
+        if: success() 
         run: echo "Deployment to server was successful!"
 
       - name: Notify Deployment Failure
-        if: failure()
+        if: failure() 
         run: echo "Deployment to server failed. Check the workflow logs for details."
