@@ -1,24 +1,27 @@
 "use client";
-import React, { useState } from "react";
-import YourDocs from "../../components/home/YourDocs";
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import React from "react";
+import { Box, Flex, Tooltip, Link } from "@chakra-ui/react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { BeforeUpload } from "../../components/home/BeforeUpload";
-import { Testimonials } from "../../components/home/Testimonials";
+import { MdContactSupport } from "react-icons/md";
+import style from "../../styles/NavBar.module.css";
 
 const FileUploader = () => {
   return (
-    <Box w="100%">
-      <SimpleGrid columns={{ lg: 2, md: 1 }} h="100%">
-        <BeforeUpload />
-        <Box overflow="auto">
-          <Testimonials />
-          <Testimonials />
-          <Testimonials />
-          <Testimonials />
+    <>
+      <Box w="100%">
+        <Flex w="100%" h="100%" justifyContent="center" pt="36">
+          <BeforeUpload />
+        </Flex>
+      </Box>
+      <Link href="mailto:support@docxpert.com" className={style.hoverLink}>
+        <Box position="fixed" bottom="20px" right={"16px"} zIndex={1}>
+          <Tooltip label="Support" placement="right" shouldWrapChildren>
+            <MdContactSupport fontSize={32} />
+          </Tooltip>
         </Box>
-      </SimpleGrid>
-    </Box>
+      </Link>
+    </>
   );
 };
 

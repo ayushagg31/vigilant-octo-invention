@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from "react";
 // import dynamic from "next/dynamic";
 import {
-  Link,
   Flex,
   Button,
   Spacer,
@@ -16,20 +15,20 @@ import {
   DrawerBody,
   DrawerFooter,
   Avatar,
-  Tag,
-  Box,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from "@chakra-ui/react";
 import {
-  AiOutlineSetting,
-  AiOutlineLogout,
   AiFillDingtalkCircle,
   AiOutlineLoading3Quarters,
 } from "react-icons/ai";
-import { BsFiletypeDoc } from "react-icons/bs";
+import { BsFiletypeDoc, BsExclamationCircleFill } from "react-icons/bs";
 import { FcApproval } from "react-icons/fc";
 import { BiUserCircle } from "react-icons/bi";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { MdContactSupport } from "react-icons/md";
 import style from "../../styles/NavBar.module.css";
 import { LoginModal } from "../home/LoginModal";
 import { useAuth } from "../../store/useAuth";
@@ -65,19 +64,25 @@ function NavBar() {
   });
 
   const renderPlan = () => {
-    let plan;
-    switch (currentPlan) {
-      case FREE_TIER:
-        plan = <FcApproval />;
-        break;
+    let plan = (
+      <BsExclamationCircleFill
+        className={style.navbarIcons}
+        color={"#f9c7a4"}
+      />
+    );
+    let planText = "You are on free plan. Click here to upgrade";
 
+    switch (currentPlan) {
       case PLUS_TIER:
-        plan = FcApproval;
+        plan = <FcApproval className={style.navbarIcons} />;
+        planText = "You are on plus plan";
         break;
-      default:
-        plan = "Free tier";
     }
-    return <div>{plan}</div>;
+    return (
+      <Tooltip label={planText} placement="right" shouldWrapChildren>
+        {plan}
+      </Tooltip>
+    );
   };
 
   const btnDrawerRef = React.useRef();
@@ -96,12 +101,7 @@ function NavBar() {
 
   return (
     <>
-      <Flex
-        direction={{ base: "row", md: "column" }}
-        fontSize="3xl"
-        bg="black"
-        color="white"
-      >
+      <Flex direction={{ base: "row", md: "column" }} bg="black" color="white">
         <Flex
           direction={{ base: "row", md: "column" }}
           gap="25px"
@@ -126,7 +126,7 @@ function NavBar() {
             >
               <IoMdArrowRoundBack
                 style={{ cursor: "pointer" }}
-                className={` ${
+                className={`${style.navbarIcons} ${
                   activePath === "/dashboard" ? style.activeNav : ""
                 }`}
                 onClick={() => router.push("/dashboard")}
@@ -162,64 +162,41 @@ function NavBar() {
           align="center"
           p="4"
         >
-          <Tooltip label="Support" placement="right" shouldWrapChildren>
-            <Link
-              href="mailto:support@docxpert.com"
-              className={style.hoverLink}
-            >
-              <MdContactSupport className={style.navbarIcons} title="Support" />
-            </Link>
-          </Tooltip>
-
-          <Box position={"relative"}>
-            {renderPlan()}
-            <Tooltip
-              label="Settings & Plan"
-              placement="right"
-              shouldWrapChildren
-            >
-              <AiOutlineSetting
-                className={`${style.navbarIcons} activePath === "/settings" ? style.activeNav : ""`}
-                onClick={() => router.push("/settings")}
-                title="Settings & Plan"
-              />
-            </Tooltip>
-          </Box>
           {loadingUser ? (
             <AiOutlineLoading3Quarters className={style.loading} />
           ) : (
             <>
               {user ? (
                 <>
-                  <Tooltip
-                    label={user?.displayName}
-                    placement="right"
-                    shouldWrapChildren
-                  >
-                    <Flex>
-                      <Avatar
-                        size={"sm"}
-                        src={user?.photoURL}
-                        className={`${style.navbarIcons} ${
-                          activePath === "/profile" ? style.activeNav : ""
-                        }`}
-                        onClick={() => router.push("/profile")}
-                      />
-                    </Flex>
-                  </Tooltip>
-
-                  <Tooltip label="Logout" placement="right" shouldWrapChildren>
-                    <AiOutlineLogout
-                      className={`${style.navbarIcons} ${
-                        activePath === "/settings" ? style.activeNav : ""
-                      }`}
-                      onClick={async () => {
-                        router.push("/");
-                        await logout(router);
-                      }}
-                      title="Logout"
-                    />
-                  </Tooltip>
+                  {renderPlan()}
+                  <Menu placement="right-end">
+                    <MenuButton
+                      as={Button}
+                      rounded={"full"}
+                      variant={"link"}
+                      cursor={"pointer"}
+                      minW={0}
+                    >
+                      <Avatar size={"sm"} src={user?.photoURL} />
+                    </MenuButton>
+                    <MenuList color={"black"}>
+                      <MenuItem onClick={() => router.push("/profile")}>
+                        Profile
+                      </MenuItem>
+                      <MenuItem onClick={() => router.push("/settings")}>
+                        Settings & Plan
+                      </MenuItem>
+                      <MenuDivider />
+                      <MenuItem
+                        onClick={async () => {
+                          router.push("/");
+                          await logout(router);
+                        }}
+                      >
+                        Logout
+                      </MenuItem>
+                    </MenuList>
+                  </Menu>
                 </>
               ) : (
                 <>

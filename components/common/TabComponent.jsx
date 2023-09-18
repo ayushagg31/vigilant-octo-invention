@@ -17,7 +17,13 @@ export const TabComponent = ({ tabConfig }) => {
 
   return (
     <>
-      <Tabs position="relative" isFitted variant="unstyled" p={4}>
+      <Tabs
+        position="relative"
+        isFitted
+        variant="unstyled"
+        p={4}
+        w={{ base: "100%", md: "80%" }}
+      >
         <TabList>
           {tabKeys.map((el, index) => (
             <Tab

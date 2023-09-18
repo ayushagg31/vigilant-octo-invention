@@ -9,6 +9,7 @@
 .navbarIcons {
   cursor: pointer;
   transition: all 0.2s ease-in;
+  font-size: 32px;
 }
 .navbarIcons:hover {
   rotate: -20deg;
