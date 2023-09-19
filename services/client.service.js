@@ -176,3 +176,12 @@ export const chatApi = async ({ question, history, collectionId }) => {
     throw new Error(e.response.data.error);
   }
 };
+
+export const planListApi = async () => {
+  try {
+    const response = await axios.get("/api/planList");
+    return response;
+  } catch (e) {
+    throw new Error("Error in getting plan", e.message);
+  }
+};

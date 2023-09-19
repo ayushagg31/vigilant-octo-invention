@@ -19,7 +19,6 @@ async function handler(req, res) {
       .status(200)
       .json({ collections: activeCollections, currentPlan, queryInfo });
   } catch (error) {
-    logger.error(`/api/fetchCollections - userEmail:${userEmail}`, err);
     res.status(500).json({ error: error.message || "Something went wrong" });
   }
 }

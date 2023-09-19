@@ -15,6 +15,8 @@ import {
 } from "@chakra-ui/react";
 import { FaCheckCircle } from "react-icons/fa";
 import { pricingPlanConfig } from "../../config/pricing.plan";
+import { planListApi } from "../../services/client.service";
+import { useEffect } from "react";
 
 interface Props {
   children: React.ReactNode;
@@ -39,6 +41,11 @@ function PriceWrapper(props: Props) {
 
 function PricePlan({ plan }) {
   const { planName, priceDetails, features } = plan;
+
+  useEffect(() => {
+    let response = planListApi();
+    console.log(response);
+  }, [])
   return (
     <>
       <Box py={4} px={12}>

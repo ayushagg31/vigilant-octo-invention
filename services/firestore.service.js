@@ -9,7 +9,7 @@ import { app } from "../config/googleAuth.config";
 import { removeCollection } from "../config/qdrant.config";
 import logger from "./logging.service";
 import { deleteObject } from "./r2.service";
-import { FREE_TIER } from "../config/plan.config";
+import { plans } from "../config/plan.config";
 
 const COLLECTION_LIMIT = 3;
 
@@ -228,7 +228,7 @@ export const fetchDashboardStatistics = async (userEmail) => {
   try {
     const userRef = doc(db, `users/${userEmail}`);
     const userDoc = await get;
-  } catch (error) {}
+  } catch (error) { }
 };
 
 export const updateUser = async ({ userEmail, ...rest }) => {
@@ -272,3 +272,27 @@ export const fetchPlanInfo = async ({ userEmail }) => {
     throw new Error("Failed to fetch planInfo");
   }
 };
+
+const pick = (valuesToPick, obj) => {
+  let currentObj = {};
+  valuesToPick.forEach((key) => {
+    currentObj[key] = obj[key]
+  })
+  return currentObj;
+}
+
+
+export const fetchPlanList = async () => {
+  const planToDisplay = pick(['free_tier', 'plus_tier'], plans);
+
+  let displayToFe = [];
+  for (let plan in planToDisplay) {
+    let currentPlan = planToDisplay[plan];
+    let pricing = currentPlan.pricing;
+    let planOfLocation = pricing['in'];
+    let valuesToPick = ['planName', 'primaryText', 'amount', 'duration', 'currency', 'features'];
+    let currentObj = pick(valuesToPick, planOfLocation);
+    displayToFe.push(currentObj);
+  }
+  return displayToFe;
+}
