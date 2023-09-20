@@ -20,6 +20,7 @@ import { createCheckoutSessionApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
 import { LoginModal } from "../home/LoginModal";
 import { useEffect, useRef, useState, useCallback } from "react";
+import { useAPIError } from "../../hooks/useApiHook";
 
 interface Props {
   children: React.ReactNode;
@@ -33,6 +34,7 @@ export default function ThreeTierPricing() {
   const [currentPlanId, setCurrentPlanId] = useState(null);
   const [loader, setLoader] = useState(false);
   const initialRun = useRef(false);
+  const { addError } = useAPIError();
   const {
     isOpen: isOpenLoginModal,
     onOpen: onOpenLoginModal,
@@ -65,7 +67,7 @@ export default function ThreeTierPricing() {
   const processPayment = async () => {
     try {
       const { data } = await createCheckoutSessionApi({
-        planId: currentPlanId,
+        planId: currentPlanId
       });
       console.log(data.url);
       window.location.href = data.url;
@@ -85,15 +87,23 @@ export default function ThreeTierPricing() {
       initialRun.current = true;
       return;
     } else {
-      setLoader(true);
-      const handlePayment = async () => {
-        if (user) {
-          await processPayment();
-        } else {
-          onOpenLoginModal();
+      try {
+        setLoader(true);
+        const handlePayment = async () => {
+          if (user) {
+            await processPayment();
+          } else {
+            onOpenLoginModal();
+          }
         }
+        handlePayment();
       }
-      handlePayment();
+      catch (e) {
+        setLoader(false);
+        addError("Error in processing subscription ");
+
+      }
+
     }
 
   }, [currentPlanId])
@@ -125,8 +135,8 @@ export default function ThreeTierPricing() {
           borderBottomRadius={"xl"}
         >
           <List spacing={3} textAlign="start" px={12}>
-            {features.map((feature) => (
-              <ListItem>
+            {features.map((feature, i) => (
+              <ListItem key={i}>
                 <ListIcon
                   as={FaCheckCircle}
                   rounded={100}

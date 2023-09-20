@@ -138,10 +138,13 @@ export const downloadDocApi = async ({ pdfUrl }) => {
 export const createCheckoutSessionApi = async ({ planId }) => {
   const userToken = await getCurrentUserToken();
   try {
+    const currentTimeZoneCalc = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const timeZone = currentTimeZoneCalc === 'Asia/Calcutta' ? 'in' : 'us';
     const response = await axios.post(
       "/api/create-checkout-session",
       {
         planId,
+        timeZone
       },
       {
         headers: {

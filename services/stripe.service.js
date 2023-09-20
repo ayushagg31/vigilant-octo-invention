@@ -16,9 +16,9 @@ export const createCheckoutSession = async ({ priceId, userEmail }) => {
         quantity: 1,
       },
     ],
-    success_url: "http://localhost:3000",
+    success_url: process.env.WEBSITE_BASE_URL,
     //   "https://example.com/success.html?session_id={CHECKOUT_SESSION_ID}",
-    cancel_url: "http://localhost:3000",
+    cancel_url: process.env.WEBSITE_BASE_URL,
   });
   return session;
 };
@@ -85,5 +85,5 @@ export const handleWebhookEvents = async (event) => {
       default:
         console.log(`Unhandled event type ${event.type}`);
     }
-  } catch (err) {}
+  } catch (err) { }
 };
