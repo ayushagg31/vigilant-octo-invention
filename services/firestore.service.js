@@ -9,7 +9,7 @@ import { app } from "../config/googleAuth.config";
 import { removeCollection } from "../config/qdrant.config";
 import logger from "./logging.service";
 import { deleteObject } from "./r2.service";
-import { plans } from "../config/plan.config";
+import { plans, FREE_TIER } from "../config/plan.config";
 
 const COLLECTION_LIMIT = 3;
 
