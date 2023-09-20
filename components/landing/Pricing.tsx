@@ -71,7 +71,7 @@ export default function ThreeTierPricing() {
       window.location.href = data.url;
     } catch (e) {
       console.error("Error adding document: ", e);
-      throw new Error("Failed to create user", e.message);
+      throw new Error("error in processing payment", e.message);
     }
   };
 
