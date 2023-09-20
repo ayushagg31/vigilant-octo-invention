@@ -5,12 +5,7 @@ import { Flex, Box } from "@chakra-ui/react";
 export default function DashboardLayout({ children }) {
   return (
     <Box h="100vh">
-      <Flex
-        className="tatti"
-        w="100%"
-        h="100%"
-        direction={{ base: "column", md: "row" }}
-      >
+      <Flex w="100%" h="100%" direction={{ base: "column", md: "row" }}>
         <NavBar />
         <div style={{ flex: 1 }}>{children}</div>
       </Flex>
