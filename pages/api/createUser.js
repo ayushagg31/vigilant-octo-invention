@@ -20,7 +20,7 @@ const createUserHandler = async (req, res) => {
       message: "User created successfully",
     });
   } catch (err) {
-    logger.error("/api/createUser", error);
+    logger.error("/api/createUser", err);
     return res.status(500).json({ error: "Failed to create user" });
   }
 };
