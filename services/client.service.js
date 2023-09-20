@@ -1,7 +1,7 @@
 import { auth } from "../config/googleAuth.config";
 import axios from "axios";
 
-const getCurrentUserToken = async () => {
+export const getCurrentUserToken = async () => {
   try {
     await auth.authStateReady();
     const user = auth?.currentUser;
@@ -135,13 +135,13 @@ export const downloadDocApi = async ({ pdfUrl }) => {
   }
 };
 
-export const createCheckoutSessionApi = async ({ priceId }) => {
+export const createCheckoutSessionApi = async ({ planId }) => {
   const userToken = await getCurrentUserToken();
   try {
     const response = await axios.post(
       "/api/create-checkout-session",
       {
-        priceId,
+        planId,
       },
       {
         headers: {

@@ -1,9 +1,18 @@
 import { createCheckoutSession } from "../../services/stripe.service";
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
+import { get } from "lodash"
+import { plans } from "../../config/plan.config";
 import logger from "../../services/logging.service";
 
+const getPriceIdFromPlanId = (planId) => {
+  let currentTimeZoneCalc = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  let currentTimeZone = currentTimeZoneCalc === 'Asia/Calcutta' ? 'in' : 'us';
+  let currentPlan = get(plans, [planId, 'pricing', currentTimeZone, 'price_id']);
+  return currentPlan;
+}
+
 export default AuthorizeMiddleware(async function handler(req, res) {
-  const { priceId } = req.body;
+  const { planId } = req.body;
   const userEmail = req?.context?.user?.email;
 
   // only accept post requests
@@ -12,10 +21,11 @@ export default AuthorizeMiddleware(async function handler(req, res) {
     return;
   }
 
-  if (!priceId || !userEmail) {
+  if (!planId || !userEmail) {
     return res.status(400).json({ message: "Missing required data" });
   }
   try {
+    let priceId = getPriceIdFromPlanId(planId);
     const session = await createCheckoutSession({ userEmail, priceId });
     res.status(200).send({ url: session.url });
   } catch (error) {
