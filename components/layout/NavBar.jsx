@@ -69,6 +69,7 @@ function NavBar() {
       <BsExclamationCircleFill
         fontSize={"16px"}
         color={"#f9c7a4"}
+        cursor={"pointer"}
         onClick={() => router.push("/settings")}
       />
     );
@@ -76,7 +77,7 @@ function NavBar() {
 
     switch (currentPlan) {
       case PLUS_TIER:
-        plan = <FcApproval fontSize={"16px"} />;
+        plan = <FcApproval fontSize={"16px"} cursor={"pointer"} />;
         planText = "You are on plus plan";
         break;
     }
@@ -92,11 +93,6 @@ function NavBar() {
         </Tooltip>
       </Box>
     );
-    // return (
-    //   <Tooltip label={planText} placement="right" shouldWrapChildren>
-    //     {plan}
-    //   </Tooltip>
-    // );
   };
 
   const btnDrawerRef = React.useRef();
