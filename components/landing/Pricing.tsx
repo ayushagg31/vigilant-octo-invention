@@ -72,8 +72,7 @@ export default function ThreeTierPricing() {
       console.log(data.url);
       window.location.href = data.url;
     } catch (e) {
-      console.error("Error adding document: ", e);
-      throw new Error("error in processing payment", e.message);
+      console.error("Error in processing payment");
     }
   };
 

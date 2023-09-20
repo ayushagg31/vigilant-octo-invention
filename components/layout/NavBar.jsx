@@ -37,10 +37,12 @@ import { useRouter } from "next/router";
 import YourDocs from "../home/YourDocs";
 import { useCollections } from "../../store/useCollections";
 import { FREE_TIER, PLUS_TIER } from "../../config/plan.config";
+import { useAPIError } from "../../hooks/useApiHook";
 
 function NavBar() {
   const router = useRouter();
   const activePath = router.pathname;
+  const { addError } = useAPIError();
 
   const [mounted, setMounted] = useState(false);
 
@@ -103,8 +105,12 @@ function NavBar() {
 
   useEffect(() => {
     try {
-      fetchCollections();
-    } catch (error) {}
+      if (user) {
+        fetchCollections();
+      }
+    } catch (error) {
+      addError('Error in Fetching Collection')
+    }
   }, [user?.email]);
 
   if (!mounted) return <></>;
@@ -136,9 +142,8 @@ function NavBar() {
             >
               <IoMdArrowRoundBack
                 style={{ cursor: "pointer" }}
-                className={`${style.navbarIcons} ${
-                  activePath === "/dashboard" ? style.activeNav : ""
-                }`}
+                className={`${style.navbarIcons} ${activePath === "/dashboard" ? style.activeNav : ""
+                  }`}
                 onClick={() => router.push("/dashboard")}
                 title="Upload your doc"
               />

@@ -19,15 +19,21 @@ import {
 import { FaGoogle } from "react-icons/fa";
 // import { useModal } from "../../store/useModal";
 import { useAuth } from "../../store/useAuth";
+import { useAPIError } from "../../hooks/useApiHook";
 
 export function LoginModal({ isOpen, onOpen, onClose, fn = null }) {
   const termConditionText = `By creating an account you agree with our Terms of Service, Privacy Policy, and our default Notification Settings.`;
   const { googleLogin } = useAuth((store) => ({
     googleLogin: store.googleLogin,
   }));
-
+  const { addError } = useAPIError();
   const handleSignInClick = () => {
-    googleLogin(onClose, fn);
+    try {
+      googleLogin(onClose, fn);
+    } catch (error) {
+      addError('error in successfully loggin in')
+    }
+
   };
 
   const OverlayTwo = () => (

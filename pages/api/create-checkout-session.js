@@ -21,7 +21,7 @@ export default AuthorizeMiddleware(async function handler(req, res) {
   }
 
   if (!planId || !userEmail || !timeZone) {
-    return res.status(400).json({ message: "Missing required data" });
+    return res.status(400).json({ message: "You are missing a required data" });
   }
   try {
     let priceId = getPriceIdFromPlanId(planId, timeZone);

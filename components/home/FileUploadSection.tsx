@@ -48,9 +48,7 @@ export const FileUploadSection = () => {
       });
     } catch (err) {
       removeLoader();
-      console.log(err, "Err");
       addError("Failed to upload document");
-      console.error("Error:", error);
     }
   };
 
