@@ -38,17 +38,18 @@ const AfterUpload = () => {
         collectionId: id,
       });
     } else {
-
       router.replace("dashboard");
     }
   }, [id]);
 
   const RenderPdf = () => {
     return (
-      <>
+      <Flex direction="column" height="100%">
         <Text fontSize="xl">{`${name}`}</Text>
-        <iframe src={`/api/view/${id}`} width="100%" height="100%"></iframe>
-      </>
+        <div style={{ flex: 1 }}>
+          <iframe src={`/api/view/${id}`} width="100%" height="100%"></iframe>
+        </div>
+      </Flex>
     );
   };
 

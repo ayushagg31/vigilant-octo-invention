@@ -20,6 +20,7 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
+  Box,
 } from "@chakra-ui/react";
 import {
   AiFillDingtalkCircle,
@@ -66,22 +67,31 @@ function NavBar() {
   const renderPlan = () => {
     let plan = (
       <BsExclamationCircleFill
-        className={style.navbarIcons}
+        fontSize={"16px"}
         color={"#f9c7a4"}
+        cursor={"pointer"}
+        onClick={() => router.push("/settings")}
       />
     );
     let planText = "You are on free plan. Click here to upgrade";
 
     switch (currentPlan) {
       case PLUS_TIER:
-        plan = <FcApproval className={style.navbarIcons} />;
+        plan = <FcApproval fontSize={"16px"} cursor={"pointer"} />;
         planText = "You are on plus plan";
         break;
     }
     return (
-      <Tooltip label={planText} placement="right" shouldWrapChildren>
-        {plan}
-      </Tooltip>
+      <Box position="absolute" top="-1" right="-1">
+        <Tooltip
+          label={planText}
+          placement="right"
+          shouldWrapChildren
+          openDelay={500}
+        >
+          {plan}
+        </Tooltip>
+      </Box>
     );
   };
 
@@ -149,8 +159,6 @@ function NavBar() {
               />
             </Tooltip>
           )}
-
-          {/* Chat with pdf end */}
         </Flex>
 
         <Spacer />
@@ -168,18 +176,23 @@ function NavBar() {
             <>
               {user ? (
                 <>
-                  {renderPlan()}
                   <Menu placement="right-end">
-                    <MenuButton
-                      as={Button}
-                      rounded={"full"}
-                      variant={"link"}
-                      cursor={"pointer"}
-                      minW={0}
-                    >
-                      <Avatar size={"sm"} src={user?.photoURL} />
-                    </MenuButton>
+                    <Box position="relative">
+                      <MenuButton
+                        as={Button}
+                        rounded={"full"}
+                        variant={"link"}
+                        cursor={"pointer"}
+                        minW={0}
+                      >
+                        <Avatar size={"sm"} src={user?.photoURL} />
+                      </MenuButton>
+                      {renderPlan()}
+                    </Box>
                     <MenuList color={"black"}>
+                      <MenuItem onClick={() => router.push("/dashboard")}>
+                        Dashboard
+                      </MenuItem>
                       <MenuItem onClick={() => router.push("/profile")}>
                         Profile
                       </MenuItem>

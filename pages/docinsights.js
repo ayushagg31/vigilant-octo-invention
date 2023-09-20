@@ -6,10 +6,9 @@ import DashboardLayout from "../components/layout/DashboardLayout";
 import AfterUpload from "../components/home/AfterUpload";
 
 const DocInsights = () => {
-  const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
     if (!router.isReady) return;
-
   }, [router.isReady]);
   return router.isReady && <AfterUpload />;
 };
