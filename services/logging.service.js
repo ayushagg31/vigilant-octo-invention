@@ -8,9 +8,8 @@ const logFormat = winston.format.combine(
   winston.format.timestamp({
     format: "DD-MM-YYYY hh:mm:ss.SSS A",
   }),
-  winston.format.printf(({ timestamp, level, message, metadata }) => {
-    const metaString = metadata ? JSON.stringify(metadata) : "";
-    return `[${timestamp}] ${level}: ${message}${metaString}`;
+  winston.format.printf(({ timestamp, level, message, stack }) => {
+    return `[${timestamp}] ${level} - ${message} (${stack || "unknown"})`;
   })
 );
 
