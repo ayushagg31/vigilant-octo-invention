@@ -20,12 +20,13 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
+            set -e
             source ~/.nvm/nvm.sh
             nvm use 18
-            cd /var/www/vigilant-octo-invention
-            git pull || { echo "git pull failed"; exit 1; }
-            npm ci || { echo "npm ci failed"; exit 1; }
-            npm run build || { echo "npm run build failed"; exit 1; }
+            cd /var/www/vigilant-oto-invention
+            git pull 
+            npm ci 
+            npm run build 
             pm2 restart docXpert || { echo "pm2 restart failed"; exit 1; }
 
       - name: Notify Deployment Success
