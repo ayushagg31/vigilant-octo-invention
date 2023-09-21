@@ -67,7 +67,7 @@ export default function Simple() {
   const Links = useMemo(() => {
     return [
       { name: "How it works", fn: () => jumpToReleventDiv("how-it-works") },
-      { name: "Demo", fn: () => jumpToReleventDiv("how-it-works") },
+      { name: "Demo", fn: () => jumpToReleventDiv("demo-section") },
       { name: "Pricing", fn: () => jumpToReleventDiv("pricing-section") },
     ];
   }, [jumpToReleventDiv]);
@@ -94,7 +94,13 @@ export default function Simple() {
   if (!mounted) return <></>;
   return (
     <>
-      <Box bg={"black"} color={"#fff"} boxShadow={"lg"} px={4}>
+      <Box
+        boxShadow={"lg"}
+        px={4}
+        backdropFilter={"blur(6px)"}
+        bg={"rgba(0,0,0, 0.4)"}
+        style={{ position: "sticky", top: "0", zIndex: "100" }}
+      >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}
@@ -102,12 +108,12 @@ export default function Simple() {
             aria-label={"Open Menu"}
             display={{ md: "none" }}
             onClick={isOpen ? onClose : onOpen}
-            bg={"black"}
+            bg={"transparent"}
             color={"#fff"}
             _active={{ color: "#fff", borderColor: "#fff" }}
             _hover={{ color: "#fff", borderColor: "#fff" }}
           />
-          <Flex alignItems={"center"} gap={2}>
+          <Flex alignItems={"center"} gap={2} color={"#fff"}>
             <AiFillDingtalkCircle size="44px" title="Doc Xpert" />
             <Box>Doc Xpert</Box>
           </Flex>

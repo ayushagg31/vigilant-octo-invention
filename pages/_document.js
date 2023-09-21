@@ -1,6 +1,6 @@
 import { Html, Head, Main, NextScript } from "next/document";
-import { ColorModeScript } from '@chakra-ui/react'
-import theme from '../theme';
+import { ColorModeScript } from "@chakra-ui/react";
+import theme from "../theme";
 
 export default function Document() {
   return (
@@ -16,7 +16,7 @@ export default function Document() {
         />
         <title>Doc Expert</title>
       </Head>
-      <body style={{ background: '#ffffff' }}>
+      <body>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <Main />
         <NextScript />

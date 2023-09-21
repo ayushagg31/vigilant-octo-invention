@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  Flex,
+  Box,
   Container,
   Heading,
   Stack,
@@ -10,11 +10,13 @@ import {
   Icon,
   IconProps,
   useDisclosure,
-  Highlight,
+  Img,
 } from "@chakra-ui/react";
 import { useAuth } from "../../store/useAuth";
 import { useRouter } from "next/router";
 import { IoMdArrowForward } from "react-icons/io";
+import { BsFillArrowDownCircleFill } from "react-icons/bs";
+import { TypeAnimation } from "react-type-animation";
 
 import { LoginModal } from "../home/LoginModal";
 
@@ -48,8 +50,13 @@ export default function Hero() {
   };
 
   return (
-    <>
-      <Container maxW={"5xl"} id="how-it-works">
+    <Box
+      id="how-it-works"
+      className="snap-section theme-gradient"
+      h={"100vh"}
+      pos={"relative"}
+    >
+      <Container maxW={"5xl"}>
         <Stack
           textAlign={"center"}
           align={"center"}
@@ -59,72 +66,83 @@ export default function Hero() {
           <div>
             <Heading
               fontWeight={800}
-              className="hero-heading"
               color={"#fff"}
-              fontSize={{ base: "3xl", sm: "4xl", md: "5xl" }}
-              lineHeight={"110%"}
+              fontSize={{ base: "5xl", sm: "6xl", md: "8xl" }}
+              my={6}
+              height={"230px"}
             >
-              <Highlight
-                query="Save countless hours"
-                styles={{
-                  px: "1",
-                  py: "1",
-                  bg: "green.500",
-                  fontFamily: "Inconsolata",
-                }}
-              >
-                Chat With Documents & Youtube Videos Save countless hours
-              </Highlight>
+              <TypeAnimation
+                sequence={[
+                  // Same substring at the start will only be typed out once, initially
+                  "Chat With Documents",
+                  2000, // wait 1s before replacing "Mice" with "Hamsters"
+                  "Chat With Youtube Videos",
+                  2000,
+                ]}
+                wrapper="span"
+                speed={40}
+                repeat={Infinity}
+              />
             </Heading>
+            <Text
+              display={"inline-block"}
+              px={"5"}
+              fontStyle={"italic"}
+              color={"#fff"}
+              fontSize={{ base: "md", sm: "3xl", md: "4xl" }}
+              backgroundColor={"rgb(30 30 58)"}
+            >
+              Save countless hours
+            </Text>
           </div>
           <Text
             as="b"
+            color={"white"}
             className="hero-heading"
             fontWeight={600}
-            fontSize={{ base: "md", sm: "lg" }}
+            fontSize={{ base: "md", sm: "2xl" }}
             maxW={"4xl"}
+            mt={8}
           >
             Summarize your content, Ask questions and Create notes. Almost
             Instantly.
           </Text>
-          <Stack spacing={6} direction={"row"}>
+          <Stack spacing={6} direction={"row"} mt={3}>
             <Button
               rightIcon={<IoMdArrowForward />}
               onClick={() => {
                 tryItHandler();
               }}
-              rounded={"full"}
-              px={6}
-              colorScheme={"gray"}
-              bg="#343a40"
-              _hover={{
-                bg: "#23272b",
-                color: "#fff",
-                borderWidth: "1px",
-              }}
-              color="#fff"
+              size={"lg"}
+              colorScheme="green"
             >
               Start for free
             </Button>
-            <Button onClick={() => demoHandler()} _hover={{
-              bg: "#23272b",
-              color: "#fff",
-              borderWidth: "1px",
-            }} rounded={"full"} px={6}>
+
+            <Button onClick={() => demoHandler()} px={6} size={"lg"}>
               See it in action
             </Button>
           </Stack>
-          <Flex w={"full"}>
-            {/* <Illustration height={{ sm: '24rem', lg: '28rem' }} mt={{ base: 12, sm: 16 }} /> */}
-          </Flex>
         </Stack>
       </Container>
+      <Img src="/images/rocket.png" className="rocket-animation" />
+
+      <Box textAlign={"center"}>
+        <BsFillArrowDownCircleFill
+          className="movedown-animated"
+          color="#fff"
+          onClick={() => {
+            const releventDiv = document.getElementById("demo-section");
+            releventDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+          }}
+        />
+      </Box>
       <LoginModal
         isOpen={isOpenLoginModal}
         onOpen={onOpenLoginModal}
         onClose={onCloseLoginModal}
         fn={gotoDashboard}
       />
-    </>
+    </Box>
   );
 }
