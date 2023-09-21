@@ -133,7 +133,7 @@ export default function ThreeTierPricing() {
           py={4}
           borderBottomRadius={"xl"}
         >
-          <List spacing={3} textAlign="start" px={12}>
+          <List color={'black'} spacing={3} textAlign="start" px={12}>
             {features.map((feature, i) => (
               <ListItem key={i}>
                 <ListIcon
@@ -149,7 +149,7 @@ export default function ThreeTierPricing() {
           <Box w="80%" pt={7}>
             {
               showPricingButton && (
-                <Button w="full" isLoading={loader} rounded={100} colorScheme="black" variant="outline" onClick={() => HandlePaymentClick(planId)}>
+                <Button w="full" isLoading={loader} rounded={100} borderColor={'black'} variant="outline" onClick={() => HandlePaymentClick(planId)}>
                   Subscribe
                 </Button>
               )

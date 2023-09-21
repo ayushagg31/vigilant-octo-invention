@@ -60,7 +60,7 @@ export default function Hero() {
             <Heading
               fontWeight={800}
               className="hero-heading"
-              color={"#343a40"}
+              color={"#fff"}
               fontSize={{ base: "3xl", sm: "4xl", md: "5xl" }}
               lineHeight={"110%"}
             >
@@ -69,8 +69,7 @@ export default function Hero() {
                 styles={{
                   px: "1",
                   py: "1",
-                  bg: "black",
-                  color: "#fff",
+                  bg: "green.500",
                   fontFamily: "Inconsolata",
                 }}
               >
@@ -101,15 +100,17 @@ export default function Hero() {
               _hover={{
                 bg: "#23272b",
                 color: "#fff",
-                borderColor: "#1d2124",
                 borderWidth: "1px",
               }}
               color="#fff"
             >
               Start for free
             </Button>
-
-            <Button onClick={() => demoHandler()} rounded={"full"} px={6}>
+            <Button onClick={() => demoHandler()} _hover={{
+              bg: "#23272b",
+              color: "#fff",
+              borderWidth: "1px",
+            }} rounded={"full"} px={6}>
               See it in action
             </Button>
           </Stack>

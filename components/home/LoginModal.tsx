@@ -40,7 +40,6 @@ export function LoginModal({ isOpen, onOpen, onClose, fn = null }) {
     <ModalOverlay
       bg="none"
       backdropFilter="auto"
-      backdropInvert="80%"
       backdropBlur="2px"
     />
   );

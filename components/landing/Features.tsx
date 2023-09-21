@@ -58,12 +58,12 @@ export default function SplitWithImage() {
               }
             >
               <Feature
-                icon={<Icon as={FiUploadCloud} w={5} h={5} />}
+                icon={<Icon as={FiUploadCloud} color={'black'}  w={5} h={5} />}
                 iconBg={useColorModeValue("yellow.100", "yellow.900")}
                 text={"Upload or link your PDFs and videos."}
               />
               <Feature
-                icon={<Icon as={BsFillChatLeftTextFill} w={5} h={5} />}
+                icon={<Icon as={BsFillChatLeftTextFill}  color={'black'} w={5} h={5} />}
                 iconBg={useColorModeValue("green.100", "green.900")}
                 text={"Chat with our AI-powered chatbot."}
               />
