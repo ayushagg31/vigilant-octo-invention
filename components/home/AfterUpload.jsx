@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Flex, Show, Spinner, Text } from "@chakra-ui/react";
+import { Box, Flex, Show, Spinner, Text, Img } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import ChatWidget from "./ChatWidget";
 import ReactPlayer from "react-player/lazy";
@@ -89,6 +89,8 @@ const AfterUpload = () => {
         color="white.500"
         size="xl"
       />
+
+      <Img src="/images/rocket.png" className="rocket-animation loading-doc" />
       <Text mt={4} color={"#fff"}>
         Loading your doc
       </Text>
