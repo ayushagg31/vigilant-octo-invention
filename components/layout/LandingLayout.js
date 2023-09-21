@@ -4,7 +4,7 @@
 export default function LandingLayout({ children }) {
     return (
         <>
-            <div>
+            <div className="dark-bg">
                 <div>{children}</div>
             </div>
         </>

@@ -122,3 +122,11 @@ a:hover {
 .main-container {
   height: 100%;
 }
+
+
+.dark-bg {
+  background-image: linear-gradient(0deg, rgba(5, 5, 10, 1) 0%, rgba(12, 12, 23, 0.91) 100%);
+  border-color: transparent;
+  border-style: solid;
+  color: #fff;
+}
