@@ -24,7 +24,7 @@ jobs:
             nvm use 18
             cd /var/www/vigilant-octo-invention
             git pull
-            npm install
+            npm ci
             npm run build
             pm2 restart docXpert
 
