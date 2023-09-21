@@ -45,7 +45,12 @@ const AfterUpload = () => {
   const RenderPdf = () => {
     return (
       <Flex direction="column" height="100%">
-        <Text fontSize="xl">{`${name}`}</Text>
+        <Text
+          fontSize="sm"
+          p={"2"}
+          color={"#fff"}
+          fontWeight={"bold"}
+        >{`${name}`}</Text>
         <div style={{ flex: 1 }}>
           <iframe src={`/api/view/${id}`} width="100%" height="100%"></iframe>
         </div>
@@ -56,7 +61,7 @@ const AfterUpload = () => {
   const ChatAndTabJsx = (
     <Flex columns={{ sm: 1, md: 2 }} w="100%" className="main-container">
       <Show above="md">
-        <Box borderWidth="1px" borderRadius="lg" h="100%" flex={1}>
+        <Box h="100%" flex={1}>
           {youtubeUrl !== null ? (
             <ReactPlayer url={youtubeUrl} />
           ) : (
@@ -81,10 +86,12 @@ const AfterUpload = () => {
         thickness="4px"
         speed="0.65s"
         emptyColor="gray.200"
-        color="blue.500"
+        color="white.500"
         size="xl"
       />
-      <Text mt={4}>Loading your doc</Text>
+      <Text mt={4} color={"#fff"}>
+        Loading your doc
+      </Text>
     </Flex>
   );
 

@@ -54,7 +54,7 @@ const DragAndDrop = ({ onFileSelect }) => {
         e.stopPropagation();
       }}
     >
-      <Card variant={"outline"} h="300px">
+      <Card variant={"unstyled"} h="350px">
         <CardBody>
           <input
             ref={fileInput}

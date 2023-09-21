@@ -4,12 +4,12 @@ import style from "../../styles/DragAndDrop.module.css";
 export const FileUploadWrapper = ({ children }) => {
   return (
     <>
-      <Card variant={"outline"}>
-        <CardBody>
-          <div className={style.uploadedFileSection}>
-            <Box p={4}>{children}</Box>
-          </div>
-        </CardBody>
+      <Card variant={"unstyled"} h="350px">
+        <div className={style.uploadedFileSection}>
+          <Box p={4} w={"100%"}>
+            {children}
+          </Box>
+        </div>
       </Card>
     </>
   );

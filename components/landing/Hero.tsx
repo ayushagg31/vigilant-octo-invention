@@ -55,6 +55,7 @@ export default function Hero() {
       className="snap-section theme-gradient"
       h={"100vh"}
       pos={"relative"}
+      pt={10}
     >
       <Container maxW={"5xl"}>
         <Stack
@@ -87,10 +88,10 @@ export default function Hero() {
             <Text
               display={"inline-block"}
               px={"5"}
-              fontStyle={"italic"}
               color={"#fff"}
-              fontSize={{ base: "md", sm: "3xl", md: "4xl" }}
+              fontSize={{ base: "md", sm: "3xl", md: "5xl" }}
               backgroundColor={"rgb(30 30 58)"}
+              rounded={"8"}
             >
               Save countless hours
             </Text>
