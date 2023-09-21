@@ -23,11 +23,11 @@ jobs:
             set -e
             source ~/.nvm/nvm.sh
             nvm use 18
-            cd /var/www/vigilant-oto-invention
+            cd /var/www/vigilant-octo-invention
             git pull 
             npm ci 
             npm run build 
-            pm2 restart docXpert || { echo "pm2 restart failed"; exit 1; }
+            pm2 restart docXpert 
 
       - name: Notify Deployment Success
         if: success() 
