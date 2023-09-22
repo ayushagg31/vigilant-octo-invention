@@ -89,6 +89,11 @@ export default function Simple() {
     onClose: onCloseLoginModal,
   } = useDisclosure();
 
+
+  const handleMobileIconClick = (fn) => {
+    fn();
+    onClose()
+  }
   const termConditionText = `By creating an account you agree with our Terms of Service, Privacy Policy, and our default Notification Settings.`;
 
   if (!mounted) return <></>;
@@ -175,12 +180,12 @@ export default function Simple() {
           </Flex>
         </Flex>
         {isOpen ? (
-          <Box pb={4} display={{ md: "none" }}>
+          <Box pb={4} display={{ md: "none" }} className="Modal.open">
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
                 <Button
                   color="#fff"
-                  onClick={link.fn}
+                  onClick={() => handleMobileIconClick(link.fn)}
                   _active={{ color: "#fff", bg: "black" }}
                   _hover={{
                     color: "#fff",

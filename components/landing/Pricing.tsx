@@ -94,6 +94,7 @@ export default function ThreeTierPricing() {
           } else {
             onOpenLoginModal();
           }
+          setLoader(false);
         }
         handlePayment();
       }
