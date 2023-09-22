@@ -68,9 +68,9 @@ export default function Hero() {
             <Heading
               fontWeight={800}
               color={"#fff"}
-              fontSize={{ base: "5xl", sm: "6xl", md: "8xl" }}
-              my={6}
-              height={"230px"}
+              fontSize={{ base: "3xl", sm: "7xl", lg: "8xl" }}
+              mb={6}
+              height={{ base: "120px", sm: "250px" }}
             >
               <TypeAnimation
                 sequence={[
@@ -81,7 +81,7 @@ export default function Hero() {
                   2000,
                 ]}
                 wrapper="span"
-                speed={40}
+                speed={50}
                 repeat={Infinity}
               />
             </Heading>
@@ -103,7 +103,7 @@ export default function Hero() {
             fontWeight={600}
             fontSize={{ base: "md", sm: "2xl" }}
             maxW={"4xl"}
-            mt={8}
+            mt={{ base: 2, md: 8 }}
           >
             Summarize your content, Ask questions and Create notes. Almost
             Instantly.
@@ -114,19 +114,27 @@ export default function Hero() {
               onClick={() => {
                 tryItHandler();
               }}
-              size={"lg"}
+              size={{ base: "sm", sm: "lg" }}
               colorScheme="green"
             >
               Start for free
             </Button>
 
-            <Button onClick={() => demoHandler()} px={6} size={"lg"}>
+            <Button
+              onClick={() => demoHandler()}
+              px={6}
+              size={{ base: "sm", sm: "lg" }}
+            >
               See it in action
             </Button>
           </Stack>
         </Stack>
       </Container>
-      <Img src="/images/rocket.png" className="rocket-animation" />
+      <Img
+        src="/images/rocket.png"
+        h={{ base: "150px", sm: "250px", lg: "300px" }}
+        className="rocket-animation"
+      />
 
       <Box textAlign={"center"}>
         <BsFillArrowDownCircleFill
