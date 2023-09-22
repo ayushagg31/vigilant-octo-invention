@@ -180,8 +180,8 @@ a:hover {
   animation: rocket 5s infinite reverse linear;
 }
 .rocket-animation.loading-doc {
-  transform: translate(-50%);
-  left: 32%;
+  position: relative;
+  left: 20px;
 }
 
 @media (max-width: 768px) {

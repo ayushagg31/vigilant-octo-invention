@@ -82,6 +82,11 @@ const AfterUpload = () => {
       justifyContent="center"
       alignItems="center"
     >
+      <Img
+        src="/images/rocket.png"
+        className="rocket-animation loading-doc"
+        h={{ base: "150px", sm: "250px", lg: "300px" }}
+      />
       <Spinner
         thickness="4px"
         speed="0.65s"
@@ -90,7 +95,6 @@ const AfterUpload = () => {
         size="xl"
       />
 
-      <Img src="/images/rocket.png" className="rocket-animation loading-doc" />
       <Text mt={4} color={"#fff"}>
         Loading your doc
       </Text>
