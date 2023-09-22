@@ -42,23 +42,6 @@ export default function ThreeTierPricing() {
     user: store.user,
   }));
 
-  function PriceWrapper(props: Props) {
-    const { children } = props;
-
-    return (
-      <Box
-        mb={4}
-        shadow="base"
-        borderWidth="1px"
-        alignSelf={{ base: "center", lg: "stretch" }}
-        borderColor={useColorModeValue("gray.200", "gray.500")}
-        borderRadius={"xl"}
-      >
-        {children}
-      </Box>
-    );
-  }
-
   const processPayment = async () => {
     try {
       const { data } = await createCheckoutSessionApi({
@@ -101,19 +84,26 @@ export default function ThreeTierPricing() {
     const { planName, priceDetails, features, planId, showPricingButton } =
       plan;
     return (
-      <Flex flexDirection={"column"} h={"100%"}>
-        <Box py={4} px={12} color={"white"}>
-          <Text fontWeight="500" fontSize={{ base: "xl", md: "2xl" }}>
+      <Flex
+        flexDirection={"column"}
+        shadow="base"
+        borderWidth="1px"
+        alignSelf="stretch"
+        borderColor={useColorModeValue("gray.200", "gray.500")}
+        borderRadius={"xl"}
+      >
+        <Box py={{ base: "2", sm: "4" }} color={"white"}>
+          <Text fontWeight="500" fontSize={{ base: "l", sm: "2xl" }}>
             {planName}
           </Text>
           <HStack justifyContent="center">
-            <Text fontSize="3xl" fontWeight="600">
+            <Text fontSize={{ base: "xl", sm: "3xl" }} fontWeight="600">
               {priceDetails.currency}
             </Text>
-            <Text fontSize={{ base: "3xl", md: "5xl" }} fontWeight="900">
+            <Text fontSize={{ base: "2xl", sm: "5xl" }} fontWeight="900">
               {priceDetails.amount}
             </Text>
-            <Text fontSize="3xl" color="gray.500">
+            <Text fontSize={{ base: "xl", sm: "3xl" }} color="gray.500">
               / {priceDetails.duration}
             </Text>
           </HStack>
@@ -124,9 +114,14 @@ export default function ThreeTierPricing() {
           borderBottomRadius={"xl"}
           h={"100%"}
         >
-          <List color={"black"} spacing={3} textAlign="start" px={12}>
+          <List
+            color={"black"}
+            spacing={3}
+            textAlign="start"
+            px={{ base: "3", sm: "12" }}
+          >
             {features.map((feature, i) => (
-              <ListItem key={i}>
+              <ListItem key={i} fontSize={{ base: "sm", sm: "sm", md: "2xl" }}>
                 <ListIcon
                   as={FaCheckCircle}
                   rounded={100}
@@ -176,16 +171,14 @@ export default function ThreeTierPricing() {
           </VStack>
 
           <Stack
-            direction={{ base: "column", md: "row" }}
+            direction={{ md: "row" }}
             textAlign="center"
             justify="center"
             spacing={{ base: 4, lg: 10 }}
             py={10}
           >
             {pricingPlanConfig.map((plan, i) => (
-              <PriceWrapper key={i}>
-                <PricePlan plan={plan} />
-              </PriceWrapper>
+              <PricePlan plan={plan} />
             ))}
           </Stack>
         </Box>
