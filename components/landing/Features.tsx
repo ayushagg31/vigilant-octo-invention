@@ -11,6 +11,7 @@ import {
   StackDivider,
   Icon,
   useColorModeValue,
+  Box,
 } from "@chakra-ui/react";
 import { ReactElement } from "react";
 import { FiUploadCloud } from "react-icons/fi";
@@ -42,45 +43,40 @@ const Feature = ({ text, icon, iconBg }: FeatureProps) => {
 
 export default function SplitWithImage() {
   return (
-    <div id="demo-section">
-      <Container maxW={"5xl"} py={12}>
-        <div className="demo-video">
-          <Stack spacing={2}>
-            <Text as="b" fontSize={"xl"}>
-              Get insights in 2 simple steps
-            </Text>
-            <Stack
-              spacing={4}
-              divider={
-                <StackDivider
-                  borderColor={useColorModeValue("gray.100", "gray.700")}
-                />
-              }
-            >
-              <Feature
-                icon={<Icon as={FiUploadCloud} color={'black'}  w={5} h={5} />}
-                iconBg={useColorModeValue("yellow.100", "yellow.900")}
-                text={"Upload or link your PDFs and videos."}
-              />
-              <Feature
-                icon={<Icon as={BsFillChatLeftTextFill}  color={'black'} w={5} h={5} />}
-                iconBg={useColorModeValue("green.100", "green.900")}
-                text={"Chat with our AI-powered chatbot."}
-              />
+    <Flex
+      id="demo-section"
+      className="snap-section theme-gradient"
+      h={"100vh"}
+      alignItems={"center"}
+    >
+      <Box p={{ base: "10", md: "36" }} color="#fff">
+        <Box textAlign={"center"} mb={10}>
+          <Heading fontSize={{ base: "3xl", md: "4xl" }} mb={6}>
+            Get insights in 2 simple steps
+          </Heading>
+          <Stack align={"center"} spacing={4} fontSize={"20px"}>
+            <Stack direction={"row"} align={"center"}>
+              <Icon as={FiUploadCloud} w={5} h={5} />
+              <Text>Upload or link your PDFs and videos</Text>
+            </Stack>
+            <Stack direction={"row"} align={"center"}>
+              <Icon as={BsFillChatLeftTextFill} w={5} h={5} />
+              <Text>Chat with our AI-powered chatbot.</Text>
             </Stack>
           </Stack>
-          <Flex>
-            <Image
-              boxShadow={"xl"}
-              border={"1px"}
-              rounded={"md"}
-              alt={"feature image"}
-              src={"/sitegpt.gif"}
-              objectFit={"scale-down"}
-            />
-          </Flex>
-        </div>
-      </Container>
-    </div>
+        </Box>
+
+        <Box w={{ base: "100%", md: "75%" }} margin={"0 auto"}>
+          <Image
+            boxShadow={"xl"}
+            border={"1px"}
+            rounded={"md"}
+            alt={"feature image"}
+            src={"/sitegpt.gif"}
+            objectFit={"scale-down"}
+          />
+        </Box>
+      </Box>
+    </Flex>
   );
 }

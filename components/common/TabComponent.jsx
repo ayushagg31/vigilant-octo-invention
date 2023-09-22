@@ -21,10 +21,11 @@ export const TabComponent = ({ tabConfig }) => {
         position="relative"
         isFitted
         variant="unstyled"
-        p={4}
-        w={{ base: "100%", md: "80%" }}
+        w={{ base: "90%", md: "70%" }}
+        bg={"#fff"}
+        rounded={"2xl"}
       >
-        <TabList>
+        <TabList py={3}>
           {tabKeys.map((el, index) => (
             <Tab
               style={{ gap: 12 }}
@@ -36,7 +37,7 @@ export const TabComponent = ({ tabConfig }) => {
           ))}
         </TabList>
         <TabIndicator height="2px" bg="blue.500" mt="-1.5px" />
-        <TabPanels>
+        <TabPanels minH={"300px"}>
           {tabComponents.map((component, index) => (
             <TabPanel key={index}>{component}</TabPanel>
           ))}

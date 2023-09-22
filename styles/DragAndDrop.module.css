@@ -53,4 +53,8 @@
   border-style: dashed;
   border-color: #cbd5e1;
   background-color: #f8fafc;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }

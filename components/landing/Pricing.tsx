@@ -13,6 +13,7 @@ import {
   ListIcon,
   Button,
   useDisclosure,
+  Flex,
 } from "@chakra-ui/react";
 import { FaCheckCircle } from "react-icons/fa";
 import { pricingPlanConfig } from "../../config/pricing.plan";
@@ -26,11 +27,7 @@ interface Props {
   children: React.ReactNode;
 }
 
-
-
-
 export default function ThreeTierPricing() {
-
   const [currentPlanId, setCurrentPlanId] = useState(null);
   const [loader, setLoader] = useState(false);
   const initialRun = useRef(false);
@@ -45,7 +42,6 @@ export default function ThreeTierPricing() {
     user: store.user,
   }));
 
-
   function PriceWrapper(props: Props) {
     const { children } = props;
 
@@ -54,7 +50,7 @@ export default function ThreeTierPricing() {
         mb={4}
         shadow="base"
         borderWidth="1px"
-        alignSelf={{ base: "center", lg: "flex-start" }}
+        alignSelf={{ base: "center", lg: "stretch" }}
         borderColor={useColorModeValue("gray.200", "gray.500")}
         borderRadius={"xl"}
       >
@@ -63,11 +59,10 @@ export default function ThreeTierPricing() {
     );
   }
 
-
   const processPayment = async () => {
     try {
       const { data } = await createCheckoutSessionApi({
-        planId: currentPlanId
+        planId: currentPlanId,
       });
       console.log(data.url);
       window.location.href = data.url;
@@ -76,10 +71,9 @@ export default function ThreeTierPricing() {
     }
   };
 
-
   const HandlePaymentClick = async (planId) => {
     setCurrentPlanId(planId);
-  }
+  };
 
   useEffect(() => {
     if (initialRun.current == false) {
@@ -94,33 +88,29 @@ export default function ThreeTierPricing() {
           } else {
             onOpenLoginModal();
           }
-        }
+        };
         handlePayment();
-      }
-      catch (e) {
+      } catch (e) {
         setLoader(false);
         addError("Error in processing subscription ");
-
       }
-
     }
-
-  }, [currentPlanId])
-
+  }, [currentPlanId]);
 
   function PricePlan({ plan }) {
-    const { planName, priceDetails, features, planId, showPricingButton } = plan;
+    const { planName, priceDetails, features, planId, showPricingButton } =
+      plan;
     return (
-      <>
-        <Box py={4} px={12}>
-          <Text fontWeight="500" fontSize="2xl">
+      <Flex flexDirection={"column"} h={"100%"}>
+        <Box py={4} px={12} color={"white"}>
+          <Text fontWeight="500" fontSize={{ base: "xl", md: "2xl" }}>
             {planName}
           </Text>
           <HStack justifyContent="center">
             <Text fontSize="3xl" fontWeight="600">
               {priceDetails.currency}
             </Text>
-            <Text fontSize="5xl" fontWeight="900">
+            <Text fontSize={{ base: "3xl", md: "5xl" }} fontWeight="900">
               {priceDetails.amount}
             </Text>
             <Text fontSize="3xl" color="gray.500">
@@ -132,8 +122,9 @@ export default function ThreeTierPricing() {
           bg={useColorModeValue("gray.50", "gray.700")}
           py={4}
           borderBottomRadius={"xl"}
+          h={"100%"}
         >
-          <List color={'black'} spacing={3} textAlign="start" px={12}>
+          <List color={"black"} spacing={3} textAlign="start" px={12}>
             {features.map((feature, i) => (
               <ListItem key={i}>
                 <ListIcon
@@ -147,30 +138,39 @@ export default function ThreeTierPricing() {
             ))}
           </List>
           <Box w="80%" pt={7}>
-            {
-              showPricingButton && (
-                <Button w="full" isLoading={loader} rounded={100} borderColor={'black'} variant="outline" onClick={() => HandlePaymentClick(planId)}>
-                  Subscribe
-                </Button>
-              )
-            }
-
+            {showPricingButton && (
+              <Button
+                w="full"
+                isLoading={loader}
+                rounded={100}
+                colorScheme="black"
+                variant="outline"
+                onClick={() => HandlePaymentClick(planId)}
+              >
+                Subscribe
+              </Button>
+            )}
           </Box>
         </VStack>
-      </>
+      </Flex>
     );
   }
 
-
   return (
     <>
-      <div id="pricing-section">
-        <Box py={12}>
-          <VStack spacing={2} textAlign="center">
-            <Heading as="h1" fontSize="4xl">
+      <Flex
+        h={"100vh"}
+        align={"center"}
+        justify={"center"}
+        id="pricing-section"
+        className="snap-section theme-gradient"
+      >
+        <Box mt={16}>
+          <VStack spacing={2} textAlign="center" color={"#fff"} mt={4}>
+            <Heading fontSize={{ base: "3xl", md: "6xl" }}>
               Plans that fit your need
             </Heading>
-            <Text fontSize="lg" color={"gray.500"}>
+            <Text fontSize={{ base: "xl", md: "2xl" }} color={"white.500"}>
               pick one that suits you.
             </Text>
           </VStack>
@@ -189,7 +189,7 @@ export default function ThreeTierPricing() {
             ))}
           </Stack>
         </Box>
-      </div>
+      </Flex>
       <LoginModal
         isOpen={isOpenLoginModal}
         onOpen={onOpenLoginModal}
@@ -197,7 +197,5 @@ export default function ThreeTierPricing() {
         fn={processPayment}
       />
     </>
-
-
   );
 }

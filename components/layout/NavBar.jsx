@@ -109,7 +109,7 @@ function NavBar() {
         fetchCollections();
       }
     } catch (error) {
-      addError('Error in Fetching Collection')
+      addError("Error in Fetching Collection");
     }
   }, [user?.email]);
 
@@ -117,7 +117,11 @@ function NavBar() {
 
   return (
     <>
-      <Flex direction={{ base: "row", md: "column" }} bg="black" color="white">
+      <Flex
+        direction={{ base: "row", md: "column" }}
+        color="white"
+        bg={"rgba(0,0,0, 0.2)"}
+      >
         <Flex
           direction={{ base: "row", md: "column" }}
           gap="25px"
@@ -142,8 +146,9 @@ function NavBar() {
             >
               <IoMdArrowRoundBack
                 style={{ cursor: "pointer" }}
-                className={`${style.navbarIcons} ${activePath === "/dashboard" ? style.activeNav : ""
-                  }`}
+                className={`${style.navbarIcons} ${
+                  activePath === "/dashboard" ? style.activeNav : ""
+                }`}
                 onClick={() => router.push("/dashboard")}
                 title="Upload your doc"
               />
