@@ -83,15 +83,16 @@ export default function Hero() {
                 wrapper="span"
                 speed={50}
                 repeat={Infinity}
+                className="hero-heading"
               />
             </Heading>
             <Text
               display={"inline-block"}
               px={"5"}
               color={"#fff"}
-              fontSize={{ base: "md", sm: "3xl", md: "5xl" }}
-              backgroundColor={"rgb(30 30 58)"}
-              rounded={"8"}
+              fontSize={{ base: "3xl", sm: "4xl", md: "5xl" }}
+              backgroundColor={"green.500"}
+              className="hero-heading"
             >
               Save countless hours
             </Text>
