@@ -11,7 +11,7 @@ import logger from "./logging.service";
 import { deleteObject } from "./r2.service";
 import { plans, FREE_TIER } from "../config/plan.config";
 
-const COLLECTION_LIMIT = 3;
+const COLLECTION_LIMIT = 5;
 
 const db = getFirestore(app);
 
@@ -228,7 +228,7 @@ export const fetchDashboardStatistics = async (userEmail) => {
   try {
     const userRef = doc(db, `users/${userEmail}`);
     const userDoc = await get;
-  } catch (error) { }
+  } catch (error) {}
 };
 
 export const updateUser = async ({ userEmail, ...rest }) => {
@@ -238,7 +238,7 @@ export const updateUser = async ({ userEmail, ...rest }) => {
       ...rest,
     });
   } catch (e) {
-    logger.error("Failed to update user ", userEmail, rest, e);
+    logger.error(`Failed to update user , ${userEmail}, ${rest}, ${e}`);
     throw new Error("Failed to update user");
   }
 };
@@ -276,23 +276,29 @@ export const fetchPlanInfo = async ({ userEmail }) => {
 const pick = (valuesToPick, obj) => {
   let currentObj = {};
   valuesToPick.forEach((key) => {
-    currentObj[key] = obj[key]
-  })
+    currentObj[key] = obj[key];
+  });
   return currentObj;
-}
-
+};
 
 export const fetchPlanList = async () => {
-  const planToDisplay = pick(['free_tier', 'plus_tier'], plans);
+  const planToDisplay = pick(["free_tier", "plus_tier"], plans);
 
   let displayToFe = [];
   for (let plan in planToDisplay) {
     let currentPlan = planToDisplay[plan];
     let pricing = currentPlan.pricing;
-    let planOfLocation = pricing['in'];
-    let valuesToPick = ['planName', 'primaryText', 'amount', 'duration', 'currency', 'features'];
+    let planOfLocation = pricing["in"];
+    let valuesToPick = [
+      "planName",
+      "primaryText",
+      "amount",
+      "duration",
+      "currency",
+      "features",
+    ];
     let currentObj = pick(valuesToPick, planOfLocation);
     displayToFe.push(currentObj);
   }
   return displayToFe;
-}
+};

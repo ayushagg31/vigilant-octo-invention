@@ -22,10 +22,10 @@ import { useAuth } from "../../store/useAuth";
 import { LoginModal } from "../home/LoginModal";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useAPIError } from "../../hooks/useApiHook";
+import LemonLoader from "./LemonLoader"
+import isUrl from "is-url";
 
-interface Props {
-  children: React.ReactNode;
-}
+
 
 export default function ThreeTierPricing() {
   const [currentPlanId, setCurrentPlanId] = useState(null);
@@ -42,7 +42,8 @@ export default function ThreeTierPricing() {
     user: store.user,
   }));
 
-  function PriceWrapper(props: Props) {
+
+  function PriceWrapper(props) {
     const { children } = props;
 
     return (
@@ -64,10 +65,19 @@ export default function ThreeTierPricing() {
       const { data } = await createCheckoutSessionApi({
         planId: currentPlanId,
       });
-      console.log(data.url);
-      window.location.href = data.url;
+      const checkoutUrl = data.url;
+      if (isUrl(checkoutUrl)) {
+        if (window.LemonSqueezy)
+          window.LemonSqueezy.Url.Open(checkoutUrl);
+        else
+          window.location.href = checkoutUrl;
+      }
+      else {
+        addError("Error in processing subscription ");
+        setLoader(false);
+      }
     } catch (e) {
-      console.error("Error in processing payment");
+      throw e;
     }
   };
 
@@ -158,6 +168,7 @@ export default function ThreeTierPricing() {
 
   return (
     <>
+      <LemonLoader />
       <Flex
         h={"100vh"}
         align={"center"}

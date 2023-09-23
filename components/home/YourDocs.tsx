@@ -26,7 +26,6 @@ import { AiOutlineLink, AiOutlineFilePdf } from "react-icons/ai";
 
 let selectedCollection;
 const YourDocs = ({ closeDrawer }) => {
-  console.log();
   const toast = useToast();
   const router = useRouter();
   const [mounted, setMounted] = useState(false);

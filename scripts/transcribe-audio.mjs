@@ -5,7 +5,6 @@ import logger from "../services/logging.service";
 
 // Convert audio to text using openAI whisper
 export const AudioLoader = async (filePath) => {
-  console.log("filePath" ,filePath);
   try {
     const transcript = await openai.createTranscription(
       fs.createReadStream(filePath),

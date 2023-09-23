@@ -1,4 +1,3 @@
-
 export const plans = {
   zero_tier: {
     MAX_DOCUMENT_LIMIT: {
@@ -13,20 +12,30 @@ export const plans = {
   free_tier: {
     pricing: {
       in: {
-        planName: 'Free',
+        planName: "Free",
         primaryText: "₹0/month",
         amount: 0,
         duration: "month",
         currency: "INR",
-        features: ['120 pages/PDF', '10 MB/PDF', '2 PDFs/day', '20 questions/day']
+        features: [
+          "120 pages/PDF",
+          "10 MB/PDF",
+          "2 PDFs/day",
+          "20 questions/day",
+        ],
       },
       us: {
-        planName: 'Free',
+        planName: "Free",
         primaryText: "$0/month",
         amount: 0,
         duration: "month",
         currency: "USD",
-        features: ['120 pages/PDF', '10 MB/PDF', '2 PDFs/day', '20 questions/day']
+        features: [
+          "120 pages/PDF",
+          "10 MB/PDF",
+          "2 PDFs/day",
+          "20 questions/day",
+        ],
       },
     },
     MAX_DOCUMENT_LIMIT: {
@@ -40,23 +49,33 @@ export const plans = {
   },
   plus_tier: {
     pricing: {
+      checkout_url:
+        "https://docxpert.lemonsqueezy.com/checkout/buy/0327a6d3-333c-4371-b76d-bafe77a0d018?embed=1&desc=0&discount=0&dark=1",
       in: {
         planName: "Pro",
-        price_id: "price_1NjmwMSHPnNdGnAZe9guNYlQ",
-        primaryText: "₹100/month",
+        primaryText: "$5/month",
         amount: 0,
         duration: "month",
         currency: "INR",
-        features: ['2400 pages/PDF', '20 MB/PDF', '5 PDFs/day', '50 questions/day']
+        features: [
+          "2400 pages/PDF",
+          "20 MB/PDF",
+          "5 PDFs/day",
+          "50 questions/day",
+        ],
       },
       us: {
         planName: "Pro",
-        price_id: "price_needToCreate",
         primaryText: "$5/month",
         amount: 0,
         duration: "month",
         currency: "USD",
-        features: ['2400 pages/PDF', '20 MB/PDF', '5 PDFs/day', '50 questions/day']
+        features: [
+          "2400 pages/PDF",
+          "20 MB/PDF",
+          "5 PDFs/day",
+          "50 questions/day",
+        ],
       },
     },
     MAX_DOCUMENT_LIMIT: {
