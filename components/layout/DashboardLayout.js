@@ -4,7 +4,7 @@ import { Flex, Box } from "@chakra-ui/react";
 
 export default function DashboardLayout({ children }) {
   return (
-    <Box h="100vh">
+    <Box h={{ base: '90vh', sm: '100vh' }}>
       <Flex
         w="100%"
         h="100%"

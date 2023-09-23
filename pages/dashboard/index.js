@@ -1,26 +1,37 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Flex, Tooltip, Link } from "@chakra-ui/react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { BeforeUpload } from "../../components/home/BeforeUpload";
-import { MdContactSupport } from "react-icons/md";
-import style from "../../styles/NavBar.module.css";
+import TawkMessenger from "../../components/home/TawkMessenger";
+
 
 const FileUploader = () => {
+
+  useEffect(() => {
+    if (window?.Tawk_API && window?.Tawk_API?.showWidget) {
+      window?.Tawk_API?.showWidget();
+
+    }
+    return () => {
+      if (window?.Tawk_API && window?.Tawk_API?.hideWidget) {
+        window?.Tawk_API?.minimize();
+        window?.Tawk_API?.hideWidget();
+      }
+    };
+  }, []);
+
   return (
+
     <>
       <Box w="100%">
         <Flex w="100%" h="100%" justifyContent="center" pt="36">
           <BeforeUpload />
         </Flex>
       </Box>
-      <Link href="mailto:support@docxpert.com" className={style.hoverLink}>
-        <Box position="fixed" bottom="20px" right={"16px"} zIndex={1}>
-          <Tooltip label="Support" placement="right" shouldWrapChildren>
-            <MdContactSupport fontSize={32} />
-          </Tooltip>
-        </Box>
-      </Link>
+      <div>
+        <TawkMessenger />
+      </div>
     </>
   );
 };
