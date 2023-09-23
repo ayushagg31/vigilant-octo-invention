@@ -178,7 +178,7 @@ export default function ThreeTierPricing() {
             py={10}
           >
             {pricingPlanConfig.map((plan, i) => (
-              <PricePlan plan={plan} />
+              <PricePlan key={i} plan={plan} />
             ))}
           </Stack>
         </Box>
