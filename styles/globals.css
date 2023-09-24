@@ -17,7 +17,7 @@ html {
 
 body {
   /* background-color: #051e3e !important; */
-  background-color: #4b4c8a !important;
+  background: #000000;
 }
 
 a {
@@ -127,9 +127,7 @@ a:hover {
 }
 
 .theme-gradient {
-  background-image: linear-gradient(0deg,
-      rgba(5, 5, 10, 1) 0%,
-      rgba(12, 12, 23, 0.91) 100%);
+  background: #000000;
 }
 
 .movedown-animated {
@@ -467,4 +465,14 @@ a:hover {
   border-color: transparent;
   border-style: solid;
   color: #fff;
+}
+
+.dark-bg2 {
+  background-color: rgb(22, 24, 28);
+  color: #ffffff;
+  /* box-shadow: rgba(136, 153, 166, 0.2) 0px 0px 15px, rgba(136, 153, 166, 0.15) 0px 0px 3px 1px; */
+}
+
+.dark-bg2-shadow {
+  box-shadow: 0px 0px 7px 0px rgba(189, 16, 224, 1);
 }

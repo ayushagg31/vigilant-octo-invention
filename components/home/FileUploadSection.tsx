@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, VStack, Box, Flex, Button, Progress } from "@chakra-ui/react";
+import { Text, VStack, Box, Flex, Button, Progress, Card, Center, Tag, HStack } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import DragAndDrop from "../common/DragAndDrop";
 import { useDashboard } from "../../store/useDashboard";
@@ -58,54 +58,60 @@ export const FileUploadSection = () => {
 
   return (
     <>
-      {file && !isUploading && apiFailure && (
-        <div className="notification is-danger">
-          <button
-            className="delete"
-            onClick={() => setApiFailure(false)}
-          ></button>
-          Server error! Please try after some time.
+      <Card>
+        <div id="file-upload-section">
+          {file && !isUploading && apiFailure && (
+            <div className="notification is-danger">
+              <button
+                className="delete"
+                onClick={() => setApiFailure(false)}
+              ></button>
+              Server error! Please try after some time.
+            </div>
+          )}
+          {!file ? (
+            <FileUploadWrapper>
+              <DragAndDrop onFileSelect={handleFileChange} />
+            </FileUploadWrapper>
+
+          ) : (
+            <FileUploadWrapper>
+              <VStack spacing={4} align="stretch">
+                <Box>
+                  <Flex>
+                    <div className="mr-5">
+                      <Text as="b" fontSize="sm">
+                        {file?.name}
+                      </Text>
+                    </div>
+                    <div onClick={removeFile}>
+                      <i className="fa fa-trash"></i>
+                    </div>
+                  </Flex>
+                </Box>
+                <Box>
+                  <Button
+                    border="2px"
+                    variant="outline"
+                    onClick={handleSubmit}
+                    isLoading={loader}
+                    loadingText="processing your file.."
+                    disabled={!file}
+                    colorScheme='whiteAlpha'
+                  >
+                    Upload
+                  </Button>
+                </Box>
+                <Box>
+                  {loader && (
+                    <Progress size="xs" colorScheme="gray" isIndeterminate />
+                  )}
+                </Box>
+              </VStack>
+            </FileUploadWrapper>
+          )}
         </div>
-      )}
-      {!file ? (
-        <DragAndDrop onFileSelect={handleFileChange} />
-      ) : (
-        <FileUploadWrapper>
-          <VStack spacing={4} align="stretch">
-            <Box>
-              <Flex>
-                <div className="mr-5">
-                  <Text as="b" fontSize="sm">
-                    {file?.name}
-                  </Text>
-                </div>
-                <div onClick={removeFile}>
-                  <i className="fa fa-trash"></i>
-                </div>
-              </Flex>
-            </Box>
-            <Box>
-              <Button
-                border="2px"
-                borderColor="black"
-                variant="outline"
-                onClick={handleSubmit}
-                isLoading={loader}
-                loadingText="processing your file.."
-                disabled={!file}
-              >
-                Upload
-              </Button>
-            </Box>
-            <Box>
-              {loader && (
-                <Progress size="xs" colorScheme="gray" isIndeterminate />
-              )}
-            </Box>
-          </VStack>
-        </FileUploadWrapper>
-      )}
-      <div className="buttons is-right"></div>
+      </Card>
     </>
   );
 };

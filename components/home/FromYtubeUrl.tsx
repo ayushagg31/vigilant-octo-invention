@@ -57,8 +57,8 @@ export const FromYtubeUrl = () => {
                 isLoading={loader}
                 type="submit"
                 border="2px"
-                borderColor="black"
                 variant="outline"
+                colorScheme='whiteAlpha'
               >
                 Upload
               </Button>
