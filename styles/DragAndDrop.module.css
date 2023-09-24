@@ -11,15 +11,10 @@
 }
 
 .fileInputLabel {
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-width: 2px;
-  border-radius: 1rem;
-  border-style: dashed;
   border-color: #cbd5e1;
-  background-color: #f8fafc;
 }
 
 .dragActive {
@@ -50,10 +45,7 @@
 .uploadedFileSection {
   border-width: 2px;
   border-radius: 1rem;
-  border-style: dashed;
-  border-color: #cbd5e1;
-  background-color: #f8fafc;
-  height: 100%;
+  border-color: rgb(47, 51, 54);
   display: flex;
   align-items: center;
   width: 100%;

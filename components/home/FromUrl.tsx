@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Box, Progress } from "@chakra-ui/react";
+import { Button, Box, Progress, Input } from "@chakra-ui/react";
 import isUrl from "is-url";
 import { FileUploadWrapper } from "./FileUploadWrapper";
 import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
@@ -44,20 +44,21 @@ export const FromUrl = () => {
           <div className="field has-addons" style={{ gap: "20px" }}>
             <div className="control is-expanded">
               <input
-                className={`input is-fullwidth ${error ? "is-danger" : ""}`}
+                className={`input is-fullwidth  ${error ? "is-danger" : ""}`}
                 type="text"
                 name="url"
                 placeholder="Enter PDF URL. Ex: https://url.com/path/file.pdf"
               />
+
               {error && <p className="has-text-danger">Invalid URL</p>}
             </div>
             <div className="control">
               <Button
                 isLoading={loader}
                 type="submit"
-                border="2px"
-                borderColor="black"
+              colorScheme='whiteAlpha'    border="2px"
                 variant="outline"
+              
               >
                 Upload
               </Button>

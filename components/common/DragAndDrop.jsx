@@ -9,7 +9,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import style from "../../styles/DragAndDrop.module.css";
-import { AiOutlineCloudUpload } from "react-icons/ai";
+import { FaFilePdf } from "react-icons/fa6";
 
 const DragAndDrop = ({ onFileSelect }) => {
   const [dragActive, setDragActive] = React.useState(false);
@@ -54,57 +54,56 @@ const DragAndDrop = ({ onFileSelect }) => {
         e.stopPropagation();
       }}
     >
-      <Card variant={"unstyled"} h="350px">
+      <Card variant={"unstyled"} className="dark-bg2">
         <CardBody>
-          <input
-            ref={fileInput}
-            type="file"
-            id="input-file-upload"
-            multiple={true}
-            className={style.fileInput}
-            onChange={handleChange}
-            accept="application/pdf"
-          />
-          <label
-            id="label-file-upload"
-            htmlFor="input-file-upload"
-            className={`${style.fileInputLabel} ${
-              dragActive ? style.dragActive : ""
-            }`}
-          >
-            <div>
-              <Center p={2}>
-                <Circle size="40px" bg="black" color="white">
-                  <AiOutlineCloudUpload size="30px" />
-                </Circle>
-              </Center>
-              <Stack spacing={2}>
-                <Center>
-                  <Text fontSize="sm" as="b">
-                    Click to upload{" "}
-                  </Text>{" "}
-                  <Text fontSize="sm">{`\u00A0\ or drag and drop`}</Text>
+          <div id="drag-input">
+            <input
+              ref={fileInput}
+              type="file"
+              id="input-file-upload"
+              multiple={true}
+              className={style.fileInput}
+              onChange={handleChange}
+              accept="application/pdf"
+            />
+            <label
+              id="label-file-upload"
+              htmlFor="input-file-upload"
+              className={`${style.fileInputLabel} ${dragActive ? style.dragActive : ""
+                }`}
+            >
+              <div>
+                <Center p={2}>
+                  <FaFilePdf size="30px" />
                 </Center>
+                <Stack spacing={2}>
+                  <Center>
+                    <Text fontSize="sm" as="b">
+                      Click to upload{" "}
+                    </Text>{" "}
+                    <Text fontSize="sm">{`\u00A0\ or drag and drop`}</Text>
+                  </Center>
 
-                <Text fontSize="xs">
-                  Supported formats: .pdf', '.txt', '.epub', '.rtf
-                </Text>
-              </Stack>
-              <button
-                className={style.uploadButton}
-                onClick={triggerFileUpload}
-              ></button>
-            </div>
-          </label>
-          {dragActive && (
-            <div
-              className={style.dragFileElement}
-              onDragEnter={handleDrag}
-              onDragLeave={handleDrag}
-              onDragOver={handleDrag}
-              onDrop={handleDrop}
-            ></div>
-          )}
+                  <Text fontSize="xs">
+                    Supported formats: .pdf', '.txt', '.epub', '.rtf
+                  </Text>
+                </Stack>
+                <button
+                  className={style.uploadButton}
+                  onClick={triggerFileUpload}
+                ></button>
+              </div>
+            </label>
+            {dragActive && (
+              <div
+                className={style.dragFileElement}
+                onDragEnter={handleDrag}
+                onDragLeave={handleDrag}
+                onDragOver={handleDrag}
+                onDrop={handleDrop}
+              ></div>
+            )}
+          </div>
         </CardBody>
       </Card>
     </form>
