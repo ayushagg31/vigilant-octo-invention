@@ -11,10 +11,10 @@
     /* height: 50%; */
   }
   .pdfSection {
+    flex: unset;
     padding-top: 65px;
-    height: 10%;
+    height: 105px;
   }
   .chatSection {
-    height: 90%;
   }
 }
