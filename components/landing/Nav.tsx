@@ -171,6 +171,11 @@ export default function Simple() {
                 px={2}
                 py={1}
                 rounded={"md"}
+                color={"white"}
+                _hover={{
+                  backgroundColor: "#777",
+                  color: "#fff",
+                }}
                 onClick={() => {
                   onOpenLoginModal();
                 }}
