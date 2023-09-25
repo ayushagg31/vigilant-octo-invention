@@ -69,7 +69,7 @@ const AfterUpload = () => {
           )}
         </Box>
       </Show>
-      <Box h="100%" flex={1}>
+      <Box h="100%" flex={1} background={"#000"}>
         <ChatWidget />
       </Box>
     </Flex>

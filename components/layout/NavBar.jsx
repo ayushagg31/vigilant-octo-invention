@@ -203,9 +203,6 @@ function NavBar() {
                       <MenuItem onClick={() => router.push("/dashboard")}>
                         Dashboard
                       </MenuItem>
-                      <MenuItem onClick={() => router.push("/profile")}>
-                        Profile
-                      </MenuItem>
                       <MenuItem onClick={() => router.push("/settings")}>
                         Settings & Plan
                       </MenuItem>

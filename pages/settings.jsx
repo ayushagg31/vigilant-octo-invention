@@ -1,9 +1,20 @@
-import { useRouter } from "next/router";
 import DashboardLayout from "../components/layout/DashboardLayout";
-import { useEffect } from "react";
+import PaymentInfo from "../components/settings/PaymentInfo";
+import { TabComponent } from "../components/common/TabComponent";
+import { Box } from "@chakra-ui/react";
 
+const tabsObject = [
+  {
+    component: <PaymentInfo />,
+    title: <>Payment</>,
+  },
+];
 const Settings = () => {
-  return <div>Settings</div>;
+  return (
+    // <Box p={"16"}>
+    <TabComponent tabConfig={tabsObject} />
+    // </Box>
+  );
 };
 
 Settings.getLayout = (page) => {
