@@ -59,17 +59,19 @@ const AfterUpload = () => {
   };
 
   const ChatAndTabJsx = (
-    <Flex columns={{ sm: 1, md: 2 }} w="100%" className="main-container">
-      <Show above="md">
-        <Box h="100%" flex={1}>
-          {youtubeUrl !== null ? (
-            <ReactPlayer url={youtubeUrl} />
-          ) : (
-            <RenderPdf />
-          )}
-        </Box>
-      </Show>
-      <Box h="100%" flex={1} background={"#000"}>
+    <Flex
+      columns={{ sm: 1, md: 2 }}
+      w="100%"
+      h={{ base: "100vh", sm: "100%" }}
+      className="main-container"
+      direction={{ base: "column", md: "row" }}
+    >
+      {/* <Show above="md"> */}
+      <Box flex={1} h={{ base: "40%", sm: "100%" }}>
+        {youtubeUrl !== null ? <ReactPlayer url={youtubeUrl} /> : <RenderPdf />}
+      </Box>
+      {/* </Show> */}
+      <Box h={{ base: "60%", sm: "100%" }} flex={1} background={"#000"}>
         <ChatWidget />
       </Box>
     </Flex>

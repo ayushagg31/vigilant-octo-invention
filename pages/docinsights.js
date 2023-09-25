@@ -1,16 +1,15 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/router";
-import { Container, Box } from "@chakra-ui/react";
 import DashboardLayout from "../components/layout/DashboardLayout";
-import AfterUpload from "../components/home/AfterUpload";
+import DocChatViewer from "../components/home/DocChatViewer";
 
 const DocInsights = () => {
   const router = useRouter();
   useEffect(() => {
     if (!router.isReady) return;
   }, [router.isReady]);
-  return router.isReady && <AfterUpload />;
+  return router.isReady && <DocChatViewer />;
 };
 
 DocInsights.getLayout = (page) => {

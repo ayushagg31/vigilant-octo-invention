@@ -120,7 +120,8 @@ function NavBar() {
       <Flex
         direction={{ base: "row", md: "column" }}
         color="white"
-        bg={"rgba(0,0,0, 0.2)"}
+        bg={"rgba(0,0,0)"}
+        className={style.header}
       >
         <Flex
           direction={{ base: "row", md: "column" }}

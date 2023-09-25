@@ -37,4 +37,8 @@
   .navbarIcons {
     font-size: 22px;
   }
+  .header {
+    position: fixed;
+    width: 100%;
+  }
 }
