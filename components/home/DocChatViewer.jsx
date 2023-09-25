@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import style from "./DocChat.module.css";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, Text, Show } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import ChatWidget from "./ChatWidget";
 import { verifyCollectionsApi } from "../../services/client.service";
@@ -49,11 +49,23 @@ const DocChatViewer = () => {
     >
       <Box className={`${style.docinsightSections} ${style.pdfSection}`}>
         <Box h="100%" overflowY="scroll">
-          {youtubeUrl !== null ? (
-            <ReactPlayer url={youtubeUrl} />
-          ) : (
-            <iframe src={`/api/view/${id}`} width="100%" height="100%"></iframe>
-          )}
+          <Text
+            fontSize="sm"
+            p={"2"}
+            color={"#fff"}
+            fontWeight={"bold"}
+          >{`${name}`}</Text>
+          <Show above="md">
+            {youtubeUrl !== null ? (
+              <ReactPlayer url={youtubeUrl} />
+            ) : (
+              <iframe
+                src={`/api/view/${id}`}
+                width="100%"
+                height="100%"
+              ></iframe>
+            )}
+          </Show>
         </Box>
       </Box>
       <Box className={`${style.docinsightSections} ${style.chatSection}`}>
