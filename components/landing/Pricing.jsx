@@ -22,10 +22,8 @@ import { useAuth } from "../../store/useAuth";
 import { LoginModal } from "../home/LoginModal";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useAPIError } from "../../hooks/useApiHook";
-import LemonLoader from "./LemonLoader"
+import LemonLoader from "./LemonLoader";
 import isUrl from "is-url";
-
-
 
 export default function ThreeTierPricing() {
   const [currentPlanId, setCurrentPlanId] = useState(null);
@@ -49,12 +47,9 @@ export default function ThreeTierPricing() {
       });
       const checkoutUrl = data.url;
       if (isUrl(checkoutUrl)) {
-        if (window.LemonSqueezy)
-          window.LemonSqueezy.Url.Open(checkoutUrl);
-        else
-          window.location.href = checkoutUrl;
-      }
-      else {
+        if (window.LemonSqueezy) window.LemonSqueezy.Url.Open(checkoutUrl);
+        else window.location.href = checkoutUrl;
+      } else {
         addError("Error in processing subscription ");
         setLoader(false);
       }
@@ -112,17 +107,12 @@ export default function ThreeTierPricing() {
             <Text fontSize={{ base: "2xl", sm: "5xl" }} fontWeight="900">
               {priceDetails.amount}
             </Text>
-            <Text fontSize={{ base: "xl", sm: "3xl" }} color="gray.500">
+            <Text fontSize={{ base: "xl", sm: "3xl" }}>
               / {priceDetails.duration}
             </Text>
           </HStack>
         </Box>
-        <VStack
-          bg={useColorModeValue("gray.50", "gray.700")}
-          py={4}
-          borderBottomRadius={"xl"}
-          h={"100%"}
-        >
+        <VStack bg={"#171923"} py={4} borderBottomRadius={"xl"} h={"100%"}>
           <List
             color={"black"}
             spacing={3}
@@ -130,11 +120,15 @@ export default function ThreeTierPricing() {
             px={{ base: "3", sm: "12" }}
           >
             {features.map((feature, i) => (
-              <ListItem key={i} fontSize={{ base: "sm", sm: "sm", md: "2xl" }}>
+              <ListItem
+                key={i}
+                color="#f2f2f2"
+                fontSize={{ base: "sm", sm: "sm", md: "2xl" }}
+              >
                 <ListIcon
                   as={FaCheckCircle}
                   rounded={100}
-                  color="#fff"
+                  color="#f2f2f2"
                   bg="black"
                 />
                 {feature}

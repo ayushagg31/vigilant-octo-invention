@@ -69,15 +69,15 @@ export default function Hero() {
               fontWeight={800}
               color={"#fff"}
               fontSize={{ base: "3xl", sm: "7xl", lg: "8xl" }}
-              mb={6}
-              height={{ base: "120px", sm: "250px" }}
+              // mb={6}
+              height={{ base: "60px", sm: "150px" }}
             >
               <TypeAnimation
                 sequence={[
                   // Same substring at the start will only be typed out once, initially
-                  "Chat With Documents",
+                  "Chat with PDFs",
                   2000, // wait 1s before replacing "Mice" with "Hamsters"
-                  "Chat With Youtube Videos",
+                  "Chat with Videos",
                   2000,
                 ]}
                 wrapper="span"

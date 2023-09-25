@@ -67,7 +67,7 @@ export default function LandingFooter() {
             <Box>
               <Logo color={useColorModeValue("gray.700", "white")} />
             </Box>
-            <Text fontSize={"sm"}>© 2023 Doc Xpert. All rights reserved</Text>
+            <Text fontSize={"sm"}>© 2023 YourPDF.chat. All rights reserved</Text>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>FAQ</ListHeader>

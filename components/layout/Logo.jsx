@@ -11,7 +11,7 @@ export default function Logo(props) {
       </Box>
       <Box>
         <Text fontSize="lg" fontWeight="bold">
-          Doc Xpert
+          YourPDF.chat
         </Text>
       </Box>
       <Box>

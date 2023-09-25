@@ -98,7 +98,7 @@ export default function Simple() {
         boxShadow={"lg"}
         px={4}
         backdropFilter={"blur(6px)"}
-        bg={"rgba(0,0,0, 0.4)"}
+        bg={"rgba(23,25,35, 0.7)"}
         style={{ position: "sticky", top: "0", zIndex: "100" }}
       >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
@@ -114,8 +114,8 @@ export default function Simple() {
             _hover={{ color: "#fff", borderColor: "#fff" }}
           />
           <Flex alignItems={"center"} gap={2} color={"#fff"}>
-            <AiFillDingtalkCircle size="44px" title="Doc Xpert" />
-            <Box>Doc Xpert</Box>
+            <AiFillDingtalkCircle size="44px" title="YourPDF.chat" />
+            <Box>YourPDF.chat</Box>
           </Flex>
           <HStack spacing={8} alignItems={"center"}>
             <HStack spacing={8} alignItems={"center"}>

@@ -120,7 +120,7 @@ function NavBar() {
       <Flex
         direction={{ base: "row", md: "column" }}
         color="white"
-        bg={"rgba(0,0,0)"}
+        bg={"#171923"}
         className={style.header}
       >
         <Flex
@@ -134,7 +134,7 @@ function NavBar() {
           <AiFillDingtalkCircle
             size="44px"
             className={style.logo}
-            title="Doc Xpert"
+            title="YourPDF.chat"
             onClick={() => router.push("/")}
           />
           {/* Logo end */}

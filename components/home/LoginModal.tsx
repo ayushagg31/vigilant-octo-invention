@@ -17,12 +17,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { FaGoogle } from "react-icons/fa";
-// import { useModal } from "../../store/useModal";
 import { useAuth } from "../../store/useAuth";
 import { useAPIError } from "../../hooks/useApiHook";
 
+const termConditionText = `By creating an account you agree with our Terms of Service, Privacy Policy, and our default Notification Settings.`;
+
 export function LoginModal({ isOpen, onOpen, onClose, fn = null }) {
-  const termConditionText = `By creating an account you agree with our Terms of Service, Privacy Policy, and our default Notification Settings.`;
   const { googleLogin } = useAuth((store) => ({
     googleLogin: store.googleLogin,
   }));
@@ -74,11 +74,10 @@ export function LoginModal({ isOpen, onOpen, onClose, fn = null }) {
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <OverlayTwo />
-        <ModalContent>
+        <ModalContent bg="#171923">
           <ModalHeader>
             <Center>
-              {" "}
-              <Text fontSize="lg">Sign in to doc chat</Text>
+              <Text fontSize="lg">Sign in to YourPDF.chat</Text>
             </Center>
           </ModalHeader>
           <ModalCloseButton />

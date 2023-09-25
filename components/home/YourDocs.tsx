@@ -94,7 +94,7 @@ const YourDocs = ({ closeDrawer }) => {
   return (
     <>
       <VStack
-        divider={<StackDivider borderColor="gray.200" />}
+        divider={<StackDivider borderColor="gray.500" />}
         spacing={2}
         align="stretch"
       >

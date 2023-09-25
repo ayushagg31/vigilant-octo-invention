@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Text, VStack, Box, Flex, Button, Progress, Card, Center, Tag, HStack } from "@chakra-ui/react";
+import { Text, VStack, Box, Flex, Button } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import DragAndDrop from "../common/DragAndDrop";
 import { useDashboard } from "../../store/useDashboard";
 import { uploadDocumentApi } from "../../services/client.service";
 import { FileUploadWrapper } from "./FileUploadWrapper";
 import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
+import RandomLoader from "../common/RandomLoader"
 
 export const FileUploadSection = () => {
   const router = useRouter();
@@ -58,60 +59,64 @@ export const FileUploadSection = () => {
 
   return (
     <>
-      <Card>
-        <div id="file-upload-section">
-          {file && !isUploading && apiFailure && (
-            <div className="notification is-danger">
-              <button
-                className="delete"
-                onClick={() => setApiFailure(false)}
-              ></button>
-              Server error! Please try after some time.
-            </div>
-          )}
-          {!file ? (
-            <FileUploadWrapper>
-              <DragAndDrop onFileSelect={handleFileChange} />
-            </FileUploadWrapper>
+      <div id="file-upload-section" >
+        {file && !isUploading && apiFailure && (
+          <div className="notification is-danger">
+            <button
+              className="delete"
+              onClick={() => setApiFailure(false)}
+            ></button>
+            Server error! Please try after some time.
+          </div>
+        )}
+        {!file ? (
+          <FileUploadWrapper type="upload">
+            <DragAndDrop onFileSelect={handleFileChange} />
+          </FileUploadWrapper>
 
-          ) : (
-            <FileUploadWrapper>
-              <VStack spacing={4} align="stretch">
-                <Box>
-                  <Flex>
-                    <div className="mr-5">
-                      <Text as="b" fontSize="sm">
-                        {file?.name}
-                      </Text>
-                    </div>
-                    <div onClick={removeFile}>
-                      <i className="fa fa-trash"></i>
-                    </div>
-                  </Flex>
-                </Box>
-                <Box>
-                  <Button
-                    border="2px"
-                    variant="outline"
-                    onClick={handleSubmit}
-                    isLoading={loader}
-                    loadingText="processing your file.."
-                    disabled={!file}
-                    colorScheme='whiteAlpha'
-                  >
-                    Upload
-                  </Button>
-                </Box>
-                <Box>
-                  {loader && (
-                    <Progress size="xs" colorScheme="gray" isIndeterminate />
-                  )}
-                </Box>
-              </VStack>
-            </FileUploadWrapper>
-          )}
-        </div>
-      </Card>
+        ) : (
+          <FileUploadWrapper>
+            <VStack spacing={4} style={{ height: "100%" }}>
+              <Flex direction="column"
+                gap="1rem"
+                justifyContent={"center"}
+                alignItems={"center"}
+                height={"100%"}>
+                {!loader ? <>
+                  <Box>
+                    <Flex>
+                      <div className="mr-5">
+                        <Text as="b" fontSize="lg">
+                          {file?.name}
+                        </Text>
+                      </div>
+                      <div onClick={removeFile} style={{ cursor: "pointer" }}>
+                        <i className="fa fa-trash"></i>
+                      </div>
+                    </Flex>
+                  </Box>
+                  <Box>
+                    <Button
+                      variant="outline"
+                      onClick={handleSubmit}
+                      isLoading={loader}
+                      loadingText="Processing your file..."
+                      disabled={!file}
+                      style={{ background: "#37A169", alignSelf: "flex-end", color: "#fff", padding: "1.25rem 1.5rem" }}
+                    >
+                      Upload
+                    </Button>
+                  </Box>
+                </> :
+                  <>
+                    <RandomLoader color="#37A169" />
+                    <Text>Processing your file...</Text>
+                  </>}
+              </Flex>
+            </VStack>
+          </FileUploadWrapper>
+        )}
+      </div >
     </>
   );
 };

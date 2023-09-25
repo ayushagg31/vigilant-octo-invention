@@ -46,13 +46,14 @@ const DocChatViewer = () => {
       w="100%"
       direction={{ base: "column", md: "row" }}
       flex={"1"}
+      bg="#171923"
     >
       <Box className={`${style.docinsightSections} ${style.pdfSection}`}>
         <Box h="100%" overflowY="scroll">
           <Text
-            fontSize="sm"
+            fontSize="lg"
             p={"2"}
-            color={"#fff"}
+            color={"#37A169"}
             fontWeight={"bold"}
           >{`${name}`}</Text>
           <Show above="md">
