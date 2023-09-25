@@ -200,7 +200,7 @@ function NavBar() {
                       </MenuButton>
                       {renderPlan()}
                     </Box>
-                    <MenuList color={"black"}>
+                    <MenuList color={"fff"}>
                       <MenuItem onClick={() => router.push("/dashboard")}>
                         Dashboard
                       </MenuItem>

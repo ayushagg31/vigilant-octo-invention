@@ -2,19 +2,10 @@
 import React, { useEffect, useState } from "react";
 import NextLink from "next/link";
 import {
-  Tag,
-  TagLabel,
-  TagCloseButton,
-  Link,
-  Flex,
+
   Text,
 } from "@chakra-ui/react";
-import { useCollections } from "../../store/useCollections";
 import { useRouter } from "next/router";
-import { useAuth } from "../../store/useAuth";
-import { deleteCollectionApi } from "../../services/client.service";
-import { AiOutlineLink } from "react-icons/ai";
-import { useAPIError } from "../../hooks/useApiHook";
 
 const TagDoc = ({ collectionEl, size, closeDrawer }) => {
   const router = useRouter();
@@ -36,6 +27,7 @@ const TagDoc = ({ collectionEl, size, closeDrawer }) => {
     <Text
       as={NextLink}
       href="#"
+      style={{ color: "#37A169" }}
       onClick={(e) => {
         e.preventDefault();
         closeDrawer();
@@ -45,7 +37,7 @@ const TagDoc = ({ collectionEl, size, closeDrawer }) => {
       }}
     >
       {collectionEl.collectionName}
-    </Text>
+    </Text >
   );
 };
 

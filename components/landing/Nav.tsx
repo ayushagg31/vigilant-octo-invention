@@ -156,7 +156,7 @@ export default function Simple() {
                   >
                     <Avatar size={"sm"} src={user?.photoURL} />
                   </MenuButton>
-                  <MenuList color={"black"}>
+                  <MenuList color={"fff"}>
                     <MenuItem onClick={() => router.push("/dashboard")}>
                       Dashboard
                     </MenuItem>
