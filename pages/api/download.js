@@ -26,7 +26,13 @@ const downloadHandler = async (req, res) => {
     const collectionName = pdfUrl.substring(pdfUrl.lastIndexOf("/") + 1);
     const filePath = `uploads/${collectionId}.${fileType}`;
 
-    const response = await axios.get(pdfUrl, { responseType: "arraybuffer" });
+    const response = await axios.get(pdfUrl, {
+      responseType: "arraybuffer",
+      headers: {
+        "User-Agent":
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36",
+      },
+    });
     const pdfContent = Buffer.from(response.data, "binary");
     const pdfData = new Uint8Array(pdfContent);
     const pdfDocument = await pdfjs.getDocument({ data: pdfData }).promise;
@@ -78,7 +84,7 @@ const downloadHandler = async (req, res) => {
       }
     });
   } catch (err) {
-    logger.error(`Failed to download document - userEmail: $`, err);
+    logger.error(`Failed to download document - userEmail: ${userEmail}`, err);
     return res.status(500).json({ error: "Failed to download document" });
   }
 };
