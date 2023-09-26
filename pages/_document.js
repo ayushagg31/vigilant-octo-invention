@@ -20,12 +20,18 @@ export default function Document() {
           content="Brings your documents and videos to life, enabling you to engage in natural and interactive conversations with them. Unlock a world of possibilities for collaboration, learning, and information retrieval like never before."
           key="desc"
         />
-        <meta property="og:title" content="YourPDF.chat | Experience PDFs like Never Before" />
+        <meta
+          property="og:title"
+          content="YourPDF.chat | Experience PDFs like Never Before!"
+        />
         <meta
           property="og:description"
           content="Brings your documents and videos to life, enabling you to engage in natural and interactive conversations with them. Unlock a world of possibilities for collaboration, learning, and information retrieval like never before."
         />
-        <meta property="og:image" content="../public/favicon.ico" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/logo.png" />
+        <meta property="og:site_name" content="YourPDF.chat" />
+        <meta property="og:url" content="https://yourpdf.chat" />
       </Head>
       <body>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />

@@ -13,7 +13,7 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>YourPDF.chat | Experience PDFs like Never Before</title>
+        <title>YourPDF.chat | Experience PDFs like Never Before!</title>
       </Head>
       <Providers>
         <APIErrorProvider>
