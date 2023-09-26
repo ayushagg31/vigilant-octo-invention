@@ -17,11 +17,11 @@ const withAuthRedirect = (Component) => {
         }, []);
 
         const router = useRouter();
-        useLayoutEffect(() => {
-            if (user == null) {
+        useEffect(() => {
+            if (!loadingUser && user == null) {
                 router.push("/");
             }
-        }, [user])
+        }, [user, loadingUser])
         if (!isMounted || loadingUser) return <></>
         // Otherwise, render the component
         return user && <Component {...props} />;
