@@ -19,7 +19,6 @@ import {
 import { useDashboard } from "../../store/useDashboard";
 import { useCollections } from "../../store/useCollections";
 import { useRouter } from "next/router";
-import { useAuth } from "../../store/useAuth";
 import TagDoc from "./TagDoc";
 import { MdSettings } from "react-icons/md";
 import { AiOutlineLink, AiOutlineFilePdf } from "react-icons/ai";
@@ -71,6 +70,7 @@ const YourDocs = ({ closeDrawer }) => {
     if (selectedCollection) {
       try {
         await deleteCollection(selectedCollection.collectionId);
+        router.replace("dashboard")
       } catch (e) {
         toast({
           title: e.message,

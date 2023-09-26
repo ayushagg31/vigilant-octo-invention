@@ -3,8 +3,6 @@ import { Box, Flex, Show, Spinner, Text, Img } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import ChatWidget from "./ChatWidget";
 import ReactPlayer from "react-player/lazy";
-import { useAuth } from "../../store/useAuth";
-// import { useCollections } from "../../store/useCollections";
 import { useAPIError } from "../../hooks/useApiHook";
 import { verifyCollectionsApi } from "../../services/client.service";
 

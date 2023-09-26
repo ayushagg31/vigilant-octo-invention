@@ -10,29 +10,24 @@ import RandomLoader from "../common/RandomLoader"
 
 export const FileUploadSection = () => {
   const router = useRouter();
-  const [error, setError] = useState(false);
   const { addError } = useAPIError();
   const { loader, addLoader, removeLoader } = useAPILoader();
 
-  const { isUploading, handleFileUpload, apiFailure, setApiFailure } =
+  const { isUploading, apiFailure, setApiFailure } =
     useDashboard((store) => {
       return {
-        handleFileUpload: store.handleFileUpload,
         isUploading: store.isUploading,
         apiFailure: store.apiFailure,
         setApiFailure: store.setApiFailure,
       };
     });
 
-  const [file, setFile] = useState(null);
+  const [doc, setDoc] = useState(null);
 
-  const handleFileChange = (files) => {
+  const handleSubmit = async (files) => {
     setApiFailure(false);
-    setFile(files[0]);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    let file = files[0]
+    setDoc(file);
     if (!file) return;
     const formData = new FormData();
     formData.append("file", file);
@@ -44,7 +39,7 @@ export const FileUploadSection = () => {
       } = response;
       removeLoader();
       router.push({
-        pathname: "dashboard/docinsights",
+        pathname: "docinsights",
         query: { id: collectionId, name: collectionName },
       });
     } catch (err) {
@@ -53,14 +48,10 @@ export const FileUploadSection = () => {
     }
   };
 
-  const removeFile = () => {
-    setFile(null);
-  };
-
   return (
     <>
       <div id="file-upload-section" >
-        {file && !isUploading && apiFailure && (
+        {doc && !isUploading && apiFailure && (
           <div className="notification is-danger">
             <button
               className="delete"
@@ -69,9 +60,9 @@ export const FileUploadSection = () => {
             Server error! Please try after some time.
           </div>
         )}
-        {!file ? (
+        {!doc ? (
           <FileUploadWrapper type="upload">
-            <DragAndDrop onFileSelect={handleFileChange} />
+            <DragAndDrop onFileSelect={handleSubmit} />
           </FileUploadWrapper>
 
         ) : (
@@ -87,30 +78,15 @@ export const FileUploadSection = () => {
                     <Flex>
                       <div className="mr-5">
                         <Text as="b" fontSize="lg">
-                          {file?.name}
+                          {doc?.name}
                         </Text>
                       </div>
-                      <div onClick={removeFile} style={{ cursor: "pointer" }}>
-                        <i className="fa fa-trash"></i>
-                      </div>
                     </Flex>
-                  </Box>
-                  <Box>
-                    <Button
-                      variant="outline"
-                      onClick={handleSubmit}
-                      isLoading={loader}
-                      loadingText="Processing your file..."
-                      disabled={!file}
-                      style={{ background: "#37A169", alignSelf: "flex-end", color: "#fff", padding: "1.25rem 1.5rem" }}
-                    >
-                      Upload
-                    </Button>
                   </Box>
                 </> :
                   <>
                     <RandomLoader color="#37A169" />
-                    <Text>Processing your file...</Text>
+                    <Text>{`Processing ${doc?.name}...`}</Text>
                   </>}
               </Flex>
             </VStack>

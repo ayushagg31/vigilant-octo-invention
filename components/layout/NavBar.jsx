@@ -139,7 +139,7 @@ function NavBar() {
           />
           {/* Logo end */}
           {/* Chat with pdf start */}
-          {activePath === "/docinsights" && (
+          {activePath.includes("/docinsights") && (
             <Tooltip
               label="Go to dashboard"
               placement="right"
@@ -180,6 +180,7 @@ function NavBar() {
           justify="center"
           align="center"
           p="4"
+          zIndex="100"
         >
           {loadingUser ? (
             <AiOutlineLoading3Quarters className={style.loading} />
@@ -196,7 +197,11 @@ function NavBar() {
                         cursor={"pointer"}
                         minW={0}
                       >
-                        <Avatar size={"sm"} src={user?.photoURL} />
+                        <Avatar
+                          name={user?.displayName}
+                          size={"sm"}
+                          src={user?.photoURL}
+                        />
                       </MenuButton>
                       {renderPlan()}
                     </Box>

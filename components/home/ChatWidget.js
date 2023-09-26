@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/router";
 import { HumanChatMessage, AIChatMessage } from "langchain/schema";
 import { Box, Avatar, Stack } from "@chakra-ui/react";
-import { AiOutlineRobot, AiOutlineSend } from "react-icons/ai";
+import { AiFillDingtalkCircle, AiOutlineSend } from "react-icons/ai";
 import { chatApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
 
@@ -128,7 +128,7 @@ export default function ChatWidget() {
                       <Avatar
                         bg="black"
                         style={{ marginTop: "0.5rem" }}
-                        icon={<AiOutlineRobot fontSize="1.5rem" />}
+                        icon={<AiFillDingtalkCircle fontSize="3rem" />}
                       />
                     ) : (
                       <Avatar

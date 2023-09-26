@@ -26,7 +26,7 @@ export const FromYtubeUrl = () => {
         } = response;
         removeLoader();
         router.push({
-          pathname: "dashboard/docinsights",
+          pathname: "docinsights",
           query: { id: collectionId, yt: btoa(ytUrl) },
         });
       } catch (error) {

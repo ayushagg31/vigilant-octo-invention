@@ -26,7 +26,7 @@ export const FromUrl = () => {
         } = response;
         removeLoader();
         router.push({
-          pathname: "dashboard/docinsights",
+          pathname: "docinsights",
           query: { id: collectionId, name: collectionName },
         });
       } catch (error) {

@@ -5,10 +5,12 @@ import { useRouter } from "next/router";
 import ChatWidget from "./ChatWidget";
 import { verifyCollectionsApi } from "../../services/client.service";
 import LoaderScreen from "./LoaderScreen";
+import { useAPIError } from "../../hooks/useApiHook";
 import Head from "next/head";
 
 const DocChatViewer = () => {
   const [isVerified, setIsVerified] = useState(false);
+  const { addError } = useAPIError();
   const router = useRouter();
   const {
     query: { id, name, yt },
@@ -25,6 +27,10 @@ const DocChatViewer = () => {
           data: { isVerified },
         } = await verifyCollectionsApi({ collectionId });
         setIsVerified(isVerified);
+        if (!isVerified) {
+          addError("Document not verified");
+          router.replace("dashboard");
+        }
       } catch (err) {
         addError("Error in verifying account");
         router.replace("dashboard");

@@ -23,7 +23,7 @@ const LoaderScreen = () => {
       />
 
       <Text mt={4} color={"#fff"}>
-        Loading your doc
+        Loading your document...
       </Text>
     </Flex>
   );
