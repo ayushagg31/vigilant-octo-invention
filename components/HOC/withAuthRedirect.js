@@ -2,9 +2,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { useRouter } from "next/router";
 import { useAuth } from '../../store/useAuth';
-import {
-  PacmanLoader,
-} from "react-spinners";
 
 
 const withAuthRedirect = (Component) => {
@@ -25,7 +22,7 @@ const withAuthRedirect = (Component) => {
                 router.push("/");
             }
         }, [user])
-        if (!isMounted) return <></>
+        if (!isMounted || loadingUser) return <></>
         // Otherwise, render the component
         return user && <Component {...props} />;
     };
