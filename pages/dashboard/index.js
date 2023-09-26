@@ -4,14 +4,12 @@ import { Box, Flex, Tooltip, Link } from "@chakra-ui/react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { BeforeUpload } from "../../components/home/BeforeUpload";
 import TawkMessenger from "../../components/home/TawkMessenger";
-
+import Head from "next/head";
 
 const FileUploader = () => {
-
   useEffect(() => {
     if (window?.Tawk_API && window?.Tawk_API?.showWidget) {
       window?.Tawk_API?.showWidget();
-
     }
     return () => {
       if (window?.Tawk_API && window?.Tawk_API?.hideWidget) {
@@ -22,8 +20,10 @@ const FileUploader = () => {
   }, []);
 
   return (
-
     <>
+      <Head>
+        <title>Dashboard | YourPDF.chat</title>
+      </Head>
       <Box w="100%">
         <Flex w="100%" h="100%" justifyContent="center" pt="36">
           <BeforeUpload />

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, Children, useRef, useEffect } from "react";
 import styles from "../../styles/Home.module.css";
 import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/router";
@@ -119,46 +119,48 @@ export default function ChatWidget() {
     <>
       <Box className={styles.cloud}>
         <div ref={messageListRef} className={styles.messagelist}>
-          {messages.map((message, index) => {
-            return (
-              <div id="chat-conatiner" className={styles.chatBubbleContainer}>
-                <Stack direction="row">
-                  {message.type === "apiMessage" ? (
-                    <Avatar
-                      bg="black"
-                      style={{ marginTop: "0.5rem" }}
-                      icon={<AiOutlineRobot fontSize="1.5rem" />}
-                    />
-                  ) : (
-                    <Avatar
-                      name={user?.displayName}
-                      src={user?.photoURL}
-                      style={{ marginTop: "0.5rem" }}
-                    />
-                  )}
+          {Children.toArray(
+            messages.map((message, index) => {
+              return (
+                <div id="chat-conatiner" className={styles.chatBubbleContainer}>
+                  <Stack direction="row">
+                    {message.type === "apiMessage" ? (
+                      <Avatar
+                        bg="black"
+                        style={{ marginTop: "0.5rem" }}
+                        icon={<AiOutlineRobot fontSize="1.5rem" />}
+                      />
+                    ) : (
+                      <Avatar
+                        name={user?.displayName}
+                        src={user?.photoURL}
+                        style={{ marginTop: "0.5rem" }}
+                      />
+                    )}
 
-                  <div
-                    key={index}
-                    className={
-                      message.type === "userMessage" &&
+                    <div
+                      key={index}
+                      className={
+                        message.type === "userMessage" &&
                         loading &&
                         index === messages.length - 1
-                        ? styles.usermessagewaiting
-                        : message.type === "apiMessage"
+                          ? styles.usermessagewaiting
+                          : message.type === "apiMessage"
                           ? styles.apimessage
                           : styles.usermessage
-                    }
-                  >
-                    <div className={styles.markdownanswer}>
-                      <ReactMarkdown linkTarget={"_blank"}>
-                        {message.message}
-                      </ReactMarkdown>
+                      }
+                    >
+                      <div className={styles.markdownanswer}>
+                        <ReactMarkdown linkTarget={"_blank"}>
+                          {message.message}
+                        </ReactMarkdown>
+                      </div>
                     </div>
-                  </div>
-                </Stack>
-              </div>
-            );
-          })}
+                  </Stack>
+                </div>
+              );
+            })
+          )}
         </div>
       </Box>
       <div>
