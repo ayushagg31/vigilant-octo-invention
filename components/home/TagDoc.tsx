@@ -17,7 +17,7 @@ const TagDoc = ({ collectionEl, size, closeDrawer }) => {
 
   const creatLink = ({ collectionId, fileType, ytUrl, collectionName }) => {
     if (fileType == "mp3") {
-      return `/docinsights?id=${collectionId}&yt=${btoa(ytUrl)}`;
+      return `/docinsights?id=${collectionId}&yt=${btoa(ytUrl)}&name=${(collectionName)}`;
     }
     return `/docinsights?id=${collectionId}&name=${(collectionName)}`;
   };
