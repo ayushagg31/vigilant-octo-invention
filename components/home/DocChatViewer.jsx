@@ -7,6 +7,7 @@ import { verifyCollectionsApi } from "../../services/client.service";
 import LoaderScreen from "./LoaderScreen";
 import { useAPIError } from "../../hooks/useApiHook";
 import Head from "next/head";
+import ReactPlayer from "react-player";
 
 const DocChatViewer = () => {
   const [isVerified, setIsVerified] = useState(false);

@@ -57,7 +57,7 @@ const ytHandler = async (req, res) => {
 
               return res.status(200).json({
                 message: "File transcribed and ingested successfully",
-                videoTitle,
+                collectionName: videoTitle,
                 collectionId,
                 ytUrl,
               });

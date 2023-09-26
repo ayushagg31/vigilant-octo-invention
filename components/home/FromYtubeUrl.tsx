@@ -22,12 +22,12 @@ export const FromYtubeUrl = () => {
         addLoader();
         const response = await youtubeTranscribeApi({ ytUrl: url });
         const {
-          data: { collectionId, ytUrl },
+          data: { collectionId, collectionName, ytUrl },
         } = response;
         removeLoader();
         router.push({
           pathname: "docinsights",
-          query: { id: collectionId, yt: btoa(ytUrl) },
+          query: { id: collectionId, yt: btoa(ytUrl), name: collectionName },
         });
       } catch (error) {
         removeLoader();
@@ -43,38 +43,38 @@ export const FromYtubeUrl = () => {
     <>
       <FileUploadWrapper>
         <form onSubmit={saveAsAudio} style={{ height: "100%" }}>
-            <Flex justifyContent={"center"}
-              padding={"1rem"}
-              direction={"column"}
-              height={"100%"}
-              alignItems={"center"}
-              gap="1rem">
-              {!loader ?
-                <>
-                  <input
-                    className={`input is-fullwidth  ${error ? "is-danger" : ""}`}
-                    type="text"
-                    name="url"
-                    placeholder="Provide a Youtube Video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)"
-                    style={{ padding: "1.5rem", borderRadius: '4px' }}
-                  />
+          <Flex justifyContent={"center"}
+            padding={"1rem"}
+            direction={"column"}
+            height={"100%"}
+            alignItems={"center"}
+            gap="1rem">
+            {!loader ?
+              <>
+                <input
+                  className={`input is-fullwidth  ${error ? "is-danger" : ""}`}
+                  type="text"
+                  name="url"
+                  placeholder="Provide a Youtube Video URL (e.g., https://www.youtube.com/watch?v=VIDEO_ID)"
+                  style={{ padding: "1.5rem", borderRadius: '4px' }}
+                />
 
-                  {error && <p className="has-text-danger">Invalid URL</p>}
-                  <Button
-                    isLoading={loader}
-                    type="submit"
-                    loadingText="Processing your file..."
-                    variant="outline"
-                    style={{ background: "#37A169", alignSelf: "flex-end", color: "#fff", padding: "1.25rem 1.5rem" }}
-                  >
-                    Upload
-                  </Button>
-                </> :
-                <>
-                  <RandomLoader color="#37A169" />
-                  <Text>Processing your video...</Text>
-                </>}
-            </Flex>
+                {error && <p className="has-text-danger">Invalid URL</p>}
+                <Button
+                  isLoading={loader}
+                  type="submit"
+                  loadingText="Processing your file..."
+                  variant="outline"
+                  style={{ background: "#37A169", alignSelf: "flex-end", color: "#fff", padding: "1.25rem 1.5rem" }}
+                >
+                  Upload
+                </Button>
+              </> :
+              <>
+                <RandomLoader color="#37A169" />
+                <Text>Processing your video...</Text>
+              </>}
+          </Flex>
         </form>
       </FileUploadWrapper>
     </>
