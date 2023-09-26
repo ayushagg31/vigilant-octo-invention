@@ -6,27 +6,28 @@ import { useDashboard } from "../../store/useDashboard";
 import { uploadDocumentApi } from "../../services/client.service";
 import { FileUploadWrapper } from "./FileUploadWrapper";
 import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
-import RandomLoader from "../common/RandomLoader"
+import RandomLoader from "../common/RandomLoader";
+import { useCollections } from "../../store/useCollections";
 
 export const FileUploadSection = () => {
   const router = useRouter();
   const { addError } = useAPIError();
   const { loader, addLoader, removeLoader } = useAPILoader();
+  const { fetchCollections } = useCollections();
 
-  const { isUploading, apiFailure, setApiFailure } =
-    useDashboard((store) => {
-      return {
-        isUploading: store.isUploading,
-        apiFailure: store.apiFailure,
-        setApiFailure: store.setApiFailure,
-      };
-    });
+  const { isUploading, apiFailure, setApiFailure } = useDashboard((store) => {
+    return {
+      isUploading: store.isUploading,
+      apiFailure: store.apiFailure,
+      setApiFailure: store.setApiFailure,
+    };
+  });
 
   const [doc, setDoc] = useState(null);
 
   const handleSubmit = async (files) => {
     setApiFailure(false);
-    let file = files[0]
+    let file = files[0];
     setDoc(file);
     if (!file) return;
     const formData = new FormData();
@@ -38,6 +39,7 @@ export const FileUploadSection = () => {
         data: { collectionId, collectionName },
       } = response;
       removeLoader();
+      fetchCollections();
       router.push({
         pathname: "docinsights",
         query: { id: collectionId, name: collectionName },
@@ -50,7 +52,7 @@ export const FileUploadSection = () => {
 
   return (
     <>
-      <div id="file-upload-section" >
+      <div id="file-upload-section">
         {doc && !isUploading && apiFailure && (
           <div className="notification is-danger">
             <button
@@ -64,35 +66,39 @@ export const FileUploadSection = () => {
           <FileUploadWrapper type="upload">
             <DragAndDrop onFileSelect={handleSubmit} />
           </FileUploadWrapper>
-
         ) : (
           <FileUploadWrapper>
             <VStack spacing={4} style={{ height: "100%" }}>
-              <Flex direction="column"
+              <Flex
+                direction="column"
                 gap="1rem"
                 justifyContent={"center"}
                 alignItems={"center"}
-                height={"100%"}>
-                {!loader ? <>
-                  <Box>
-                    <Flex>
-                      <div className="mr-5">
-                        <Text as="b" fontSize="lg">
-                          {doc?.name}
-                        </Text>
-                      </div>
-                    </Flex>
-                  </Box>
-                </> :
+                height={"100%"}
+              >
+                {!loader ? (
+                  <>
+                    <Box>
+                      <Flex>
+                        <div className="mr-5">
+                          <Text as="b" fontSize="lg">
+                            {doc?.name}
+                          </Text>
+                        </div>
+                      </Flex>
+                    </Box>
+                  </>
+                ) : (
                   <>
                     <RandomLoader color="#37A169" />
-                    <Text>{`Processing ${doc?.name}...`}</Text>
-                  </>}
+                    <Text color="white">{`Processing ${doc?.name}...`}</Text>
+                  </>
+                )}
               </Flex>
             </VStack>
           </FileUploadWrapper>
         )}
-      </div >
+      </div>
     </>
   );
 };
