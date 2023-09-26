@@ -147,9 +147,8 @@ function NavBar() {
             >
               <IoMdArrowRoundBack
                 style={{ cursor: "pointer" }}
-                className={`${style.navbarIcons} ${
-                  activePath === "/dashboard" ? style.activeNav : ""
-                }`}
+                className={`${style.navbarIcons} ${activePath === "/dashboard" ? style.activeNav : ""
+                  }`}
                 onClick={() => router.push("/dashboard")}
                 title="Upload your doc"
               />

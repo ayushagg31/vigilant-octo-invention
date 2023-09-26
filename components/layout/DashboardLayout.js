@@ -1,8 +1,9 @@
 ("use client");
 import NavBar from "./NavBar";
 import { Flex, Box } from "@chakra-ui/react";
+import withAuthRedirect from "../../components/HOC/withAuthRedirect";
 
-export default function DashboardLayout({ children }) {
+const DashboardLayout = ({ children }) => {
   return (
     <>
       <Box h="100vh">
@@ -21,3 +22,7 @@ export default function DashboardLayout({ children }) {
     </>
   );
 }
+
+
+
+export default withAuthRedirect(DashboardLayout);

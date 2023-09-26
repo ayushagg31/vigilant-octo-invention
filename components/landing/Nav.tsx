@@ -61,7 +61,7 @@ export default function Simple() {
   const jumpToReleventDiv = useCallback((id) => {
     const releventDiv = document.getElementById(id);
     // behavior: "smooth" parameter for smooth movement
-    releventDiv.scrollIntoView({ behavior: "smooth", block: "center" });
+    releventDiv?.scrollIntoView({ behavior: "smooth", block: "center" });
   }, []);
 
   const Links = useMemo(() => {
