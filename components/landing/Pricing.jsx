@@ -15,7 +15,6 @@ import {
   useDisclosure,
   Flex,
 } from "@chakra-ui/react";
-import Head from "next/head";
 import { FaCheckCircle } from "react-icons/fa";
 import { pricingPlanConfig } from "../../config/pricing.plan";
 import { createCheckoutSessionApi } from "../../services/client.service";
@@ -159,9 +158,7 @@ export default function ThreeTierPricing() {
 
   return (
     <>
-      <Head>
-        <LemonLoader />
-      </Head>
+      <LemonLoader />
       <Flex
         h={"100vh"}
         align={"center"}
