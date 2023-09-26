@@ -11,7 +11,8 @@ import { useAuth } from "../../store/useAuth";
 
 const initalMessage = [
   {
-    message: "Hi, what would you like to learn about this document?",
+    message:
+      "It's great to see you here! What questions do you have about this document?",
     type: "apiMessage",
   },
 ];

@@ -147,8 +147,7 @@
   padding: 0.5rem 1rem;
   margin: 5px;
   color: #222;
-  /* Text color: Red */
-  background: linear-gradient(to left, #d1d5db, #ffffff, #d1d5db);
+  background: linear-gradient(to right, #f2f2f2 10%, #222, #f2f2f2 90%);
   background-size: 200% 200%;
   background-position: -100% 0;
   animation: loading-gradient 2s ease-in-out infinite;
