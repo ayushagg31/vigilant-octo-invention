@@ -121,6 +121,7 @@ function NavBar() {
         direction={{ base: "row", md: "column" }}
         color="white"
         bg={"#171923"}
+        zIndex="1"
         className={style.header}
       >
         <Flex

@@ -12,7 +12,7 @@ export default function DashboardLayout({ children }) {
         className="theme-gradient"
       >
         <NavBar />
-        <div style={{ flex: 1 }}>{children}</div>
+        <div style={{ flex: 1, zIndex: 1, background: "#000" }}>{children}</div>
       </Flex>
     </Box>
   );

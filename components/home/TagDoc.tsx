@@ -27,7 +27,7 @@ const TagDoc = ({ collectionEl, size, closeDrawer }) => {
     <Text
       as={NextLink}
       href="#"
-      style={{ color: "#37A169" }}
+      style={{ color: "#fff" }}
       onClick={(e) => {
         e.preventDefault();
         closeDrawer();

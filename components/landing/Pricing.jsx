@@ -92,9 +92,11 @@ export default function ThreeTierPricing() {
         flexDirection={"column"}
         shadow="base"
         borderWidth="1px"
+        zIndex="1"
         alignSelf="stretch"
         borderColor={useColorModeValue("gray.200", "gray.500")}
         borderRadius={"xl"}
+        bg="#000"
       >
         <Box py={{ base: "2", sm: "4" }} color={"white"}>
           <Text fontWeight="500" fontSize={{ base: "l", sm: "2xl" }}>
