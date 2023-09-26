@@ -90,5 +90,5 @@ export const plans = {
 };
 
 export const FREE_TIER = "free_tier";
-export const PLUS_TIER = "plus_tier";
 export const ZERO_TIER = "zero_tier";
+export const PLUS_TIER = "plus_tier";

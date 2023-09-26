@@ -72,10 +72,9 @@ function NavBar() {
         fontSize={"16px"}
         color={"#f9c7a4"}
         cursor={"pointer"}
-        onClick={() => router.push("/settings")}
       />
     );
-    let planText = "You are on free plan. Click here to upgrade";
+    let planText = "You're using the free plan. Upgrade for more prompts.";
 
     switch (currentPlan) {
       case PLUS_TIER:
@@ -85,12 +84,7 @@ function NavBar() {
     }
     return (
       <Box position="absolute" top="-1" right="-1">
-        <Tooltip
-          label={planText}
-          placement="right"
-          shouldWrapChildren
-          openDelay={500}
-        >
+        <Tooltip label={planText} placement="right" shouldWrapChildren>
           {plan}
         </Tooltip>
       </Box>
@@ -147,8 +141,9 @@ function NavBar() {
             >
               <IoMdArrowRoundBack
                 style={{ cursor: "pointer" }}
-                className={`${style.navbarIcons} ${activePath === "/dashboard" ? style.activeNav : ""
-                  }`}
+                className={`${style.navbarIcons} ${
+                  activePath === "/dashboard" ? style.activeNav : ""
+                }`}
                 onClick={() => router.push("/dashboard")}
                 title="Upload your doc"
               />

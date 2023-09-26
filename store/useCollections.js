@@ -3,6 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import {
   deleteCollectionApi,
   fetchCollectionsApi,
+  updateChatLimit,
 } from "../services/client.service";
 import { FREE_TIER } from "../config/plan.config";
 
@@ -13,7 +14,7 @@ export const useCollections = create(
       collections: [],
       currentPlan: FREE_TIER,
       queryInfo: {
-        query: 0,
+        count: 0,
       },
       fetchCollections: async () => {
         const { data } = await fetchCollectionsApi();
@@ -31,6 +32,11 @@ export const useCollections = create(
         } catch (error) {
           throw new Error(error);
         }
+      },
+      updateChatCount: async () => {
+        try {
+          await updateChatLimit();
+        } catch (error) {}
       },
     }),
     {

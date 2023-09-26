@@ -1,6 +1,7 @@
 import React from "react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
 import { useAPILoader } from "../../hooks/useApiHook";
+
 export const TabComponent = ({ tabConfig }) => {
   const { loader } = useAPILoader();
 
@@ -21,6 +22,7 @@ export const TabComponent = ({ tabConfig }) => {
         zIndex={"999"}
         p="2"
         variant="soft-rounded"
+        m="auto"
       >
         <TabList py={3} cursor={loader ? "not-allowed" : "auto"}>
           {tabKeys.map((el, index) => (
@@ -32,6 +34,8 @@ export const TabComponent = ({ tabConfig }) => {
               pointerEvents={loader ? "none" : "auto"}
               _selected={{
                 color: "#fff",
+                fontWeight: "light",
+                border: "1px",
                 border: "2px solid #37A169",
               }}
             >

@@ -1,3 +1,5 @@
+import { updateUser } from "./services/firestore.service";
+
 export const isToday = (timestamp) => {
   if (!timestamp) return false;
   const currentDate = new Date();

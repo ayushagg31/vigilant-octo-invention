@@ -75,11 +75,11 @@ const DragAndDrop = ({ onFileSelect }) => {
         >
           <div>
             <Center p={2}>
-              <FaFilePdf size="30px" />
+              <FaFilePdf size="30px" color="white" />
             </Center>
-            <Stack spacing={2}>
+            <Stack spacing={2} mt={3}>
               <Center>
-                <Text fontSize="sm" as="b">
+                <Text fontSize="sm" as="b" color={"white"}>
                   Click to upload or Drag & drop
                 </Text>
               </Center>
