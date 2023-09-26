@@ -34,9 +34,7 @@ const TawkMessenger = () => {
         }
     }, [user?.email])
 
-    const onBeforeLoad = () => {
-        console.log('onBeforeLoaded');
-    }
+   
     const onLoadHandler = () => {
         setIsTawkLoaded(true);
     }
@@ -46,7 +44,6 @@ const TawkMessenger = () => {
         propertyId="650b083e0f2b18434fd9991a"
         widgetId="1haphgdqr"
         ref={tawkMessengerRef}
-        onBeforeLoad={onBeforeLoad}
     />
 }
 
