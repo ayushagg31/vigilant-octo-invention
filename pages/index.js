@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import  Head  from "next/head";
 import Nav from "../components/landing/Nav";
 import Hero from "../components/landing/Hero";
 import Features from "../components/landing/Features";
