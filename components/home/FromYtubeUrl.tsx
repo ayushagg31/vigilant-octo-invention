@@ -24,13 +24,13 @@ export const FromYtubeUrl = () => {
         addLoader();
         const response = await youtubeTranscribeApi({ ytUrl: url });
         const {
-          data: { collectionId, ytUrl },
+          data: { collectionId, collectionName, ytUrl },
         } = response;
         removeLoader();
         fetchCollections();
         router.push({
           pathname: "docinsights",
-          query: { id: collectionId, yt: btoa(ytUrl) },
+          query: { id: collectionId, yt: btoa(ytUrl), name: collectionName },
         });
       } catch (error) {
         removeLoader();
@@ -83,7 +83,7 @@ export const FromYtubeUrl = () => {
             ) : (
               <>
                 <RandomLoader color="#37A169" />
-                <Text>Processing your video...</Text>
+                <Text color="white">Processing your video...</Text>
               </>
             )}
           </Flex>
