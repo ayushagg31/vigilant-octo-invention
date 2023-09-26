@@ -121,7 +121,6 @@ function NavBar() {
         direction={{ base: "row", md: "column" }}
         color="white"
         bg={"#171923"}
-        zIndex="1"
         className={style.header}
       >
         <Flex
@@ -201,15 +200,31 @@ function NavBar() {
                       </MenuButton>
                       {renderPlan()}
                     </Box>
-                    <MenuList color={"fff"}>
-                      <MenuItem onClick={() => router.push("/dashboard")}>
+                    <MenuList color={"#000"} bg="#fff">
+                      <MenuItem
+                        _hover={{
+                          backgroundColor: "#EDF2F6",
+                        }}
+                        bg="#fff"
+                        onClick={() => router.push("/dashboard")}
+                      >
                         Dashboard
                       </MenuItem>
-                      <MenuItem onClick={() => router.push("/settings")}>
+                      <MenuItem
+                        _hover={{
+                          backgroundColor: "#EDF2F6",
+                        }}
+                        bg="#fff"
+                        onClick={() => router.push("/settings")}
+                      >
                         Settings & Plan
                       </MenuItem>
                       <MenuDivider />
                       <MenuItem
+                        _hover={{
+                          backgroundColor: "#EDF2F6",
+                        }}
+                        bg="#fff"
                         onClick={async () => {
                           router.push("/");
                           await logout(router);

@@ -156,12 +156,20 @@ export default function Simple() {
                   >
                     <Avatar size={"sm"} src={user?.photoURL} />
                   </MenuButton>
-                  <MenuList color={"fff"}>
-                    <MenuItem onClick={() => router.push("/dashboard")}>
+                  <MenuList color={"#000"} bg="#fff" >
+                    <MenuItem
+                      _hover={{
+                        backgroundColor: "#EDF2F6",
+                      }}
+                      onClick={() => router.push("/dashboard")} bg="#fff">
                       Dashboard
                     </MenuItem>
                     <MenuDivider />
-                    <MenuItem onClick={() => onLogout()}>Logout</MenuItem>
+                    <MenuItem
+                      _hover={{
+                        backgroundColor: "#EDF2F6",
+                      }}
+                      onClick={() => onLogout()} bg="#fff">Logout</MenuItem>
                   </MenuList>
                 </Menu>
               </>
@@ -206,7 +214,7 @@ export default function Simple() {
             </Stack>
           </Box>
         ) : null}
-      </Box>
+      </Box >
 
       <LoginModal
         isOpen={isOpenLoginModal}
