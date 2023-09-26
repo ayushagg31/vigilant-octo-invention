@@ -30,10 +30,10 @@ const YourDocs = ({ closeDrawer }) => {
   const [mounted, setMounted] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
+  const [loading, setLoading] = useState(false)
 
-  const { showResult, collectionId } = useDashboard((store) => {
+  const { collectionId } = useDashboard((store) => {
     return {
-      showResult: store.showResult,
       collectionId: store.result.collectionId,
     };
   });
@@ -69,9 +69,12 @@ const YourDocs = ({ closeDrawer }) => {
   const handleCloseCollection = async () => {
     if (selectedCollection) {
       try {
+        setLoading(true)
         await deleteCollection(selectedCollection.collectionId);
+        setLoading(false)
         router.replace("dashboard")
       } catch (e) {
+        setLoading(false)
         toast({
           title: e.message,
           status: "error",
@@ -140,7 +143,10 @@ const YourDocs = ({ closeDrawer }) => {
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-              <Button colorScheme="red" onClick={handleCloseCollection} ml={3}>
+              <Button colorScheme="red"
+                isLoading={loading}
+                loadingText='Deleting'
+                onClick={handleCloseCollection} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>

@@ -5,8 +5,6 @@ import { TabComponent } from "../common/TabComponent";
 import { FromYtubeUrl } from "./FromYtubeUrl";
 import {
   BsYoutube,
-  BsChatFill,
-  BsArrowRight,
   BsUpload,
   BsLink,
 } from "react-icons/bs";

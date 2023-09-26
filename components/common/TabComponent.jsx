@@ -1,19 +1,15 @@
 import React from "react";
-import {
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-} from "@chakra-ui/react";
-
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import { useAPILoader } from "../../hooks/useApiHook";
 export const TabComponent = ({ tabConfig }) => {
+  const { loader } = useAPILoader();
+
   if (tabConfig == undefined) {
     return <div>Provide defined config</div>;
   }
   const tabKeys = tabConfig.map((tab) => tab.title);
   const tabComponents = tabConfig.map((tab) => tab.component);
-  //#50c878
+
   return (
     <>
       <Tabs
@@ -26,13 +22,14 @@ export const TabComponent = ({ tabConfig }) => {
         p="2"
         variant="soft-rounded"
       >
-        <TabList py={3}>
+        <TabList py={3} cursor={loader ? "not-allowed" : "auto"}>
           {tabKeys.map((el, index) => (
             <Tab
               style={{ gap: 12 }}
               fontSize={{ base: "14px", md: "16px" }}
               key={index}
               color={"#fff"}
+              pointerEvents={loader ? "none" : "auto"}
               _selected={{
                 color: "#fff",
                 border: "2px solid #37A169",
