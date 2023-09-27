@@ -25,10 +25,11 @@ import {
 import {
   AiFillDingtalkCircle,
   AiOutlineLoading3Quarters,
+  AiOutlineMail,
 } from "react-icons/ai";
 import { BsFiletypeDoc, BsExclamationCircleFill } from "react-icons/bs";
 import { FcApproval } from "react-icons/fc";
-import { BiUserCircle } from "react-icons/bi";
+import { BiSolidUserCircle, BiUserCircle } from "react-icons/bi";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import style from "../../styles/NavBar.module.css";
 import { LoginModal } from "../home/LoginModal";
@@ -199,7 +200,16 @@ function NavBar() {
                       </MenuButton>
                       {renderPlan()}
                     </Box>
-                    <MenuList color={"#000"} bg="#fff">
+                    <MenuList color={"#000"} bg="#fff" maxW="300px">
+                      <MenuItem bg="#fff">Login detail:</MenuItem>
+                      <MenuItem bg="#fff" icon={<BiSolidUserCircle />}>
+                        {user?.displayName}
+                      </MenuItem>
+                      <MenuItem bg="#fff" icon={<AiOutlineMail />}>
+                        {user?.email}
+                      </MenuItem>
+
+                      <MenuDivider />
                       <MenuItem
                         _hover={{
                           backgroundColor: "#EDF2F6",
