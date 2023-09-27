@@ -28,6 +28,21 @@ export default function App({ Component, pageProps }) {
           </APILoaderProvider>
         </APIErrorProvider>
         <Script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" />
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-H4515X7ECK"
+        />
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-H4515X7ECK"
+        />
+        <Script strategy="afterInteractive">
+          {`window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          
+            gtag('config', 'G-H4515X7ECK');`}
+        </Script>
       </Providers>
     </>
   );
