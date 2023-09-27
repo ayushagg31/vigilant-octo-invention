@@ -79,7 +79,7 @@ function NavBar() {
     switch (currentPlan) {
       case PLUS_TIER:
         plan = <FcApproval fontSize={"16px"} cursor={"pointer"} />;
-        planText = "You are on plus plan";
+        planText = "You are on pro plan";
         break;
     }
     return (
