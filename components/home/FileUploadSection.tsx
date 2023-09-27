@@ -50,6 +50,10 @@ export const FileUploadSection = () => {
     }
   };
 
+  const deleteDoc = () => {
+    setDoc(null)
+  }
+
   return (
     <>
       <div id="file-upload-section">
@@ -85,6 +89,10 @@ export const FileUploadSection = () => {
                             {doc?.name}
                           </Text>
                         </div>
+                        <div onClick={deleteDoc} style={{ cursor: "pointer" }}>
+                          <i className="fa fa-trash"></i>
+                        </div>
+
                       </Flex>
                     </Box>
                   </>
