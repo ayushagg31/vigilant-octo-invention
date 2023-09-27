@@ -1,10 +1,10 @@
+import fs from "fs";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { PDFLoader } from "langchain/document_loaders/fs/pdf";
 import { createVectorStore } from "../config/qdrant.config.js";
 import { AudioLoader } from "./transcribe-audio.mjs";
 import { addCollection } from "../services/firestore.service";
 import logger from "../services/logging.service";
-import fs from "fs";
 import "dotenv/config";
 
 export const ingestData = async ({
@@ -36,6 +36,7 @@ export const ingestData = async ({
 
     const rawText = await loader.load();
     const textSplitter = new RecursiveCharacterTextSplitter({
+      characters: ["\n\n", "\n", " ", "", ".", "?", "!"],
       chunkSize: 1000,
       chunkOverlap: 200,
     });

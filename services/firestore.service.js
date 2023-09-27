@@ -10,8 +10,9 @@ import { removeCollection } from "../config/qdrant.config";
 import logger from "./logging.service";
 import { deleteObject } from "./r2.service";
 import { plans, FREE_TIER } from "../config/plan.config";
+import "dotenv/config";
 
-const COLLECTION_LIMIT = 5;
+const COLLECTION_LIMIT = process.env.COLLECTION_LIMIT || 5;
 
 const db = getFirestore(app);
 

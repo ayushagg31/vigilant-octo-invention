@@ -3,7 +3,7 @@ import { useState, Children, useRef, useEffect } from "react";
 import styles from "../../styles/Home.module.css";
 import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/router";
-import { HumanChatMessage, AIChatMessage } from "langchain/schema";
+// import { HumanMessage, AIMessage } from "langchain/schema";
 import { Box, Avatar, Stack } from "@chakra-ui/react";
 import { AiFillDingtalkCircle, AiOutlineSend } from "react-icons/ai";
 import { chatApi } from "../../services/client.service";
@@ -78,7 +78,7 @@ export default function ChatWidget() {
       { message: userInput, type: "userMessage" },
     ]);
 
-    const query = new HumanChatMessage(userInput);
+    const query = userInput;
 
     try {
       const response = await chatApi({
@@ -94,11 +94,7 @@ export default function ChatWidget() {
       ]);
       setLoading(false);
       setUserInput("");
-      setHistory((prevHistory) => [
-        ...prevHistory,
-        query,
-        new AIChatMessage(data.message),
-      ]);
+      setHistory((prevHistory) => [...prevHistory, query, data.message]);
     } catch (error) {
       handleError(error);
       setLoading(false);

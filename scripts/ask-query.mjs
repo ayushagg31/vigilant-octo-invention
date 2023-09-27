@@ -1,5 +1,6 @@
 import { ConversationalRetrievalQAChain } from "langchain/chains";
 import { model } from "../config/openai.config.js";
+import { HumanMessage } from "langchain/schema";
 
 const CONDENSE_PROMPT = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
 
@@ -29,7 +30,7 @@ export const ask = async (vectorStore, question, chat_history = []) => {
   const response = await chain.call({
     // this shit cost money, use frugally
     question,
-    chat_history,
+    chat_history: chat_history.map((c) => new HumanMessage(c)),
   });
   return response;
 };

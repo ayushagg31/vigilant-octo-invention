@@ -1,6 +1,6 @@
 import { fetchVectorStore } from "../../config/qdrant.config";
 import { ask } from "../../scripts/ask-query.mjs";
-import { HumanChatMessage, AIChatMessage } from "langchain/schema";
+// import { HumanMessage, AIMessage } from "langchain/schema";
 import { fetchQueryInfo, updateUser } from "../../services/firestore.service";
 import { isToday } from "../../utils";
 import PlanMiddleware from "../../middlewares/PlanMiddleware";
@@ -21,13 +21,13 @@ export default AuthorizeMiddleware(
       const { MAX_QUESTIONS_PER_DAY } = currentPlan;
 
       // resolve TypeError:chatMessage._getType is not a function
-      const histories = history.map((hist) => {
-        if (hist["type"] === "human") {
-          return new HumanChatMessage(question);
-        } else if (hist["type"] === "ai") {
-          return new AIChatMessage(question);
-        }
-      });
+      // const histories = history.map((hist) => {
+      //   if (hist._getType() === "human") {
+      //     return new HumanMessage(question);
+      //   } else if (hist._getType() === "ai") {
+      //     return new AIMessage(question);
+      //   }
+      // });
 
       //only accept post requests
       if (req.method !== "POST") {
@@ -61,7 +61,7 @@ export default AuthorizeMiddleware(
 
       const vectorStore = await fetchVectorStore(collectionId);
       // query
-      const response = await ask(vectorStore, sanitizedQuestion, histories);
+      const response = await ask(vectorStore, sanitizedQuestion, history);
       res.status(200).json({ message: response.text });
     } catch (error) {
       logger.error(`/api/chat for userEmail: ${userEmail}: ${error}`);
