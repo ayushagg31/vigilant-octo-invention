@@ -201,10 +201,10 @@ function NavBar() {
                       {renderPlan()}
                     </Box>
                     <MenuList color={"#000"} bg="#fff" maxW="300px">
-                      <MenuItem bg="#fff">Login detail:</MenuItem>
-                      <MenuItem bg="#fff" icon={<BiSolidUserCircle />}>
+                      {/* <MenuItem bg="#fff">Login detail:</MenuItem> */}
+                      {/* <MenuItem bg="#fff" icon={<BiSolidUserCircle />}>
                         {user?.displayName}
-                      </MenuItem>
+                      </MenuItem> */}
                       <MenuItem bg="#fff" icon={<AiOutlineMail />}>
                         {user?.email}
                       </MenuItem>

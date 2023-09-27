@@ -6,7 +6,7 @@ import withAuthRedirect from "../../components/HOC/withAuthRedirect";
 const DashboardLayout = ({ children }) => {
   return (
     <>
-      <Box h="100vh">
+      <Box h="100vh" overflow="auto">
         <Flex
           w="100%"
           h="100%"
@@ -21,8 +21,6 @@ const DashboardLayout = ({ children }) => {
       </Box>
     </>
   );
-}
-
-
+};
 
 export default withAuthRedirect(DashboardLayout);

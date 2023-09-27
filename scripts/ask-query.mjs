@@ -8,8 +8,7 @@ Chat History:
 Follow Up Input: {question}
 Standalone question:`;
 
-const QA_PROMPT = `You are a helpful AI assistant. Use the following pieces of context to answer the question at the end.
-Please give a descriptive and detailed explanation of the question asked from the context provided of the document. Please provide structure answers. If the question is descriptive you can divided answer in sections , if required.
+const QA_PROMPT = `You are a helpful AI assistant. Use the following pieces of context to answer the question at the end. Please give a descriptive and detailed explanation of the question asked from the context provided of the document. Please provide structure answers. Your answers should strike a balance between being concise and not overly lengthy. If the question is descriptive you can divided answer in sections, if required.
 If you dont know ths answer, Ask user to rephrase question with some more context.
 {context}
 
