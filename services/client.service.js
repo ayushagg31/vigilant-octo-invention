@@ -185,3 +185,21 @@ export const planListApi = async () => {
     throw new Error("Error in getting plan", e.message);
   }
 };
+
+export const updateChatLimit = async () => {
+  try {
+    const userToken = await getCurrentUserToken();
+    const response = await axios.post(
+      "/api/update-chat-limit",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    throw new Error("Error while updating chat limit", e.message);
+  }
+};

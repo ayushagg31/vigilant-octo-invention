@@ -25,10 +25,11 @@ import {
 import {
   AiFillDingtalkCircle,
   AiOutlineLoading3Quarters,
+  AiOutlineMail,
 } from "react-icons/ai";
 import { BsFiletypeDoc, BsExclamationCircleFill } from "react-icons/bs";
 import { FcApproval } from "react-icons/fc";
-import { BiUserCircle } from "react-icons/bi";
+import { BiSolidUserCircle, BiUserCircle } from "react-icons/bi";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import style from "../../styles/NavBar.module.css";
 import { LoginModal } from "../home/LoginModal";
@@ -72,25 +73,19 @@ function NavBar() {
         fontSize={"16px"}
         color={"#f9c7a4"}
         cursor={"pointer"}
-        onClick={() => router.push("/settings")}
       />
     );
-    let planText = "You are on free plan. Click here to upgrade";
+    let planText = "You're using the free plan. Upgrade for more prompts.";
 
     switch (currentPlan) {
       case PLUS_TIER:
         plan = <FcApproval fontSize={"16px"} cursor={"pointer"} />;
-        planText = "You are on plus plan";
+        planText = "You are on pro plan";
         break;
     }
     return (
       <Box position="absolute" top="-1" right="-1">
-        <Tooltip
-          label={planText}
-          placement="right"
-          shouldWrapChildren
-          openDelay={500}
-        >
+        <Tooltip label={planText} placement="right" shouldWrapChildren>
           {plan}
         </Tooltip>
       </Box>
@@ -147,8 +142,9 @@ function NavBar() {
             >
               <IoMdArrowRoundBack
                 style={{ cursor: "pointer" }}
-                className={`${style.navbarIcons} ${activePath === "/dashboard" ? style.activeNav : ""
-                  }`}
+                className={`${style.navbarIcons} ${
+                  activePath === "/dashboard" ? style.activeNav : ""
+                }`}
                 onClick={() => router.push("/dashboard")}
                 title="Upload your doc"
               />
@@ -204,7 +200,16 @@ function NavBar() {
                       </MenuButton>
                       {renderPlan()}
                     </Box>
-                    <MenuList color={"#000"} bg="#fff">
+                    <MenuList color={"#000"} bg="#fff" maxW="300px">
+                      <MenuItem bg="#fff">Login detail:</MenuItem>
+                      <MenuItem bg="#fff" icon={<BiSolidUserCircle />}>
+                        {user?.displayName}
+                      </MenuItem>
+                      <MenuItem bg="#fff" icon={<AiOutlineMail />}>
+                        {user?.email}
+                      </MenuItem>
+
+                      <MenuDivider />
                       <MenuItem
                         _hover={{
                           backgroundColor: "#EDF2F6",

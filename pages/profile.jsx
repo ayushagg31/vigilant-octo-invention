@@ -1,9 +1,10 @@
-import { useRouter } from "next/router";
 import DashboardLayout from "../components/layout/DashboardLayout";
+import { Box } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 
 const Profile = () => {
-  return <div>Profile</div>;
+  return <Box p="16">Profile</Box>;
 };
 
 Profile.getLayout = (page) => {

@@ -164,7 +164,7 @@ export default function ThreeTierPricing() {
         align={"center"}
         justify={"center"}
         id="pricing-section"
-        className="snap-section theme-gradient"
+        className="snap-section  theme-gradient"
       >
         <Box mt={16}>
           <VStack spacing={2} textAlign="center" color={"#fff"} mt={4}>

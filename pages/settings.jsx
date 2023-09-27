@@ -1,19 +1,24 @@
 import DashboardLayout from "../components/layout/DashboardLayout";
-import PaymentInfo from "../components/settings/PaymentInfo";
+import UserCurrentPlanInfo from "../components/settings/UserCurrentPlanInfo";
 import { TabComponent } from "../components/common/TabComponent";
 import { Box } from "@chakra-ui/react";
+import UserSetting from "../components/settings/UserSetting";
 
 const tabsObject = [
   {
-    component: <PaymentInfo />,
+    component: <UserCurrentPlanInfo />,
     title: <>Payment</>,
+  },
+  {
+    component: <UserSetting />,
+    title: <>Settings</>,
   },
 ];
 const Settings = () => {
   return (
-    // <Box p={"16"}>
-    <TabComponent tabConfig={tabsObject} />
-    // </Box>
+    <Box p={{ base: "8", xs: "16" }} pt="20" m="auto">
+      <TabComponent tabConfig={tabsObject} />
+    </Box>
   );
 };
 
