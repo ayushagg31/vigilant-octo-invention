@@ -86,7 +86,7 @@ export const FileUploadSection = () => {
                       <Flex>
                         <div className="mr-5">
                           <Text as="b" fontSize="lg">
-                            {doc?.name}
+                            {doc?.name || "Your PDF"}
                           </Text>
                         </div>
                         <div onClick={deleteDoc} style={{ cursor: "pointer" }}>
@@ -99,7 +99,7 @@ export const FileUploadSection = () => {
                 ) : (
                   <>
                     <RandomLoader color="#37A169" />
-                    <Text color="white">{`Processing ${doc?.name}...`}</Text>
+                    <Text color="white">{`Processing ${doc?.name || "your PDF"}...`}</Text>
                   </>
                 )}
               </Flex>

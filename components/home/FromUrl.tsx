@@ -82,7 +82,7 @@ export const FromUrl = () => {
             ) : (
               <>
                 <RandomLoader color="#37A169" />
-                <Text color="white">Processing your file...</Text>
+                <Text color="white">Processing your PDF...</Text>
               </>
             )}
           </Flex>
