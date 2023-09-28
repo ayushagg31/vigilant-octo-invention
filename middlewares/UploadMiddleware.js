@@ -22,7 +22,7 @@ const UploadMiddleware = function (handler) {
       logger.error(`UploadMiddleware error: ${error}`);
       return res
         .status(500)
-        .json({ message: `Error while uploading docs. Error: ${error}` });
+        .json({ message: `Failed to upload file in memory` });
     }
   };
 };

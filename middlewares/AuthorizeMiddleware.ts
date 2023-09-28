@@ -14,25 +14,25 @@ const AuthorizeMiddleware = function (handler) {
     const authorization = req.headers['authorization'];
     if (!authorization) {
       logger.info(`Auth Middleware - Not authenticated. No Auth header.: ${authorization}`)
-      return res.status(401).json({ message: 'Not authenticated. No Auth header.' })
+      return res.status(401).json({ message: 'Authentication required. Please log in again.' })
     }
     const token = authorization?.split(' ')[1]
     if (token === null || token === 'null') {
       logger.info(`Auth Middleware - Not authenticated. No Auth token.: ${authorization}`)
-      return res.status(401).json({ message: 'Not authenticated. No Auth token.' })
+      return res.status(401).json({ message: 'Authentication required. Please log in again.' })
     }
     try {
       const decodedIdToken = await admin.auth().verifyIdToken(token);
       if (!decodedIdToken || !decodedIdToken.uid || !decodedIdToken.email) {
         logger.info(`Auth Middleware - Not authenticated.: ${decodedIdToken}`)
-        return res.status(401).json({ message: 'Not authenticated.' })
+        return res.status(401).json({ message: 'Authentication required.' })
       }
       req.context = {
         user: decodedIdToken
       }
     } catch (error) {
       logger.error(`Auth Middleware - verifyIdToken error for authorization: ${authorization} ${error}`)
-      return res.status(401).json({ message: `Error while verifying token. Error: ${error}` })
+      return res.status(401).json({ message: `Authentication failed.` })
     }
     // pass back to handler
     return handler(req, res)

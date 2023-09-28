@@ -10,7 +10,7 @@ async function handler(req, res) {
         const plans = await fetchPlanList();
         res.status(200) .json({ plans });
     } catch (error) {
-        res.status(500).json({ error: error.message || "Something went wrong" });
+        res.status(500).json({ error: error.message || "Something went wrong, Please try again later" });
     }
 }
 

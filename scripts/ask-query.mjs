@@ -1,6 +1,7 @@
 import { ConversationalRetrievalQAChain } from "langchain/chains";
 import { model } from "../config/openai.config.js";
 import { HumanMessage } from "langchain/schema";
+import logger from "../services/logging.service";
 
 const CONDENSE_PROMPT = `Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
 
@@ -26,20 +27,25 @@ Question: {question}
 Helpful answer in markdown:`;
 
 export const ask = async (vectorStore, question, chat_history = []) => {
-  const chain = ConversationalRetrievalQAChain.fromLLM(
-    model,
-    vectorStore.asRetriever(),
-    {
-      qaTemplate: QA_PROMPT,
-      questionGeneratorTemplate: CONDENSE_PROMPT,
-      // The number of source documents returned is 4 by default
-      // returnSourceDocuments: true,
-    }
-  );
-  const response = await chain.call({
-    // this shit cost money, use frugally
-    question,
-    chat_history: chat_history.map((c) => new HumanMessage(c)),
-  });
-  return response;
+  try {
+    const chain = ConversationalRetrievalQAChain.fromLLM(
+      model,
+      vectorStore.asRetriever(),
+      {
+        qaTemplate: QA_PROMPT,
+        questionGeneratorTemplate: CONDENSE_PROMPT,
+        // The number of source documents returned is 4 by default
+        // returnSourceDocuments: true,
+      }
+    );
+    const response = await chain.call({
+      // this shit cost money, use frugally
+      question,
+      chat_history: chat_history.map((c) => new HumanMessage(c)),
+    });
+    return response;
+  } catch (err) {
+    logger.error("Querying failed - inside ask-query", err);
+    throw new Error(err.message);
+  }
 };

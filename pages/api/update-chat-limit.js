@@ -1,5 +1,4 @@
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
-import PlanMiddleware from "../../middlewares/PlanMiddleware";
 import { fetchQueryInfo } from "../../services/firestore.service";
 import { isToday } from "../../utils";
 
@@ -27,10 +26,10 @@ async function handler(req, res) {
           .json({ error: "Failed to respond, Please try again later." });
       }
     }
-    res.status(200).json({ message: "Updated" });
+    res.status(200).json({ message: "Updated Successfully" });
   } else {
     res.status(405).json({ error: "Method Not Allowed" });
   }
 }
 
-export default AuthorizeMiddleware(PlanMiddleware(handler));
+export default AuthorizeMiddleware(handler);

@@ -8,7 +8,7 @@ import {
   Divider,
   Box,
 } from "@chakra-ui/react";
-import { FREE_TIER, PLUS_TIER, plans } from "../../config/plan.config";
+import { FREE_TIER, plans, PLUS_TIER } from "../../constants/plan.constants";
 import { useCollections } from "../../store/useCollections";
 
 const plansToShow = [FREE_TIER, PLUS_TIER];

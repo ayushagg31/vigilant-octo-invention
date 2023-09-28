@@ -5,7 +5,7 @@ import {
   fetchCollectionsApi,
   updateChatLimit,
 } from "../services/client.service";
-import { FREE_TIER } from "../config/plan.config";
+import { FREE_TIER } from "../constants/plan.constants";
 
 export const useCollections = create(
   persist(

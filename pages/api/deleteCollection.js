@@ -23,6 +23,8 @@ export default AuthorizeMiddleware(async function handler(req, res) {
     res.status(200).send({ collections: activeCollections });
   } catch (error) {
     logger.error("/api/deleteCollection", userEmail, collectionId, error);
-    res.status(500).json({ error: "Failed to delete collection" });
+    res
+      .status(500)
+      .json({ error: error.message || "Failed to delete collection" });
   }
 });

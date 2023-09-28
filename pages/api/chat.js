@@ -1,12 +1,13 @@
 import { fetchVectorStore } from "../../config/qdrant.config";
 import { ask } from "../../scripts/ask-query.mjs";
-// import { HumanMessage, AIMessage } from "langchain/schema";
 import { fetchQueryInfo, updateUser } from "../../services/firestore.service";
 import { isToday } from "../../utils";
 import PlanMiddleware from "../../middlewares/PlanMiddleware";
+import { PLUS_TIER } from "../../constants/plan.constants";
 import { plans } from "../../config/plan.config";
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
 import logger from "../../services/logging.service";
+import getErrorMsg from "../../constants/error.constants";
 
 export default AuthorizeMiddleware(
   PlanMiddleware(async function handler(req, res) {
@@ -17,17 +18,9 @@ export default AuthorizeMiddleware(
       return res.status(400).json({ message: "Missing required data" });
     }
     try {
-      const currentPlan = plans[req.headers["X-Plan-Type"]];
+      const planType = req.headers["X-Plan-Type"];
+      const currentPlan = plans[planType];
       const { MAX_QUESTIONS_PER_DAY } = currentPlan;
-
-      // resolve TypeError:chatMessage._getType is not a function
-      // const histories = history.map((hist) => {
-      //   if (hist._getType() === "human") {
-      //     return new HumanMessage(question);
-      //   } else if (hist._getType() === "ai") {
-      //     return new AIMessage(question);
-      //   }
-      // });
 
       //only accept post requests
       if (req.method !== "POST") {
@@ -36,7 +29,10 @@ export default AuthorizeMiddleware(
       }
 
       if (!question) {
-        return res.status(400).json({ message: "No question in the request" });
+        return res.status(400).json({
+          message:
+            "I need a question to answer. Can you please ask your question again?",
+        });
       }
 
       // if lastUpdatedAt is today, just increase by 1 and update lastUpdatedAt timestamp
@@ -45,7 +41,9 @@ export default AuthorizeMiddleware(
       const isLastUpdatedToday = isToday(lastUpdatedAt);
       if (isLastUpdatedToday && count >= MAX_QUESTIONS_PER_DAY) {
         return res.status(400).json({
-          error: "Max limit exceeds for the day",
+          error: getErrorMsg(
+            planType === PLUS_TIER ? "DAILY_LIMIT_PRO" : "DAILY_LIMIT"
+          ),
         });
       }
       await updateUser({

@@ -14,7 +14,7 @@ export default AuthorizeMiddleware(async function handler(req, res) {
   }
 
   if (!planId || !userEmail) {
-    return res.status(400).json({ message: "You are missing a required data" });
+    return res.status(400).json({ message: "Server failed to verify request" });
   }
   try {
     const urlParams = new URLSearchParams();
@@ -26,6 +26,6 @@ export default AuthorizeMiddleware(async function handler(req, res) {
     res.status(200).send({ url: checkoutUrl });
   } catch (error) {
     logger.error(`/api/create-checkout-session error for ${error.message}`);
-    res.status(500).json({ error: error.message || "Something went wrong" });
+    res.status(500).json({ error: error.message || "Something went wrong, Please try again later" });
   }
 });

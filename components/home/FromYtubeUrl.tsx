@@ -34,8 +34,7 @@ export const FromYtubeUrl = () => {
         });
       } catch (error) {
         removeLoader();
-        addError("error in fetching youtube link");
-        console.error("Error:", error);
+        addError(error.message || "Something went wrong, Please try again later.");
       }
     } else {
       setError(true);

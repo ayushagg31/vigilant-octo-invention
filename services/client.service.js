@@ -10,8 +10,8 @@ export const getCurrentUserToken = async () => {
     }
     const token = await user?.getIdToken();
     return token;
-  } catch (er) {
-    throw new Error("error in fetching from store");
+  } catch (err) {
+    throw new Error(err.message || "Failed to access token");
   }
 };
 
@@ -24,7 +24,7 @@ export const createUser = async () => {
       },
     });
   } catch (e) {
-    throw new Error("Failed to create user", e.message);
+    throw new Error(e?.response?.data?.error);
   }
 };
 
@@ -38,7 +38,7 @@ export const fetchCollectionsApi = async () => {
     });
     return response;
   } catch (e) {
-    throw new Error("Error in fetching collection", e.message);
+    throw new Error(e?.response?.data?.error);
   }
 };
 
@@ -59,7 +59,7 @@ export const verifyCollectionsApi = async ({ collectionId }) => {
 
     return response;
   } catch (e) {
-    throw new Error("Error in fetching collection", e.message);
+    throw new Error(e?.response?.data?.error);
   }
 };
 
@@ -76,7 +76,7 @@ export const deleteCollectionApi = async ({ collectionId }) => {
     });
     return response;
   } catch (e) {
-    throw new Error("Error in deleting collection", e.message);
+    throw new Error(e?.response?.data?.error);
   }
 };
 
@@ -91,7 +91,7 @@ export const uploadDocumentApi = async ({ formData }) => {
     });
     return response;
   } catch (e) {
-    throw new Error("Error in uploading documents", e.message);
+    throw new Error(e?.response?.data?.error);
   }
 };
 
@@ -111,7 +111,7 @@ export const youtubeTranscribeApi = async ({ ytUrl }) => {
     );
     return response;
   } catch (e) {
-    throw new Error("Error in transcribing video", e.message);
+    throw new Error(e?.response?.data?.error);
   }
 };
 
@@ -131,7 +131,7 @@ export const downloadDocApi = async ({ pdfUrl }) => {
     );
     return response;
   } catch (e) {
-    throw new Error("Error in downloading document", e.message);
+    throw new Error(e?.response?.data?.error);
   }
 };
 
@@ -151,7 +151,7 @@ export const createCheckoutSessionApi = async ({ planId }) => {
     );
     return response;
   } catch (e) {
-    throw new Error("Error in creating checkout session", e.message);
+    throw new Error(e?.response?.data?.error);
   }
 };
 
@@ -173,7 +173,9 @@ export const chatApi = async ({ question, history, collectionId }) => {
     );
     return response;
   } catch (e) {
-    throw new Error(e.response.data.error);
+    throw new Error(
+      e?.response?.data?.error || "Failed to respond, Please try again later"
+    );
   }
 };
 
@@ -182,7 +184,7 @@ export const planListApi = async () => {
     const response = await axios.get("/api/planList");
     return response;
   } catch (e) {
-    throw new Error("Error in getting plan", e.message);
+    throw new Error(e?.response?.data?.error);
   }
 };
 
@@ -200,6 +202,6 @@ export const updateChatLimit = async () => {
     );
     return response;
   } catch (error) {
-    throw new Error("Error while updating chat limit", e.message);
+    throw new Error(error?.response?.data?.error);
   }
 };

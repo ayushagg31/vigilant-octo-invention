@@ -42,7 +42,7 @@ const downloadHandler = async (req, res) => {
 
     if (numPages > MAX_PDF_PAGE_COUNT || pdfSizeInMB > MAX_PDF_SIZE_MB) {
       return res.status(400).json({
-        error: "PDF exceeds page count or size limits",
+        error: "PDF exceeds the page count or size limits",
       });
     }
 
@@ -100,7 +100,12 @@ export default AuthorizeMiddleware(
         }
       } catch (err) {
         logger.error("/api/download", error);
-        return res.status(500).json({ error: err.message });
+        return res
+          .status(500)
+          .json({
+            error:
+              err.message || "Something went wrong, Please try again later",
+          });
       }
     })
   )

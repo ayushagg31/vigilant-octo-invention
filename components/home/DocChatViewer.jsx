@@ -29,11 +29,11 @@ const DocChatViewer = () => {
         } = await verifyCollectionsApi({ collectionId });
         setIsVerified(isVerified);
         if (!isVerified) {
-          addError("Document not verified");
+          addError("You're not authorized to view this document.");
           router.replace("dashboard");
         }
       } catch (err) {
-        addError("Error in verifying account");
+        addError(err.message || "Failed to verify account");
         router.replace("dashboard");
       }
     }

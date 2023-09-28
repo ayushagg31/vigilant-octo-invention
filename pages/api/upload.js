@@ -45,7 +45,7 @@ const uploadHandler = async (req, res) => {
         `Filetype not supported yet fileType: ${fileType} Originalname: ${file.originalname}`
       );
       return res.status(400).json({
-        error: "Filetype not supported yet",
+        error: "Filetype not supported yet. If you would like us to support this file type in the future, consider creating a request.",
       });
     }
 
@@ -92,7 +92,7 @@ const uploadHandler = async (req, res) => {
       `Ingestion Failed - /api/upload - userEmail: ${userEmail}, collectionId: ${collectionId}`,
       err
     );
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Something went wrong, Please try again later." });
   }
 };
 

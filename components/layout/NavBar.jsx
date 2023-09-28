@@ -37,7 +37,7 @@ import { useAuth } from "../../store/useAuth";
 import { useRouter } from "next/router";
 import YourDocs from "../home/YourDocs";
 import { useCollections } from "../../store/useCollections";
-import { FREE_TIER, PLUS_TIER } from "../../config/plan.config";
+import { PLUS_TIER } from "../../constants/plan.constants";
 import { useAPIError } from "../../hooks/useApiHook";
 
 function NavBar() {
@@ -104,7 +104,7 @@ function NavBar() {
         fetchCollections();
       }
     } catch (error) {
-      addError("Error in Fetching Collection");
+      addError(error.message || "Error in Fetching Collection");
     }
   }, [user?.email]);
 

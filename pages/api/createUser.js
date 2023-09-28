@@ -8,12 +8,12 @@ const createUserHandler = async (req, res) => {
   try {
     if (user == undefined) {
       logger.error(
-        "Unable to create user due to missing user data",
+        "User creation failed because essential user data is missing",
         req?.context
       );
-      return res
-        .status(400)
-        .json({ message: "Unable to create user due to missing user data" });
+      return res.status(400).json({
+        message: "User creation failed because essential user data is missing",
+      });
     }
     await createUser(user);
     return res.status(200).json({
@@ -21,7 +21,9 @@ const createUserHandler = async (req, res) => {
     });
   } catch (err) {
     logger.error("/api/createUser", err);
-    return res.status(500).json({ error: "Failed to create user" });
+    return res
+      .status(500)
+      .json({ error: "Failed to create user due to an unexpected error." });
   }
 };
 
@@ -33,7 +35,9 @@ async function handler(req, res) {
       res.status(405).json({ error: "Method Not Allowed" });
     }
   } catch (err) {
-    return res.status(500).json({ error: err.message });
+    return res
+      .status(500)
+      .json({ error: "Something went wrong, Please try again later" });
   }
 }
 

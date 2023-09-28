@@ -20,7 +20,7 @@ const PlanMiddleware = function (handler) {
       );
       return res
         .status(500)
-        .json({ message: `Error while checking the plans. Error: ${error}` });
+        .json({ message: `Failed to verify plans.` });
     }
     return handler(req, res);
   };

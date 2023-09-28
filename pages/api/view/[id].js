@@ -18,6 +18,6 @@ export default async (req, res) => {
     res.send(pdfData);
   } catch (error) {
     logger.error("Error fetching object from R2 bucket", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("Unable to retrieve the PDF document.");
   }
 };

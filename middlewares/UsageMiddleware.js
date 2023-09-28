@@ -8,14 +8,6 @@ TODO: PDF/Video Size Limit, PDF Pages Limit, PDF Count Limit, Video Count Limit
 Computation should be done on a per-day basis until the subscription expires.
 ************************************************/
 
-// Temporary Plan:
-// - 100 pages per document (max 15MB) => implement in /upload, /download (usageMiddleware)
-// - Max upload size: 15MB => implement in /upload, /download (usageMiddleware)
-// - 50 questions per day => implement in /chat API call (usageMiddleware)
-// - 1 document per day => implement in /upload, /download (usageMiddleware)
-// - Max video size: 15MB => implement in /ytTranscribe (usageMiddleware)
-// - 1 video per day => implement in /ytTranscribe (usageMiddleware)
-
 const UsageMiddleware = function (handler) {
   return async function (req, res) {
     const userEmail = req?.context?.user?.email;
@@ -28,19 +20,19 @@ const UsageMiddleware = function (handler) {
     try {
       const currentPlan = plans[req.headers["X-Plan-Type"]];
       const { MAX_DOCUMENT_LIMIT } = currentPlan;
-
       const fileType = ytUrl
         ? "mp3"
         : pdfUrl
         ? "pdf"
         : file?.originalname?.split(".")?.pop();
 
-      if (!MAX_DOCUMENT_LIMIT[fileType]) {
+      if (MAX_DOCUMENT_LIMIT[fileType] !== 0 && !MAX_DOCUMENT_LIMIT[fileType]) {
         logger.info(
-          `Filetype not supported yet. fileType: ${fileType} Originalname: ${file.originalname} ${userEmail}`
+          `Filetype not supported yet. fileType: ${fileType} Originalname: ${file?.originalname} ${userEmail}`
         );
         return res.status(400).json({
-          error: "Filetype not supported yet",
+          error:
+            "Filetype not supported yet. If you would like us to support this file type in the future, consider raising a request.",
           userEmail,
         });
       }
@@ -52,7 +44,7 @@ const UsageMiddleware = function (handler) {
         isToday(col.createdAt)
       );
 
-      const fileTypeCounts = {};
+      const fileTypeCounts = { mp3: 0, pdf: 0 };
       collectionsCreatedToday.forEach((col) => {
         const fileType = col.fileType;
         if (fileTypeCounts[fileType]) {
@@ -62,9 +54,10 @@ const UsageMiddleware = function (handler) {
         }
       });
 
+      console.log(MAX_DOCUMENT_LIMIT[fileType], fileTypeCounts[fileType]);
       if (fileTypeCounts[fileType] >= MAX_DOCUMENT_LIMIT[fileType]) {
         return res.status(400).json({
-          error: "Subscription Limit Exceeded",
+          error: "You've exhausted your daily limit",
         });
       }
     } catch (error) {

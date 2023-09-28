@@ -34,7 +34,7 @@ export const FromUrl = () => {
         });
       } catch (error) {
         removeLoader();
-        addError("error in downloading document");
+        addError(error.message || "Something went wrong, Please try again later.");
       }
     } else {
       setError(true);

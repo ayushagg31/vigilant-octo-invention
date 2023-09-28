@@ -11,84 +11,46 @@ export const plans = {
   },
   free_tier: {
     pricing: {
-      in: {
-        planName: "Free",
-        primaryText: "₹0/month",
-        amount: 0,
-        duration: "month",
-        currency: "INR",
-        features: [
-          "120 pages/PDF",
-          "10 MB/PDF",
-          "2 PDFs/day",
-          "20 questions/day",
-        ],
-      },
-      us: {
-        planName: "Free",
-        primaryText: "$0/month",
-        amount: 0,
-        duration: "month",
-        currency: "USD",
-        features: [
-          "120 pages/PDF",
-          "10 MB/PDF",
-          "2 PDFs/day",
-          "20 questions/day",
-        ],
-      },
+      planName: "Free",
+      primaryText: "$0/month",
+      amount: 0,
+      duration: "month",
+      currency: "USD",
+      features: [
+        "120 pages/PDF",
+        "10 MB/PDF",
+        "2 PDFs/day",
+        "1 video/day",
+        "20 queries/day",
+      ],
     },
     MAX_DOCUMENT_LIMIT: {
-      mp3: 200,
-      pdf: 100,
+      mp3: 2,
+      pdf: 5,
     },
-    MAX_PDF_PAGE_COUNT: 100,
-    MAX_PDF_SIZE_MB: 100,
-    MAX_QUESTIONS_PER_DAY: 20,
+    MAX_PDF_PAGE_COUNT: 50,
+    MAX_PDF_SIZE_MB: 10,
+    MAX_QUESTIONS_PER_DAY: 50,
     MAX_VIDEO_SIZE_MB: 15,
   },
   plus_tier: {
     pricing: {
       checkout_url:
         "https://yourpdf.lemonsqueezy.com/checkout/buy/0327a6d3-333c-4371-b76d-bafe77a0d018?embed=1&media=0",
-      in: {
-        planName: "Pro",
-        primaryText: "$5/month",
-        amount: 0,
-        duration: "month",
-        currency: "INR",
-        features: [
-          "2400 pages/PDF",
-          "20 MB/PDF",
-          "5 PDFs/day",
-          "50 questions/day",
-        ],
-      },
-      us: {
-        planName: "Pro",
-        primaryText: "$5/month",
-        amount: 0,
-        duration: "month",
-        currency: "USD",
-        features: [
-          "2400 pages/PDF",
-          "20 MB/PDF",
-          "5 PDFs/day",
-          "50 questions/day",
-        ],
-      },
+      planName: "Pro",
+      primaryText: "$5/month",
+      amount: 0,
+      duration: "month",
+      currency: "USD",
+      features: ["2400 pages/PDF", "20 MB/PDF", "5 PDFs/day", "50 queries/day"],
     },
     MAX_DOCUMENT_LIMIT: {
-      mp3: 200,
-      pdf: 100,
+      mp3: 5,
+      pdf: 20,
     },
-    MAX_PDF_PAGE_COUNT: 100,
-    MAX_PDF_SIZE_MB: 100,
-    MAX_QUESTIONS_PER_DAY: 50,
+    MAX_PDF_PAGE_COUNT: 120,
+    MAX_PDF_SIZE_MB: 50,
+    MAX_QUESTIONS_PER_DAY: 100,
     MAX_VIDEO_SIZE_MB: 25,
   },
 };
-
-export const FREE_TIER = "free_tier";
-export const ZERO_TIER = "zero_tier";
-export const PLUS_TIER = "plus_tier";

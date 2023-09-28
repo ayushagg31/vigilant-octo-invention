@@ -101,7 +101,7 @@ const YourDocs = ({ closeDrawer }) => {
         spacing={2}
         align="stretch"
       >
-        {collections?.map((collectionEl) => (
+        {React.Children.toArray(collections?.map((collectionEl) => (
           <Box key={collectionId}>
             <Flex align={"center"}>
               <Box
@@ -121,7 +121,7 @@ const YourDocs = ({ closeDrawer }) => {
               />
             </Flex>
           </Box>
-        ))}
+        )))}
         <StackDivider borderColor="gray.200" />
       </VStack>
       <AlertDialog

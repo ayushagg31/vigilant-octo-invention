@@ -22,7 +22,7 @@ async function handler(req, res) {
     res.status(200).send({ isVerified });
   } catch (error) {
     logger.error("/api/verifyCollection", userEmail, error);
-    res.status(500).json({ error: error.message || "Something went wrong" });
+    res.status(500).json({ error: error.message || "Something went wrong, Please try again later" });
   }
 }
 
