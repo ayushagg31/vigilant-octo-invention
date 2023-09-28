@@ -29,7 +29,9 @@ const DocChatViewer = () => {
         } = await verifyCollectionsApi({ collectionId });
         setIsVerified(isVerified);
         if (!isVerified) {
-          addError("You're not authorized to view this document.");
+          addError(
+            "Document not available. It may have been deleted or you may not have permission to view it."
+          );
           router.replace("dashboard");
         }
       } catch (err) {

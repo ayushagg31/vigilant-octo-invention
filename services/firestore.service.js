@@ -11,6 +11,8 @@ import logger from "./logging.service";
 import { deleteObject } from "./r2.service";
 import { plans } from "../config/plan.config";
 import { FREE_TIER } from "../constants/plan.constants";
+import { isToday } from "../utils";
+
 import "dotenv/config";
 
 const COLLECTION_LIMIT = process.env.COLLECTION_LIMIT || 5;
@@ -29,9 +31,19 @@ export const createUser = async (user) => {
         email: user.email,
         currentPlan: FREE_TIER,
         collections: [],
-        queryInfo: {
-          count: 0,
-          lastUpdatedAt: Date.now(),
+        usageInfo: {
+          query: {
+            count: 0,
+            lastUpdatedAt: Date.now(),
+          },
+          pdf: {
+            count: 0,
+            lastUpdatedAt: Date.now(),
+          },
+          mp3: {
+            count: 0,
+            lastUpdatedAt: Date.now(),
+          },
         },
       };
       if (!userDoc.exists()) {
@@ -55,10 +67,14 @@ export const addCollection = async ({
   try {
     const userRef = doc(db, `users/${userEmail}`);
     // check if total collection count exceeding the allowed limit
-    const { collections } = await fetchCollections(userEmail);
+    const { collections, usageInfo } = await fetchCollections(userEmail);
+
+    const { count, lastUpdatedAt } = usageInfo[fileType];
+    const isLastUpdatedToday = isToday(lastUpdatedAt);
+
     const updatedCollections = [...collections];
     if (collections.length >= COLLECTION_LIMIT) {
-      // set deletedAt the leastRecentAccessed Collection
+      // delete the leastRecentlyAccessed Collection
       const oldestTimestamp = Math.min(
         ...collections.map((col) => col.lastAccessedTimeStamp)
       );
@@ -67,18 +83,14 @@ export const addCollection = async ({
       );
 
       const oldestCollection = collections[indexOfOldest];
-      if (indexOfOldest !== -1) {
-        updatedCollections[indexOfOldest] = {
-          ...updatedCollections[indexOfOldest],
-          deletedAt: Date.now(),
-        };
-        await removeCollection(oldestCollection.collectionId);
-        oldestCollection.fileType === "pdf" &&
-          (await deleteObject({
-            bucketName: "pdfs",
-            objectKey: oldestCollection.collectionId,
-          }));
-      }
+      // delete indexOfOldest
+      updatedCollections.splice(indexOfOldest, 1);
+      await removeCollection(oldestCollection.collectionId);
+      oldestCollection.fileType === "pdf" &&
+        (await deleteObject({
+          bucketName: "pdfs",
+          objectKey: oldestCollection.collectionId,
+        }));
     }
     const newCollection = {
       collectionId,
@@ -92,8 +104,16 @@ export const addCollection = async ({
     updatedCollections.push(newCollection);
     await updateDoc(userRef, {
       collections: updatedCollections,
+      usageInfo: {
+        ...usageInfo,
+        [fileType]: {
+          count: isLastUpdatedToday ? count + 1 : 1,
+          lastUpdatedAt: Date.now(),
+        },
+      },
     });
   } catch (e) {
+    console.log(e);
     logger.error("Error adding document ", userEmail, collectionId, e);
     throw new Error("Failed to add document");
   }
@@ -136,29 +156,22 @@ export const deleteCollection = async ({ collectionId, userEmail }) => {
       userEmail,
     });
     if (isVerified) {
-      const updatedCollections = collections.map((col) => {
-        if (col.collectionId === collectionId) {
-          return {
-            ...col,
-            deletedAt: Date.now(),
-          };
-        }
-        return col;
-      });
-      await updateDoc(userRef, {
-        collections: updatedCollections,
-      });
-      await removeCollection(collectionId);
-
-      const isPDF =
-        updatedCollections.find((col) => col.collectionId === collectionId)
-          .fileType === "pdf";
+      const collectionIndexToDelete = collections.findIndex(
+        (col) => col.collectionId === collectionId
+      );
+      const collectionToDelete = collections[collectionIndexToDelete];
+      const isPDF = collectionToDelete.fileType === "pdf";
 
       isPDF &&
         (await deleteObject({ bucketName: "pdfs", objectKey: collectionId }));
+
+      collections.splice(collectionIndexToDelete, 1);
+      await updateDoc(userRef, {
+        collections,
+      });
+      await removeCollection(collectionId);
       return {
-        collections: updatedCollections,
-        activeCollections: updatedCollections.filter((col) => !col.deletedAt),
+        collections,
       };
     } else {
       logger.error(
@@ -168,21 +181,18 @@ export const deleteCollection = async ({ collectionId, userEmail }) => {
       );
       return {
         collections: collections,
-        activeCollections: collections.filter((col) => !col.deletedAt),
       };
     }
   } catch (e) {
-    logger.error("Failed to delete collection: ", userEmail, collectionId, e);
+    console.error("Failed to delete collection: ", userEmail, collectionId, e);
     throw new Error("Failed to delete collection");
   }
 };
 
 export const verifyCollection = async ({ collectionId, userEmail }) => {
   try {
-    const { collections, activeCollections } = await fetchCollections(
-      userEmail
-    );
-    let collection = activeCollections.find(
+    const { collections } = await fetchCollections(userEmail);
+    let collection = collections.find(
       (col) => col["collectionId"] === collectionId
     );
     const isVerified = !!collection;
@@ -195,7 +205,6 @@ export const verifyCollection = async ({ collectionId, userEmail }) => {
     }
     return {
       collections,
-      activeCollections,
       isVerified,
     };
   } catch (e) {
@@ -214,9 +223,8 @@ export const fetchCollections = async (userEmail) => {
       collections = data["collections"] || [];
       return {
         collections,
-        activeCollections: collections.filter((col) => !col.deletedAt),
         currentPlan: data.currentPlan || FREE_TIER,
-        queryInfo: data.queryInfo,
+        usageInfo: data.usageInfo,
       };
     }
     throw new Error("No collection found for the user");
@@ -224,13 +232,6 @@ export const fetchCollections = async (userEmail) => {
     logger.error("Failed to fetch collections ", userEmail, e);
     throw new Error("Failed to fetch collections");
   }
-};
-
-export const fetchDashboardStatistics = async (userEmail) => {
-  try {
-    const userRef = doc(db, `users/${userEmail}`);
-    const userDoc = await get;
-  } catch (error) {}
 };
 
 export const updateUser = async ({ userEmail, ...rest }) => {
@@ -245,18 +246,18 @@ export const updateUser = async ({ userEmail, ...rest }) => {
   }
 };
 
-export const fetchQueryInfo = async ({ userEmail }) => {
+export const fetchUsageInfo = async ({ userEmail }) => {
   try {
     const userRef = doc(db, `users/${userEmail}`);
     const userDoc = await getDoc(userRef);
-    let queryInfo = {};
+    let usageInfo = {};
     if (userDoc.exists()) {
-      queryInfo = (await userDoc.data()["queryInfo"]) || {};
+      usageInfo = (await userDoc.data()["usageInfo"]) || {};
     }
-    return queryInfo;
+    return usageInfo;
   } catch (e) {
-    logger.error("Failed to fetch query Info", userEmail, e);
-    throw new Error("Failed to fetch query Info");
+    logger.error("Failed to fetch usage Info", userEmail, e);
+    throw new Error("Failed to fetch usage Info");
   }
 };
 

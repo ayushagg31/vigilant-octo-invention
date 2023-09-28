@@ -1,6 +1,6 @@
 import { fetchVectorStore } from "../../config/qdrant.config";
 import { ask } from "../../scripts/ask-query.mjs";
-import { fetchQueryInfo, updateUser } from "../../services/firestore.service";
+import { fetchUsageInfo, updateUser } from "../../services/firestore.service";
 import { isToday } from "../../utils";
 import PlanMiddleware from "../../middlewares/PlanMiddleware";
 import { PLUS_TIER } from "../../constants/plan.constants";
@@ -37,7 +37,8 @@ export default AuthorizeMiddleware(
 
       // if lastUpdatedAt is today, just increase by 1 and update lastUpdatedAt timestamp
       // if lastUpdatedAt is not today, just set the count to 1 and update lastUpdatedAt timestamp
-      const { count, lastUpdatedAt } = await fetchQueryInfo({ userEmail });
+      const usageInfo = await fetchUsageInfo({ userEmail });
+      const { count, lastUpdatedAt } = usageInfo.query;
       const isLastUpdatedToday = isToday(lastUpdatedAt);
       if (isLastUpdatedToday && count >= MAX_QUESTIONS_PER_DAY) {
         return res.status(400).json({
@@ -48,9 +49,12 @@ export default AuthorizeMiddleware(
       }
       await updateUser({
         userEmail,
-        queryInfo: {
-          count: isLastUpdatedToday ? count + 1 : 1,
-          lastUpdatedAt: Date.now(),
+        usageInfo: {
+          ...usageInfo,
+          query: {
+            count: isLastUpdatedToday ? count + 1 : 1,
+            lastUpdatedAt: Date.now(),
+          },
         },
       });
 

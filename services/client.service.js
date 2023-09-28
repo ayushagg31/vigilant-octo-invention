@@ -188,11 +188,11 @@ export const planListApi = async () => {
   }
 };
 
-export const updateChatLimit = async () => {
+export const updateUsageInfo = async () => {
   try {
     const userToken = await getCurrentUserToken();
     const response = await axios.post(
-      "/api/update-chat-limit",
+      "/api/update-usage",
       {},
       {
         headers: {

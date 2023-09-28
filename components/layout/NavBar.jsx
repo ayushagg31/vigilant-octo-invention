@@ -27,9 +27,15 @@ import {
   AiOutlineLoading3Quarters,
   AiOutlineMail,
 } from "react-icons/ai";
-import { BsFiletypeDoc, BsExclamationCircleFill } from "react-icons/bs";
+import {
+  BsFiletypeDoc,
+  BsExclamationCircleFill,
+  BsGraphUpArrow,
+} from "react-icons/bs";
 import { FcApproval } from "react-icons/fc";
-import { BiSolidUserCircle, BiUserCircle } from "react-icons/bi";
+import { BiUserCircle } from "react-icons/bi";
+import { GiUpgrade } from "react-icons/gi";
+import { MdInsights } from "react-icons/md";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import style from "../../styles/NavBar.module.css";
 import { LoginModal } from "../home/LoginModal";
@@ -80,7 +86,7 @@ function NavBar() {
     switch (currentPlan) {
       case PLUS_TIER:
         plan = <FcApproval fontSize={"16px"} cursor={"pointer"} />;
-        planText = "You are on pro plan";
+        planText = "You are subscribed to the Pro plan.";
         break;
     }
     return (
@@ -104,7 +110,7 @@ function NavBar() {
         fetchCollections();
       }
     } catch (error) {
-      addError(error.message || "Error in Fetching Collection");
+      addError(error.message || "Error in Fetching collections");
     }
   }, [user?.email]);
 
@@ -134,22 +140,23 @@ function NavBar() {
           />
           {/* Logo end */}
           {/* Chat with pdf start */}
-          {activePath.includes("/docinsights") && (
-            <Tooltip
-              label="Go to dashboard"
-              placement="right"
-              shouldWrapChildren
-            >
-              <IoMdArrowRoundBack
-                style={{ cursor: "pointer" }}
-                className={`${style.navbarIcons} ${
-                  activePath === "/dashboard" ? style.activeNav : ""
-                }`}
-                onClick={() => router.push("/dashboard")}
-                title="Upload your doc"
-              />
-            </Tooltip>
-          )}
+          {activePath.includes("/docinsights") ||
+            (activePath.includes("/usage") && (
+              <Tooltip
+                label="Go to dashboard"
+                placement="right"
+                shouldWrapChildren
+              >
+                <IoMdArrowRoundBack
+                  style={{ cursor: "pointer" }}
+                  className={`${style.navbarIcons} ${
+                    activePath === "/dashboard" ? style.activeNav : ""
+                  }`}
+                  onClick={() => router.push("/dashboard")}
+                  title="Upload your doc"
+                />
+              </Tooltip>
+            ))}
 
           {user && (
             <Tooltip
@@ -177,6 +184,32 @@ function NavBar() {
           p="4"
           zIndex="100"
         >
+          <Tooltip
+            label={
+              currentPlan === PLUS_TIER ? "Activity Insights" : "Upgrade to Pro"
+            }
+            placement="right"
+            shouldWrapChildren
+          >
+            {currentPlan === PLUS_TIER ? (
+              <MdInsights
+                style={{ cursor: "pointer" }}
+                className={`${style.navbarIcons}`}
+                onClick={() => router.push("/usage")}
+                title={"Activity Insights"}
+                size="1.75rem"
+              />
+            ) : (
+              <GiUpgrade
+                style={{ cursor: "pointer", fontWeight: "bold" }}
+                className={`${style.navbarIcons}`}
+                onClick={() => router.push("/usage")}
+                title={"Upgrade to Pro"}
+                size="1.75rem"
+              />
+            )}
+          </Tooltip>
+
           {loadingUser ? (
             <AiOutlineLoading3Quarters className={style.loading} />
           ) : (
@@ -201,10 +234,6 @@ function NavBar() {
                       {renderPlan()}
                     </Box>
                     <MenuList color={"#000"} bg="#fff" maxW="300px">
-                      {/* <MenuItem bg="#fff">Login detail:</MenuItem> */}
-                      {/* <MenuItem bg="#fff" icon={<BiSolidUserCircle />}>
-                        {user?.displayName}
-                      </MenuItem> */}
                       <MenuItem bg="#fff" icon={<AiOutlineMail />}>
                         {user?.email}
                       </MenuItem>
@@ -224,9 +253,9 @@ function NavBar() {
                           backgroundColor: "#EDF2F6",
                         }}
                         bg="#fff"
-                        onClick={() => router.push("/settings")}
+                        onClick={() => router.push("/usage")}
                       >
-                        Settings & Plan
+                        Pricing & Usage
                       </MenuItem>
                       <MenuDivider />
                       <MenuItem

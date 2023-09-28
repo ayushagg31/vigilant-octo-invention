@@ -1,5 +1,5 @@
 import { isToday } from "../utils";
-import { fetchCollections } from "../services/firestore.service";
+import { fetchUsageInfo } from "../services/firestore.service";
 import { plans } from "../config/plan.config";
 import logger from "../services/logging.service";
 
@@ -39,23 +39,10 @@ const UsageMiddleware = function (handler) {
 
       // check for total pdf collection uploaded today
       // if count matches/exceed MAX_DOCUMENT_PER_DAY then rejects it
-      const { collections } = await fetchCollections(userEmail);
-      const collectionsCreatedToday = collections.filter((col) =>
-        isToday(col.createdAt)
-      );
-
-      const fileTypeCounts = { mp3: 0, pdf: 0 };
-      collectionsCreatedToday.forEach((col) => {
-        const fileType = col.fileType;
-        if (fileTypeCounts[fileType]) {
-          fileTypeCounts[fileType]++;
-        } else {
-          fileTypeCounts[fileType] = 1;
-        }
-      });
-
-      console.log(MAX_DOCUMENT_LIMIT[fileType], fileTypeCounts[fileType]);
-      if (fileTypeCounts[fileType] >= MAX_DOCUMENT_LIMIT[fileType]) {
+      const usageInfo = await fetchUsageInfo({ userEmail });
+      const { count, lastUpdatedAt } = usageInfo[fileType];
+      const isLastUpdatedToday = isToday(lastUpdatedAt);
+      if (isLastUpdatedToday && count >= MAX_DOCUMENT_LIMIT[fileType]) {
         return res.status(400).json({
           error: "You've exhausted your daily limit",
         });

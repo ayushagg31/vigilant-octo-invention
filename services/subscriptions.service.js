@@ -18,9 +18,19 @@ export const subscriptionsHandler = async (eventName, customData, data) => {
               customerId: customer_id,
               status, // paid
             },
-            queryInfo: {
-              count: 0,
-              lastUpdatedAt: Date.now(),
+            usageInfo: {
+              query: {
+                count: 0,
+                lastUpdatedAt: Date.now(),
+              },
+              pdf: {
+                count: 0,
+                lastUpdatedAt: Date.now(),
+              },
+              mp3: {
+                count: 0,
+                lastUpdatedAt: Date.now(),
+              },
             },
           });
         }

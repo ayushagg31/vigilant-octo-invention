@@ -14,6 +14,8 @@ export const plans = {
     MAX_VIDEO_SIZE_MB: 0,
   },
   free_tier: {
+    planName: "Free",
+    primaryText: "$0/month",
     MAX_DOCUMENT_LIMIT: {
       mp3: 2,
       pdf: 5,
@@ -24,6 +26,8 @@ export const plans = {
     MAX_VIDEO_SIZE_MB: 15,
   },
   plus_tier: {
+    planName: "Pro",
+    primaryText: "$5/month",
     MAX_DOCUMENT_LIMIT: {
       mp3: 5,
       pdf: 20,

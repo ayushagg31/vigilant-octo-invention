@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 import {
   deleteCollectionApi,
   fetchCollectionsApi,
-  updateChatLimit,
+  updateUsageInfo,
 } from "../services/client.service";
 import { FREE_TIER } from "../constants/plan.constants";
 
@@ -13,15 +13,23 @@ export const useCollections = create(
       isLoading: true,
       collections: [],
       currentPlan: FREE_TIER,
-      queryInfo: {
-        count: 0,
+      usageInfo: {
+        pdf: {
+          count: 0,
+        },
+        mp3: {
+          count: 0,
+        },
+        query: {
+          count: 0,
+        },
       },
       fetchCollections: async () => {
         const { data } = await fetchCollectionsApi();
         set({
           collections: data?.collections || [],
           currentPlan: data?.currentPlan,
-          queryInfo: data?.queryInfo || {},
+          usageInfo: data?.usageInfo || {},
           isLoading: false,
         });
       },
@@ -33,9 +41,9 @@ export const useCollections = create(
           throw new Error(error);
         }
       },
-      updateChatCount: async () => {
+      updateUsageInfo: async () => {
         try {
-          await updateChatLimit();
+          await updateUsageInfo();
         } catch (error) {}
       },
     }),

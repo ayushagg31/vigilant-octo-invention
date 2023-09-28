@@ -13,11 +13,11 @@ async function handler(req, res) {
   }
 
   try {
-    const { activeCollections, currentPlan, queryInfo } =
+    const { collections, currentPlan, usageInfo } =
       await fetchCollections(userEmail);
     res
       .status(200)
-      .json({ collections: activeCollections, currentPlan, queryInfo });
+      .json({ collections, currentPlan, usageInfo });
   } catch (error) {
     res.status(500).json({ error: error.message || "Something went wrong, Please try again later" });
   }

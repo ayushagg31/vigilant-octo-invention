@@ -1,7 +1,7 @@
 import { Box, Flex, Stat, StatLabel, Button, Text } from "@chakra-ui/react";
 import { useCollections } from "../../store/useCollections";
 import { AiFillCheckCircle } from "react-icons/ai";
-import { PLUS_TIER } from "../../constants/plan.constants";
+import { PLUS_TIER, FREE_TIER } from "../../constants/plan.constants";
 import { createCheckoutSessionApi } from "../../services/client.service";
 import isUrl from "is-url";
 import LemonLoader from "../landing/LemonLoader";
@@ -9,8 +9,7 @@ import LemonLoader from "../landing/LemonLoader";
 export const StatsCard = (props) => {
   const { currentPlan } = useCollections();
   const { cardType, plans } = props;
-  const pricing = plans[cardType].pricing.in;
-
+  const pricing = plans[cardType];
   const processPayment = async () => {
     try {
       const { data } = await createCheckoutSessionApi({
