@@ -61,6 +61,14 @@ export default function PricingInfo() {
     }
   };
 
+  const HandlePaymentClick = async (planId) => {
+    if (user) {
+      await processPayment(planId);
+    } else {
+      onOpenLoginModal();
+    }
+  };
+
   function PricePlan({ plan }) {
     const { planName, priceDetails, features, planId, showPricingButton } =
       plan;
@@ -136,7 +144,7 @@ export default function PricingInfo() {
                 rounded={100}
                 colorScheme="black"
                 variant="outline"
-                onClick={() => processPayment(planId)}
+                onClick={() => HandlePaymentClick(planId)}
               >
                 Subscribe
               </Button>
