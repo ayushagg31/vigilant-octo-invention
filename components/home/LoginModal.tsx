@@ -23,26 +23,18 @@ import { useAPIError } from "../../hooks/useApiHook";
 const termConditionText = `By creating an account you agree with our Terms of Service, Privacy Policy, and our default Notification Settings.`;
 
 export function LoginModal({ isOpen, onOpen, onClose, fn = null }) {
-  const { googleLogin, loadingUser } = useAuth((store) => ({
-    googleLogin: store.googleLogin,
-    loadingUser: store.loadingUser
-  }));
+  const { googleLogin, loadingUser } = useAuth();
   const { addError } = useAPIError();
   const handleSignInClick = () => {
     try {
       googleLogin(onClose, fn);
     } catch (error) {
-      addError('Error in successfully loggin in')
+      addError("Error in successfully loggin in");
     }
-
   };
 
   const OverlayTwo = () => (
-    <ModalOverlay
-      bg="none"
-      backdropFilter="auto"
-      backdropBlur="2px"
-    />
+    <ModalOverlay bg="none" backdropFilter="auto" backdropBlur="2px" />
   );
   const LoginContent = () => {
     return (

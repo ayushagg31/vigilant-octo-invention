@@ -177,7 +177,7 @@ export default function PricingInfo() {
           setLoader(false);
           onCloseLoginModal();
         }}
-        fn={processPayment}
+        fn={() => processPayment(pricingPlanConfig[1].planId)}
       />
     </>
   );
