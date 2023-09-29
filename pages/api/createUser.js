@@ -41,4 +41,4 @@ async function handler(req, res) {
   }
 }
 
-export default AuthorizeMiddleware(handler);
+export default AuthorizeMiddleware(handler, "createUser");

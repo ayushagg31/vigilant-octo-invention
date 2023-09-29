@@ -227,10 +227,10 @@ export const fetchCollections = async (userEmail) => {
         usageInfo: data.usageInfo,
       };
     }
-    throw new Error("No collection found for the user");
+    throw new Error("404 - User doesn't exist");
   } catch (e) {
     logger.error("Failed to fetch collections ", userEmail, e);
-    throw new Error("Failed to fetch collections");
+    throw new Error(e.message || "Failed to fetch collections");
   }
 };
 
@@ -258,6 +258,18 @@ export const fetchUsageInfo = async ({ userEmail }) => {
   } catch (e) {
     logger.error("Failed to fetch usage Info", userEmail, e);
     throw new Error("Failed to fetch usage Info");
+  }
+};
+
+export const doesUserExists = async ({ userEmail }) => {
+  try {
+    const userRef = doc(db, `users/${userEmail}`);
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) return true;
+    return false;
+  } catch (e) {
+    logger.error("Failed to verify user", userEmail, e);
+    throw new Error("Failed to verify user");
   }
 };
 

@@ -7,8 +7,6 @@ import {
   Stack,
   Text,
   Button,
-  Icon,
-  IconProps,
   useDisclosure,
   Img,
 } from "@chakra-ui/react";
@@ -115,8 +113,14 @@ export default function Hero() {
               onClick={() => {
                 tryItHandler();
               }}
-              size={{ base: "sm", sm: "lg" }}
-              colorScheme="green"
+              variant="outline"
+              style={{
+                background: "#37A169",
+                alignSelf: "flex-end",
+                color: "#fff",
+                padding: "1.25rem 1.5rem",
+              }}
+
             >
               Start for free
             </Button>
@@ -124,7 +128,14 @@ export default function Hero() {
             <Button
               onClick={() => demoHandler()}
               px={6}
-              size={{ base: "sm", sm: "lg" }}
+              variant="outline"
+              style={{
+                background: "#101219",
+                borderColor: "#000",
+                alignSelf: "flex-end",
+                color: "#fff",
+                padding: "1.25rem 1.5rem",
+              }}
             >
               See it in action
             </Button>

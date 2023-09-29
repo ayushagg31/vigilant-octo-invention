@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { FileUploadSection } from "./FileUploadSection";
 import { FromUrl } from "./FromUrl";
 import { TabComponent } from "../common/TabComponent";
@@ -37,5 +37,7 @@ const tabsObject = [
 ];
 
 export const BeforeUpload = () => {
-  return <TabComponent tabConfig={tabsObject} />;
+  return (
+    <TabComponent tabConfig={tabsObject} />
+  );
 };

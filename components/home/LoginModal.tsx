@@ -23,15 +23,16 @@ import { useAPIError } from "../../hooks/useApiHook";
 const termConditionText = `By creating an account you agree with our Terms of Service, Privacy Policy, and our default Notification Settings.`;
 
 export function LoginModal({ isOpen, onOpen, onClose, fn = null }) {
-  const { googleLogin } = useAuth((store) => ({
+  const { googleLogin, loadingUser } = useAuth((store) => ({
     googleLogin: store.googleLogin,
+    loadingUser: store.loadingUser
   }));
   const { addError } = useAPIError();
   const handleSignInClick = () => {
     try {
       googleLogin(onClose, fn);
     } catch (error) {
-      addError('error in successfully loggin in')
+      addError('Error in successfully loggin in')
     }
 
   };
@@ -57,6 +58,8 @@ export function LoginModal({ isOpen, onOpen, onClose, fn = null }) {
                 variant="outline"
                 leftIcon={<FaGoogle />}
                 onClick={handleSignInClick}
+                isLoading={loadingUser}
+                loadingText="Loading user..."
               >
                 Sign in with Google
               </Button>

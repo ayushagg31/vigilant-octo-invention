@@ -45,7 +45,7 @@ export const subscriptionsHandler = async (eventName, customData, data) => {
           // const product = customData.product; // plus_tier
           // const activeStatus = ["active", , "cancelled"];
           const inactiveStatus = ["unpaid", "past_due", "expired"];
-          if (inactiveStatus.includes(status)) currentPlan = "zero_tier";
+          if (inactiveStatus.includes(status)) currentPlan = "free_tier";
           await updateUser({
             userEmail: user_email,
             currentPlan,

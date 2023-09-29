@@ -1,7 +1,6 @@
 import "../styles/globals.css";
 import Script from "next/script";
 ("use client");
-import RootModal from "../components/layout/modals/RootModal";
 import Head from "next/head";
 import Providers from "./_provider";
 import APIErrorNotificationProvider from "../customProviders/apiNotificationProvider";
@@ -23,7 +22,6 @@ export default function App({ Component, pageProps }) {
                 <Component {...pageProps} />
               </>
             )}
-            <RootModal />
             <APIErrorNotificationProvider />
           </APILoaderProvider>
         </APIErrorProvider>

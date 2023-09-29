@@ -30,7 +30,6 @@ import {
 import {
   BsFiletypeDoc,
   BsExclamationCircleFill,
-  BsGraphUpArrow,
 } from "react-icons/bs";
 import { FcApproval } from "react-icons/fc";
 import { BiUserCircle } from "react-icons/bi";
@@ -219,6 +218,7 @@ function NavBar() {
                   <Menu placement="right-end">
                     <Box position="relative">
                       <MenuButton
+                        className={style.navbarIcons}
                         as={Button}
                         rounded={"full"}
                         variant={"link"}
