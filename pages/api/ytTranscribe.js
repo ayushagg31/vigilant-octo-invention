@@ -29,7 +29,7 @@ const ytHandler = async (req, res) => {
     const videoInfo = await ytdl.getInfo(ytUrl);
     const videoTitle = videoInfo?.videoDetails?.title;
 
-    await ytdl(ytUrl, { filter: "audioonly" })
+    await ytdl(ytUrl, { filter: "audioonly", quality: "lowestaudio" })
       .pipe(fs.createWriteStream(filePath))
       .on("finish", async () => {
         logger.info(`Audio downloaded successfully - ${collectionId}`);
