@@ -62,6 +62,7 @@ export default function PricingInfo() {
   };
 
   const HandlePaymentClick = async (planId) => {
+    setLoader(true);
     if (user) {
       await processPayment(planId);
     } else {
@@ -172,7 +173,10 @@ export default function PricingInfo() {
       <LoginModal
         isOpen={isOpenLoginModal}
         onOpen={onOpenLoginModal}
-        onClose={onCloseLoginModal}
+        onClose={() => {
+          setLoader(false);
+          onCloseLoginModal();
+        }}
         fn={processPayment}
       />
     </>
