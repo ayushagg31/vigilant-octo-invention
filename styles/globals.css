@@ -140,6 +140,10 @@ a:hover {
   animation: down 1.5s infinite ease-in;
 }
 
+strong {
+  color: #fff;
+}
+
 @keyframes down {
   0% {
     transform: translate(0);
