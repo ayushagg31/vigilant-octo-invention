@@ -36,7 +36,7 @@ export const plans = {
   plus_tier: {
     pricing: {
       checkout_url:
-        "https://yourpdf.lemonsqueezy.com/checkout/buy/0327a6d3-333c-4371-b76d-bafe77a0d018?embed=1&media=0",
+        "https://yourpdf.lemonsqueezy.com/checkout/buy/ac7556da-5370-4afe-b800-03a39f5c495a?embed=1&media=0&dark=1",
       planName: "Pro",
       primaryText: "$5/month",
       amount: 0,
