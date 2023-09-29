@@ -25,6 +25,7 @@ import { useAPIError } from "../../hooks/useApiHook";
 import { useCollections } from "../../store/useCollections";
 import LemonLoader from "./LemonLoader";
 import isUrl from "is-url";
+import { useLayoutEffect } from "react";
 
 export default function PricingInfo() {
   const [currentPlanId, setCurrentPlanId] = useState(null);
@@ -42,6 +43,18 @@ export default function PricingInfo() {
   const { user } = useAuth((store) => ({
     user: store.user,
   }));
+
+  useLayoutEffect(() => {
+    setTimeout(() => {
+      LemonSqueezy?.Setup({
+        eventHandler: (event) => {
+          if (event === "close") {
+            setLoader(false);
+          }
+        },
+      });
+    }, 2000);
+  }, []);
 
   const processPayment = async (planId) => {
     try {
