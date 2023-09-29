@@ -27,10 +27,7 @@ import {
   AiOutlineLoading3Quarters,
   AiOutlineMail,
 } from "react-icons/ai";
-import {
-  BsFiletypeDoc,
-  BsExclamationCircleFill,
-} from "react-icons/bs";
+import { BsFiletypeDoc, BsExclamationCircleFill } from "react-icons/bs";
 import { FcApproval } from "react-icons/fc";
 import { BiUserCircle } from "react-icons/bi";
 import { GiUpgrade } from "react-icons/gi";
@@ -139,23 +136,23 @@ function NavBar() {
           />
           {/* Logo end */}
           {/* Chat with pdf start */}
-          {activePath.includes("/docinsights") ||
-            (activePath.includes("/usage") && (
-              <Tooltip
-                label="Go to dashboard"
-                placement="right"
-                shouldWrapChildren
-              >
-                <IoMdArrowRoundBack
-                  style={{ cursor: "pointer" }}
-                  className={`${style.navbarIcons} ${
-                    activePath === "/dashboard" ? style.activeNav : ""
-                  }`}
-                  onClick={() => router.push("/dashboard")}
-                  title="Upload your doc"
-                />
-              </Tooltip>
-            ))}
+          {(activePath.includes("/docinsights") ||
+            activePath.includes("/usage")) && (
+            <Tooltip
+              label="Go to dashboard"
+              placement="right"
+              shouldWrapChildren
+            >
+              <IoMdArrowRoundBack
+                style={{ cursor: "pointer" }}
+                className={`${style.navbarIcons} ${
+                  activePath === "/dashboard" ? style.activeNav : ""
+                }`}
+                onClick={() => router.push("/dashboard")}
+                title="Upload your doc"
+              />
+            </Tooltip>
+          )}
 
           {user && (
             <Tooltip
