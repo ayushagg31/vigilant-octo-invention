@@ -43,10 +43,10 @@ export default function PricingInfo() {
     user: store.user,
   }));
 
-  const processPayment = async () => {
+  const processPayment = async (planId) => {
     try {
       const { data } = await createCheckoutSessionApi({
-        planId: currentPlanId,
+        planId,
       });
       const checkoutUrl = data.url;
       if (isUrl(checkoutUrl)) {
@@ -61,36 +61,10 @@ export default function PricingInfo() {
     }
   };
 
-  const HandlePaymentClick = async (planId) => {
-    setCurrentPlanId(planId);
-  };
-
-    useEffect(() => {
-      if (initialRun.current == false) {
-        initialRun.current = true;
-        return;
-      } else {
-        try {
-          setLoader(true);
-          const handlePayment = async () => {
-            if (user) {
-              await processPayment();
-            } else {
-              onOpenLoginModal();
-            }
-          };
-          handlePayment();
-        } catch (e) {
-          setLoader(false);
-          addError("Error in processing subscription ");
-        }
-      }
-    }, [currentPlanId]);
-
   function PricePlan({ plan }) {
     const { planName, priceDetails, features, planId, showPricingButton } =
       plan;
-    const isActive = currentPlan === planId;
+    const isActive = currentPlan === planId && user;
     return (
       <Flex
         flexDirection={"column"}
@@ -162,7 +136,7 @@ export default function PricingInfo() {
                 rounded={100}
                 colorScheme="black"
                 variant="outline"
-                onClick={() => HandlePaymentClick(planId)}
+                onClick={() => processPayment(planId)}
               >
                 Subscribe
               </Button>
