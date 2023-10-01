@@ -22,3 +22,10 @@ export function randomPicker(array) {
   // Return the item at the random index.
   return array[randomIndex];
 }
+
+
+export const jumpToReleventDiv = (id) => {
+  const releventDiv = document.getElementById(id);
+  // behavior: "smooth" parameter for smooth movement
+  releventDiv?.scrollIntoView({ behavior: "smooth", block: "center" });
+};

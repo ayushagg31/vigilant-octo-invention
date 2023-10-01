@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { IoMdArrowForward } from "react-icons/io";
 import { BsFillArrowDownCircleFill } from "react-icons/bs";
 import { TypeAnimation } from "react-type-animation";
+import { jumpToReleventDiv } from "../../utils";
 
 import { LoginModal } from "../home/LoginModal";
 
@@ -42,10 +43,6 @@ export default function Hero() {
     }
   };
 
-  const demoHandler = () => {
-    const url = "/docinsights?id=f5fa43d2-4497-49f4-afd4-8770af911c6f";
-    router.push(url);
-  };
 
   return (
     <Box
@@ -122,11 +119,14 @@ export default function Hero() {
               }}
 
             >
-              Start for free
+              {
+                user ? "Go to dashboard" : " Start for free"
+              }
+
             </Button>
 
             <Button
-              onClick={() => demoHandler()}
+              onClick={() => jumpToReleventDiv('demo-section')}
               px={6}
               variant="outline"
               style={{
