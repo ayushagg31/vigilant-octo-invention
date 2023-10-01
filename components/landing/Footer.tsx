@@ -75,7 +75,7 @@ export default function LandingFooter() {
             <ListHeader>FAQ</ListHeader>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>Support</ListHeader>
+            <ListHeader><a href="mailto:sellifyappshq@gmail.com">Support</a></ListHeader>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader>Stay up to date</ListHeader>

@@ -27,6 +27,7 @@ import { useAuth } from "../../store/useAuth";
 import { LoginModal } from "../home/LoginModal";
 import { useRouter } from "next/router";
 import { useEffect, useState, useMemo, useCallback } from "react";
+import { jumpToReleventDiv } from "../../utils";
 
 interface Props {
   children: React.ReactNode;
@@ -58,19 +59,12 @@ export default function Simple() {
     logout: store.logout,
   }));
 
-  const jumpToReleventDiv = useCallback((id) => {
-    const releventDiv = document.getElementById(id);
-    // behavior: "smooth" parameter for smooth movement
-    releventDiv?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }, []);
+  const Links = [
+    { name: "How it works", id: "how-it-works" },
+    { name: "Demo", id: "demo-section" },
+    { name: "Pricing", id: "pricing-section" },
+  ];
 
-  const Links = useMemo(() => {
-    return [
-      { name: "How it works", fn: () => jumpToReleventDiv("how-it-works") },
-      { name: "Demo", fn: () => jumpToReleventDiv("demo-section") },
-      { name: "Pricing", fn: () => jumpToReleventDiv("pricing-section") },
-    ];
-  }, [jumpToReleventDiv]);
   const router = useRouter();
 
   const onLogout = async () => {
@@ -125,10 +119,11 @@ export default function Simple() {
                 display={{ base: "none", md: "flex" }}
               >
                 {React.Children.toArray(
-                  Links.map((link) => (
+                  Links.map((link, index) => (
                     <Button
+                      key={index}
                       color="#fff"
-                      onClick={link.fn}
+                      onClick={() => jumpToReleventDiv(link.id)}
                       _hover={{
                         backgroundColor: "#777",
                       }}
@@ -196,10 +191,11 @@ export default function Simple() {
         {isOpen ? (
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
-              {Links.map((link) => (
+              {Links.map((link, index) => (
                 <Button
+                  key={index}
                   color="#fff"
-                  onClick={link.fn}
+                  onClick={() => jumpToReleventDiv(link.id)}
                   _active={{ color: "#fff", bg: "black" }}
                   _hover={{
                     color: "#fff",

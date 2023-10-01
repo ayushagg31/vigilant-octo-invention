@@ -138,21 +138,20 @@ function NavBar() {
           {/* Chat with pdf start */}
           {(activePath.includes("/docinsights") ||
             activePath.includes("/usage")) && (
-            <Tooltip
-              label="Go to dashboard"
-              placement="right"
-              shouldWrapChildren
-            >
-              <IoMdArrowRoundBack
-                style={{ cursor: "pointer" }}
-                className={`${style.navbarIcons} ${
-                  activePath === "/dashboard" ? style.activeNav : ""
-                }`}
-                onClick={() => router.push("/dashboard")}
-                title="Upload your doc"
-              />
-            </Tooltip>
-          )}
+              <Tooltip
+                label="Go to dashboard"
+                placement="right"
+                shouldWrapChildren
+              >
+                <IoMdArrowRoundBack
+                  style={{ cursor: "pointer" }}
+                  className={`${style.navbarIcons} ${activePath === "/dashboard" ? style.activeNav : ""
+                    }`}
+                  onClick={() => router.push("/dashboard")}
+                  title="Upload your doc"
+                />
+              </Tooltip>
+            )}
 
           {user && (
             <Tooltip
@@ -163,7 +162,7 @@ function NavBar() {
               <BsFiletypeDoc
                 className={style.navbarIcons}
                 ref={btnDrawerRef}
-                onClick={onOpenDrawer}
+                onClick={isOpenDrawer ? onCloseDrawer : onOpenDrawer}
                 cursor="pointer"
               />
             </Tooltip>

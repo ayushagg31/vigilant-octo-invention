@@ -21,7 +21,7 @@ import { useCollections } from "../../store/useCollections";
 import { useRouter } from "next/router";
 import TagDoc from "./TagDoc";
 import { MdSettings } from "react-icons/md";
-import { AiOutlineLink, AiOutlineFilePdf } from "react-icons/ai";
+import { AiOutlineLink, AiOutlineFilePdf, AiFillDelete } from "react-icons/ai";
 
 let selectedCollection;
 const YourDocs = ({ closeDrawer }) => {
@@ -114,11 +114,10 @@ const YourDocs = ({ closeDrawer }) => {
                 closeDrawer={closeDrawer}
                 size="sm"
               />
-
-              <CloseButton
-                ml="auto"
-                onClick={() => handleDelete(collectionEl)}
-              />
+              <AiFillDelete style={{
+                cursor: 'pointer',
+                marginLeft: '2px'
+              }} onClick={() => handleDelete(collectionEl)} />
             </Flex>
           </Box>
         )))}
