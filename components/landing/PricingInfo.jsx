@@ -45,8 +45,8 @@ export default function PricingInfo() {
   }));
 
   useLayoutEffect(() => {
-    setTimeout(() => {
-      if (window?.LemonSqueezy)
+    if (window?.LemonSqueezy) {
+      setTimeout(() => {
         window?.LemonSqueezy?.Setup({
           eventHandler: (event) => {
             if (event === "close") {
@@ -54,7 +54,8 @@ export default function PricingInfo() {
             }
           },
         });
-    }, 2000);
+      }, 2000);
+    }
   }, []);
 
   const processPayment = async (planId) => {
