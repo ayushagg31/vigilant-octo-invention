@@ -11,9 +11,12 @@ import {
   Input,
   IconButton,
   useColorModeValue,
+  useDisclosure,
+  Button
 } from "@chakra-ui/react";
 import { AiFillDingtalkCircle } from "react-icons/ai";
 import { BiMailSend } from "react-icons/bi";
+import  FAQComponent  from "../landing/FAQ"
 
 const Logo = (props) => {
   return <AiFillDingtalkCircle size="44px" />;
@@ -52,6 +55,12 @@ const ListHeader = ({ children }) => {
 };
 
 export default function LandingFooter() {
+  const {
+    isOpen: isOpenFaqModal,
+    onOpen: onOpenFaqModal,
+    onClose: onCloseFaqModal,
+  } = useDisclosure();
+
   return (
     <Box
       className="snap-section"
@@ -72,7 +81,9 @@ export default function LandingFooter() {
             </Text>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader>FAQ</ListHeader>
+            <Button onClick={() => onOpenFaqModal()} colorScheme='teal' variant='link'>
+              FAQ
+            </Button>
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader><a href="mailto:sellifyappshq@gmail.com">Support</a></ListHeader>
@@ -101,6 +112,7 @@ export default function LandingFooter() {
           </Stack>
         </SimpleGrid>
       </Container>
+      <FAQComponent isOpen={isOpenFaqModal} onOpen={onOpenFaqModal} onClose={onCloseFaqModal} />
     </Box>
   );
 }
