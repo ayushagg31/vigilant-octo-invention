@@ -116,7 +116,8 @@ const YourDocs = ({ closeDrawer }) => {
               />
               <AiFillDelete style={{
                 cursor: 'pointer',
-                marginLeft: '2px'
+                marginLeft: '4px',
+                color: 'red'
               }} onClick={() => handleDelete(collectionEl)} />
             </Flex>
           </Box>
