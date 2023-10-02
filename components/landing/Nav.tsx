@@ -59,8 +59,8 @@ export default function Simple() {
   }));
 
   const Links = [
-    { name: "How it works", id: "how-it-works" },
-    { name: "Demo", id: "demo-section" },
+    { name: "Home", id: "how-it-works" },
+    { name: "How it works", id: "demo-section" },
     { name: "Pricing", id: "pricing-section" },
   ];
 
