@@ -5,7 +5,8 @@ export default function LemonLoader() {
 
   useEffect(() => {
     if (isLoaded) {
-      window.createLemonSqueezy();
+       // @ts-ignore
+      window?.createLemonSqueezy();
     }
   }, [isLoaded]);
 

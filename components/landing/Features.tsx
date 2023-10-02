@@ -67,6 +67,7 @@ export default function SplitWithImage() {
           border={"2px"}
           borderColor={"#777"}
           rounded={"md"}
+          loading="lazy"
           alt={"feature image"}
           src={"/demo.gif"}
           objectFit={"scale-down"}

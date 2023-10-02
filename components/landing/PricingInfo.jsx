@@ -20,17 +20,17 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { createCheckoutSessionApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
 import { LoginModal } from "../home/LoginModal";
+// @ts-ignore
 import { useRef, useState } from "react";
 import { useAPIError } from "../../hooks/useApiHook";
 import { useCollections } from "../../store/useCollections";
 import LemonLoader from "./LemonLoader";
+// @ts-ignore
 import isUrl from "is-url";
 import { useLayoutEffect } from "react";
 
 export default function PricingInfo() {
-  const [currentPlanId, setCurrentPlanId] = useState(null);
   const [loader, setLoader] = useState(false);
-  const initialRun = useRef(false);
   const { addError } = useAPIError();
   const { currentPlan } = useCollections();
 
@@ -45,8 +45,10 @@ export default function PricingInfo() {
   }));
 
   useLayoutEffect(() => {
+    // @ts-ignore
     if (window?.LemonSqueezy) {
       setTimeout(() => {
+        // @ts-ignore
         window?.LemonSqueezy?.Setup({
           eventHandler: (event) => {
             if (event === "close") {
@@ -65,6 +67,7 @@ export default function PricingInfo() {
       });
       const checkoutUrl = data.url;
       if (isUrl(checkoutUrl)) {
+        // @ts-ignore
         if (window?.LemonSqueezy) window.LemonSqueezy.Url.Open(checkoutUrl);
         else window.location.href = checkoutUrl;
       } else {

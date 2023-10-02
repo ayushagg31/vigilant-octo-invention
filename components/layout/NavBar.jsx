@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-// import dynamic from "next/dynamic";
 import {
   Flex,
   Button,
@@ -161,6 +160,7 @@ function NavBar() {
             >
               <BsFiletypeDoc
                 className={style.navbarIcons}
+                // @ts-ignore
                 ref={btnDrawerRef}
                 onClick={isOpenDrawer ? onCloseDrawer : onOpenDrawer}
                 cursor="pointer"
@@ -261,7 +261,7 @@ function NavBar() {
                         bg="#fff"
                         onClick={async () => {
                           router.push("/");
-                          await logout(router);
+                          await logout();
                         }}
                       >
                         Logout
