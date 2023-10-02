@@ -28,7 +28,6 @@ import { LoginModal } from "../home/LoginModal";
 import { useRouter } from "next/router";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { jumpToReleventDiv } from "../../utils";
-
 interface Props {
   children: React.ReactNode;
 }
