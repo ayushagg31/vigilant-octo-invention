@@ -35,7 +35,6 @@ export const TabComponent = ({ tabConfig }) => {
               _selected={{
                 color: "#fff",
                 fontWeight: "light",
-                border: "1px",
                 border: "2px solid #37A169",
               }}
             >

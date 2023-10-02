@@ -10,7 +10,7 @@ interface ExtendedNextRequest extends NextRequest {
   context: Context
 }
 
-const AuthorizeMiddleware = function (handler, action) {
+const AuthorizeMiddleware = function (handler, action = null) {
   return async function (req: ExtendedNextRequest, res) {
     const authorization = req.headers['authorization'];
     if (!authorization) {

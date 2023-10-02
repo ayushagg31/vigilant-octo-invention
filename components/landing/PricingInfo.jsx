@@ -20,17 +20,17 @@ import { AiFillCheckCircle } from "react-icons/ai";
 import { createCheckoutSessionApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
 import { LoginModal } from "../home/LoginModal";
-import { useEffect, useRef, useState } from "react";
+// @ts-ignore
+import { useRef, useState } from "react";
 import { useAPIError } from "../../hooks/useApiHook";
 import { useCollections } from "../../store/useCollections";
 import LemonLoader from "./LemonLoader";
+// @ts-ignore
 import isUrl from "is-url";
 import { useLayoutEffect } from "react";
 
 export default function PricingInfo() {
-  const [currentPlanId, setCurrentPlanId] = useState(null);
   const [loader, setLoader] = useState(false);
-  const initialRun = useRef(false);
   const { addError } = useAPIError();
   const { currentPlan } = useCollections();
 
@@ -45,15 +45,19 @@ export default function PricingInfo() {
   }));
 
   useLayoutEffect(() => {
-    setTimeout(() => {
-      LemonSqueezy?.Setup({
-        eventHandler: (event) => {
-          if (event === "close") {
-            setLoader(false);
-          }
-        },
-      });
-    }, 2000);
+    // @ts-ignore
+    if (window?.LemonSqueezy) {
+      setTimeout(() => {
+        // @ts-ignore
+        window?.LemonSqueezy?.Setup({
+          eventHandler: (event) => {
+            if (event === "close") {
+              setLoader(false);
+            }
+          },
+        });
+      }, 2000);
+    }
   }, []);
 
   const processPayment = async (planId) => {
@@ -63,7 +67,8 @@ export default function PricingInfo() {
       });
       const checkoutUrl = data.url;
       if (isUrl(checkoutUrl)) {
-        if (window.LemonSqueezy) window.LemonSqueezy.Url.Open(checkoutUrl);
+        // @ts-ignore
+        if (window?.LemonSqueezy) window.LemonSqueezy.Url.Open(checkoutUrl);
         else window.location.href = checkoutUrl;
       } else {
         addError("Error in processing subscription ");
@@ -138,7 +143,7 @@ export default function PricingInfo() {
               <ListItem
                 key={i}
                 color="#f2f2f2"
-                fontSize={{ base: "sm", sm: "sm", md: "2xl" }}
+                fontSize={{ base: "sm", sm: "sm", md: "md" }}
               >
                 <ListIcon
                   as={FaCheckCircle}

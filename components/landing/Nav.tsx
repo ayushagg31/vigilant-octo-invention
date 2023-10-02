@@ -59,8 +59,8 @@ export default function Simple() {
   }));
 
   const Links = [
-    { name: "How it works", id: "how-it-works" },
-    { name: "Demo", id: "demo-section" },
+    { name: "Home", id: "how-it-works" },
+    { name: "How it works", id: "demo-section" },
     { name: "Pricing", id: "pricing-section" },
   ];
 
@@ -82,7 +82,6 @@ export default function Simple() {
     onClose: onCloseLoginModal,
   } = useDisclosure();
 
-  const termConditionText = `By creating an account you agree with our Terms of Service, Privacy Policy, and our default Notification Settings.`;
 
   if (!mounted) return <></>;
   return (

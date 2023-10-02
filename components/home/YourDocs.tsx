@@ -103,22 +103,25 @@ const YourDocs = ({ closeDrawer }) => {
       >
         {React.Children.toArray(collections?.map((collectionEl) => (
           <Box key={collectionId}>
-            <Flex align={"center"}>
-              <Box
-                as={renderFileIcon(collectionEl.fileType)}
-                color="green.500"
-                mr={2}
-              />
-              <TagDoc
-                collectionEl={collectionEl}
-                closeDrawer={closeDrawer}
-                size="sm"
-              />
-              <AiFillDelete style={{
-                cursor: 'pointer',
-                marginLeft: '4px',
-                color: 'red'
-              }} onClick={() => handleDelete(collectionEl)} />
+            <Flex align={"center"} justifyContent={"space-between"}>
+              <Flex align={"center"}>
+                <Box
+                  as={renderFileIcon(collectionEl.fileType)}
+                  color="green.500"
+                  mr={2}
+                />
+                <TagDoc
+                  collectionEl={collectionEl}
+                  closeDrawer={closeDrawer}
+                  size="sm"
+                />
+              </Flex>
+              <AiFillDelete
+                fontSize={"1.25rem"}
+                style={{
+                  cursor: 'pointer',
+                  color: '#F44336'
+                }} onClick={() => handleDelete(collectionEl)} />
             </Flex>
           </Box>
         )))}

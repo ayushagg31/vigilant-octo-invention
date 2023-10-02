@@ -1,3 +1,4 @@
+// @ts-check
 import { fetchCollections } from "../../services/firestore.service";
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
 
