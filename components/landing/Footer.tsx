@@ -2,12 +2,10 @@
 
 import {
   Box,
-  chakra,
   Container,
   SimpleGrid,
   Stack,
   Text,
-  VisuallyHidden,
   useColorModeValue,
   useDisclosure,
   Button
@@ -19,29 +17,6 @@ const Logo = (props) => {
   return <AiFillDingtalkCircle size="44px" />;
 };
 
-const SocialButton = ({ children, label, href }) => {
-  return (
-    <chakra.button
-      bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
-      rounded={"full"}
-      w={8}
-      h={8}
-      cursor={"pointer"}
-      as={"a"}
-      href={href}
-      display={"inline-flex"}
-      alignItems={"center"}
-      justifyContent={"center"}
-      transition={"background 0.3s ease"}
-      _hover={{
-        bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
-      }}
-    >
-      <VisuallyHidden>{label}</VisuallyHidden>
-      {children}
-    </chakra.button>
-  );
-};
 
 const ListHeader = ({ children }) => {
   return (
@@ -66,7 +41,7 @@ export default function LandingFooter() {
     >
       <Container as={Stack} maxW={"6xl"} py={10}>
         <SimpleGrid
-          templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
+          templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr" }}
           spacing={8}
         >
           <Stack spacing={6}>
@@ -83,7 +58,7 @@ export default function LandingFooter() {
             </Button>
           </Stack>
           <Stack align={"flex-start"}>
-            <Button variant='link'><a href="mailto:sellifyappshq@gmail.com">Support</a></Button>
+            <ListHeader><a href="mailto:sellifyappshq@gmail.com">Support</a></ListHeader>
           </Stack>
         </SimpleGrid>
       </Container>
