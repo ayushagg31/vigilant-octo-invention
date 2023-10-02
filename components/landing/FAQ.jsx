@@ -30,35 +30,35 @@ export default function FAQComponent({ isOpen, onOpen, onClose, fn = null }) {
 
     const QuestionAnswers = [
         {
-            question: "Is Yourpdf.chat Free?",
-            answer: "Yourpdf.chat offers a free plan that allows you to work with up to 5 PDFs per month, each containing up to 10 pages. If you require more capacity, you can upgrade to the Pro plan."
+            question: "Is YourPDF.chat free?",
+            answer: "YourPDF.chat offers a free plan that allows you to work with up to 5 PDFs per month, each containing up to 10 pages. If you require more capacity, you can upgrade to the Pro plan."
         },
         {
-            question: "Is My Data Secure?",
-            answer: "Rest assured, Yourpdf.chat takes security seriously. Your files are stored on a secure cloud storage platform and can be deleted at your discretion."
+            question: "Is my data secure?",
+            answer: "Rest assured, YourPDF.chat takes security seriously. Your files are stored on a secure cloud storage platform and can be deleted at your discretion."
         },
         {
-            question: "How Can I Delete a PDF or Videos from Yourpdf.chat?",
+            question: "How can I delete a PDF or videos from YourPDF.chat?",
             answer: "Deleting files is straightforward. Just navigate to the document toggle on your dashboard and use the provided delete button to remove the documents or videos you no longer need."
         },
         {
-            question: "How Does Yourpdf.chat Function?",
-            answer: "Yourpdf.chat operates through a two-step process. It initially creates a semantic index over all the paragraphs within a PDF. When you pose a question, Yourpdf.chat identifies the most relevant paragraphs from the PDF and utilizes the ChatGPT API from OpenAI to generate a response."
+            question: "How does YourPDF.chat function?",
+            answer: "YourPDF.chat operates through a two-step process. It initially creates a semantic index over all the paragraphs within a PDF. When you pose a question, YourPDF.chat identifies the most relevant paragraphs from the PDF and utilizes the ChatGPT API from OpenAI to generate a response."
         },
         {
-            question: "Can Yourpdf.chat Interpret Images and Tables in PDFs?",
-            answer: "No, Yourpdf.chat is designed to work exclusively with text and cannot interpret images or tables within PDF documents."
+            question: "Can YourPDF.chat interpret images and tables in PDFs?",
+            answer: "No, YourPDF.chat is designed to work exclusively with text and cannot interpret images or tables within PDF documents."
         },
         {
-            question: "Is Yourpdf.chat Powered by GPT-4?",
-            answer: "Currently, Yourpdf.chat utilizes GPT 3.5, which is equivalent to ChatGPT. However, we plan to upgrade to GPT-4 in the near future."
+            question: "Is YourPDF.chat powered by GPT-4?",
+            answer: "Currently, YourPDF.chat utilizes GPT 3.5, which is equivalent to ChatGPT. However, we plan to upgrade to GPT-4 in the near future."
         },
         {
-            question: "What Is the Cancellation Policy?",
-            answer: "You have the flexibility to cancel your Pro subscription at any time. If you do cancel, you will retain access to your Plus plan until the end of the current 30-day billing period."
+            question: "What is the cancellation policy?",
+            answer: "You have the flexibility to cancel your Pro subscription at any time. If you do cancel, you will retain access to your pro plan until the end of the current 30-day billing period."
         },
         {
-            question: "Where Can I Submit Feature Requests or Report Bugs?",
+            question: "Where can I submit feature qequests or report bugs?",
             answer: "Feel free to share your feature requests or report any bugs by emailing us at sellifyappshq@gmail.com. We value your feedback and will address your inquiries promptly."
         }
     ];
