@@ -46,13 +46,14 @@ export default function PricingInfo() {
 
   useLayoutEffect(() => {
     setTimeout(() => {
-      LemonSqueezy?.Setup({
-        eventHandler: (event) => {
-          if (event === "close") {
-            setLoader(false);
-          }
-        },
-      });
+      if (window?.LemonSqueezy)
+        window?.LemonSqueezy?.Setup({
+          eventHandler: (event) => {
+            if (event === "close") {
+              setLoader(false);
+            }
+          },
+        });
     }, 2000);
   }, []);
 
