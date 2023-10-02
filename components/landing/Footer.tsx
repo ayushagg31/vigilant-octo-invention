@@ -69,7 +69,7 @@ export default function LandingFooter() {
     >
       <Container as={Stack} maxW={"6xl"} py={10}>
         <SimpleGrid
-          templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr 2fr" }}
+          templateColumns={{ sm: "1fr 1fr", md: "2fr 1fr 1fr" }}
           spacing={8}
         >
           <Stack spacing={6}>
@@ -88,7 +88,7 @@ export default function LandingFooter() {
           <Stack align={"flex-start"}>
             <ListHeader><a href="mailto:sellifyappshq@gmail.com">Support</a></ListHeader>
           </Stack>
-          <Stack align={"flex-start"}>
+          {/* <Stack align={"flex-start"}>
             <ListHeader>Stay up to date</ListHeader>
             <Stack direction={"row"}>
               <Input
@@ -109,7 +109,7 @@ export default function LandingFooter() {
                 icon={<BiMailSend />}
               />
             </Stack>
-          </Stack>
+          </Stack> */}
         </SimpleGrid>
       </Container>
       <FAQComponent isOpen={isOpenFaqModal} onOpen={onOpenFaqModal} onClose={onCloseFaqModal} />
