@@ -110,7 +110,7 @@ export default AuthorizeMiddleware(
           res.status(405).json({ error: "Method Not Allowed" });
         }
       } catch (err) {
-        logger.error("/api/ytTranscribe", error);
+        logger.error("/api/ytTranscribe", err);
         return res.status(500).json({ error: err.message });
       }
     })
