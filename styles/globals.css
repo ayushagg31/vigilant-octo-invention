@@ -481,3 +481,9 @@ strong {
 .dark-bg2-shadow {
   box-shadow: 0px 0px 7px 0px rgba(189, 16, 224, 1);
 }
+.demo-image {
+  z-index: 99;
+  position: relative;
+  border: 3px solid #FFF;
+  /* box-shadow: 1px 1px 25px #fff; */
+}

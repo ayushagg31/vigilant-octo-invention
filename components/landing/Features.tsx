@@ -12,7 +12,6 @@ import { FiUploadCloud } from "react-icons/fi";
 import { BsFillChatLeftTextFill } from "react-icons/bs";
 
 
-
 export default function SplitWithImage() {
 
   return (
@@ -48,6 +47,7 @@ export default function SplitWithImage() {
           alt={"feature image"}
           src={"/demo.gif"}
           objectFit={"scale-down"}
+          className="demo-image"
         />
       </Box>
     </Box>
