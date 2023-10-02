@@ -143,7 +143,7 @@ export default function PricingInfo() {
               <ListItem
                 key={i}
                 color="#f2f2f2"
-                fontSize={{ base: "sm", sm: "sm", md: "md" }}
+                fontSize={{ base: "lg", sm: "sm", md: "md" }}
               >
                 <ListIcon
                   as={FaCheckCircle}
@@ -178,7 +178,8 @@ export default function PricingInfo() {
     <>
       <LemonLoader />
       <Stack
-        direction={{ md: "row" }}
+        
+        flexDirection={{base: "column", sm: "row"}}
         textAlign="center"
         justify="center"
         spacing={{ base: 4, lg: 10 }}

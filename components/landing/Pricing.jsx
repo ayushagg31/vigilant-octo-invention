@@ -14,7 +14,7 @@ export default function Pricing() {
   return (
     <>
       <Flex
-        h={"100vh"}
+        minH={"100vh"}
         align={"center"}
         justify={"center"}
         id="pricing-section"
