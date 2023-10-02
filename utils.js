@@ -1,4 +1,3 @@
-
 export const isToday = (timestamp) => {
   if (!timestamp) return false;
   const currentDate = new Date();
@@ -13,7 +12,14 @@ export const isToday = (timestamp) => {
   return false;
 };
 
-
+export function isBefore30Days(timestamp) {
+  if (!timestamp) return false;
+  const currentDate = new Date();
+  const dateToCheck = new Date(timestamp);
+  const diffInMillis = Math.abs(currentDate.getTime() - dateToCheck.getTime());
+  const diffInDays = diffInMillis / (1000 * 60 * 60 * 24);
+  return diffInDays <= 30;
+}
 
 export function randomPicker(array) {
   // Generate a random number between 0 and the length of the array.
@@ -22,7 +28,6 @@ export function randomPicker(array) {
   // Return the item at the random index.
   return array[randomIndex];
 }
-
 
 export const jumpToReleventDiv = (id) => {
   const releventDiv = document.getElementById(id);

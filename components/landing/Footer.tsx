@@ -8,15 +8,12 @@ import {
   Stack,
   Text,
   VisuallyHidden,
-  Input,
-  IconButton,
   useColorModeValue,
   useDisclosure,
   Button
 } from "@chakra-ui/react";
 import { AiFillDingtalkCircle } from "react-icons/ai";
-import { BiMailSend } from "react-icons/bi";
-import  FAQComponent  from "../landing/FAQ"
+import FAQComponent from "../landing/FAQ"
 
 const Logo = (props) => {
   return <AiFillDingtalkCircle size="44px" />;
@@ -81,34 +78,12 @@ export default function LandingFooter() {
             </Text>
           </Stack>
           <Stack align={"flex-start"}>
-            <Button onClick={() => onOpenFaqModal()} colorScheme='teal' variant='link'>
+            <Button onClick={() => onOpenFaqModal()} variant='link'>
               FAQ
             </Button>
           </Stack>
           <Stack align={"flex-start"}>
-            <ListHeader><a href="mailto:sellifyappshq@gmail.com">Support</a></ListHeader>
-          </Stack>
-          <Stack align={"flex-start"}>
-            <ListHeader>Stay up to date</ListHeader>
-            <Stack direction={"row"}>
-              <Input
-                placeholder={"Your email address"}
-                bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
-                border={0}
-                _focus={{
-                  bg: "whiteAlpha.300",
-                }}
-              />
-              <IconButton
-                bg={useColorModeValue("green.400", "green.800")}
-                color={useColorModeValue("white", "gray.800")}
-                _hover={{
-                  bg: "green.600",
-                }}
-                aria-label="Subscribe"
-                icon={<BiMailSend />}
-              />
-            </Stack>
+            <Button variant='link'><a href="mailto:sellifyappshq@gmail.com">Support</a></Button>
           </Stack>
         </SimpleGrid>
       </Container>

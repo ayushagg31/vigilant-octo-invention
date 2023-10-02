@@ -1,4 +1,4 @@
-import { isToday } from "../utils";
+import { isBefore30Days } from "../utils";
 import { fetchUsageInfo } from "../services/firestore.service";
 import { plans } from "../config/plan.config";
 import logger from "../services/logging.service";
@@ -41,10 +41,9 @@ const UsageMiddleware = function (handler) {
       // if count matches/exceed MAX_DOCUMENT_PER_DAY then rejects it
       const usageInfo = await fetchUsageInfo({ userEmail });
       const { count, lastUpdatedAt } = usageInfo[fileType];
-      const isLastUpdatedToday = isToday(lastUpdatedAt);
-      if (isLastUpdatedToday && count >= MAX_DOCUMENT_LIMIT[fileType]) {
+      if (isBefore30Days(lastUpdatedAt) && count >= MAX_DOCUMENT_LIMIT[fileType]) {
         return res.status(400).json({
-          error: "You've exhausted your daily limit",
+          error: "You've exhausted your monthly limit",
         });
       }
     } catch (error) {

@@ -1,14 +1,4 @@
 export const plans = {
-  zero_tier: {
-    MAX_DOCUMENT_LIMIT: {
-      mp3: 0,
-      pdf: 0,
-    },
-    MAX_PDF_PAGE_COUNT: 0,
-    MAX_PDF_SIZE_MB: 0,
-    MAX_QUESTIONS_PER_DAY: 0,
-    MAX_VIDEO_SIZE_MB: 0,
-  },
   free_tier: {
     pricing: {
       planName: "Free",
@@ -17,21 +7,26 @@ export const plans = {
       duration: "month",
       currency: "USD",
       features: [
-        "120 pages/PDF",
-        "10 MB/PDF",
-        "2 PDFs/day",
-        "1 video/day",
+        "5 PDFs/month",
+        "15 pages/pdf",
+        "5 MB/pdf",
+        "2 videos/month",
+        "5 minutes/video",
+        "10 MB/video",
         "20 queries/day",
+        "5 documents storage",
       ],
     },
     MAX_DOCUMENT_LIMIT: {
+      // handle monthly
       mp3: 2,
       pdf: 5,
     },
-    MAX_PDF_PAGE_COUNT: 50,
-    MAX_PDF_SIZE_MB: 10,
-    MAX_QUESTIONS_PER_DAY: 50,
-    MAX_VIDEO_SIZE_MB: 15,
+    MAX_PDF_PAGE_COUNT: 15,
+    MAX_PDF_SIZE_MB: 5,
+    MAX_QUESTIONS_PER_DAY: 20,
+    MAX_VIDEO_SIZE_MB: 10,
+    COLLECTION_LIMIT: 5,
   },
   plus_tier: {
     pricing: {
@@ -42,15 +37,25 @@ export const plans = {
       amount: 0,
       duration: "month",
       currency: "USD",
-      features: ["2400 pages/PDF", "20 MB/PDF", "5 PDFs/day", "50 queries/day"],
+      features: [
+        "100 PDFs/month",
+        "1000 pages/pdf",
+        "50 MB/pdf",
+        "15 videos/month",
+        "10 minutes/video",
+        "25 MB/video",
+        "200 queries/day",
+        "20 documents storage",
+      ],
     },
     MAX_DOCUMENT_LIMIT: {
-      mp3: 5,
-      pdf: 20,
+      mp3: 15,
+      pdf: 100,
     },
-    MAX_PDF_PAGE_COUNT: 120,
+    MAX_PDF_PAGE_COUNT: 1000,
     MAX_PDF_SIZE_MB: 50,
-    MAX_QUESTIONS_PER_DAY: 100,
+    MAX_QUESTIONS_PER_DAY: 200,
     MAX_VIDEO_SIZE_MB: 25,
+    COLLECTION_LIMIT: 20,
   },
 };

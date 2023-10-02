@@ -11,11 +11,8 @@ import logger from "./logging.service";
 import { deleteObject } from "./r2.service";
 import { plans } from "../config/plan.config";
 import { FREE_TIER } from "../constants/plan.constants";
-import { isToday } from "../utils";
-
+import { isBefore30Days } from "../utils";
 import "dotenv/config";
-
-const COLLECTION_LIMIT = process.env.COLLECTION_LIMIT || 5;
 
 const db = getFirestore(app);
 
@@ -67,10 +64,13 @@ export const addCollection = async ({
   try {
     const userRef = doc(db, `users/${userEmail}`);
     // check if total collection count exceeding the allowed limit
-    const { collections, usageInfo } = await fetchCollections(userEmail);
-
+    const { collections, currentPlan, usageInfo } = await fetchCollections(
+      userEmail
+    );
+    const COLLECTION_LIMIT =
+      plans[currentPlan].COLLECTION_LIMIT || process.env.COLLECTION_LIMIT;
     const { count, lastUpdatedAt } = usageInfo[fileType];
-    const isLastUpdatedToday = isToday(lastUpdatedAt);
+    const isLastUpdatedBefore30Days = isBefore30Days(lastUpdatedAt);
 
     const updatedCollections = [...collections];
     if (collections.length >= COLLECTION_LIMIT) {
@@ -107,7 +107,7 @@ export const addCollection = async ({
       usageInfo: {
         ...usageInfo,
         [fileType]: {
-          count: isLastUpdatedToday ? count + 1 : 1,
+          count: isLastUpdatedBefore30Days ? count + 1 : 1,
           lastUpdatedAt: Date.now(),
         },
       },
