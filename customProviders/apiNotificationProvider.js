@@ -21,13 +21,13 @@ function APIErrorNotificationProvider() {
             toast({
                 title: '',
                 description: error.message,
-                status: 'error',
+                status: error.type ? error.type : 'error',
                 duration: 9000,
                 onCloseComplete: removeError,
                 isClosable: true,
             })
         }
-    }, [error])
+    }, [error?.message])
     return (
         <>
         </>

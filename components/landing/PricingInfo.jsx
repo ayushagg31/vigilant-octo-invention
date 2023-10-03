@@ -67,7 +67,7 @@ export default function PricingInfo() {
     if (user) {
       await processPayment(planId);
       addError(
-        "Your payment is currently being processed. Please be sure to check your email for any pending actions, or consider refreshing your page for updates."
+        "Your payment is currently being processed. Please be sure to check your email for any pending actions, or consider refreshing your page for updates.", 'info'
       );
       setLoader(false);
     } else {
