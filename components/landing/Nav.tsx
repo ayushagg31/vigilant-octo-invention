@@ -22,6 +22,7 @@ import {
   AiOutlineClose as CloseIcon,
   AiOutlineMenu as HamburgerIcon,
   AiFillFileAdd as AddIcon,
+  AiOutlineMail,
 } from "react-icons/ai";
 import { useAuth } from "../../store/useAuth";
 import { LoginModal } from "../home/LoginModal";
@@ -156,6 +157,12 @@ export default function Simple() {
                     <Avatar size={"sm"} src={user?.photoURL} />
                   </MenuButton>
                   <MenuList color={"#000"} bg="#fff" >
+                    <MenuItem bg="#fff" icon={<AiOutlineMail />}>
+                      {user?.email}
+                    </MenuItem>
+
+                    <MenuDivider />
+
                     <MenuItem
                       _hover={{
                         backgroundColor: "#EDF2F6",
