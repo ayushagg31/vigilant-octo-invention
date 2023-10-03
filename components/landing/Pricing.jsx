@@ -8,8 +8,20 @@ import {
   Heading
 } from "@chakra-ui/react";
 import PricingInfo from "./PricingInfo";
+import { useCollections } from "../../store/useCollections";
+import { useAuth } from "../../store/useAuth";
+import {useEffect} from 'react'
 
 export default function Pricing() {
+  const { user } = useAuth();
+  const { fetchCollections } = useCollections();
+
+  useEffect(() => {
+    if (user) {
+      (async () => await fetchCollections())();
+    }
+  }, [user]);
+  
 
   return (
     <>
