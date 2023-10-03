@@ -1,27 +1,20 @@
 "use client";
 
-import {
-  Box,
-  Text,
-  VStack,
-  Flex,
-  Heading
-} from "@chakra-ui/react";
+import { Box, Text, VStack, Flex, Heading } from "@chakra-ui/react";
 import PricingInfo from "./PricingInfo";
 import { useCollections } from "../../store/useCollections";
 import { useAuth } from "../../store/useAuth";
-import {useEffect} from 'react'
+import { useEffect } from "react";
 
 export default function Pricing() {
   const { user } = useAuth();
-  const { fetchCollections } = useCollections();
+  const { fetchPlanInfo } = useCollections();
 
   useEffect(() => {
     if (user) {
-      (async () => await fetchCollections())();
+      (async () => await fetchPlanInfo())();
     }
   }, [user]);
-  
 
   return (
     <>

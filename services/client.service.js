@@ -42,6 +42,20 @@ export const fetchCollectionsApi = async () => {
   }
 };
 
+export const fetchPlanInfoApi = async () => {
+  const userToken = await getCurrentUserToken();
+  try {
+    const response = await axios.get("/api/fetchPlanInfo", {
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+      },
+    });
+    return response;
+  } catch (e) {
+    throw new Error(e?.response?.data?.error);
+  }
+};
+
 export const verifyCollectionsApi = async ({ collectionId }) => {
   const userToken = await getCurrentUserToken();
   try {
