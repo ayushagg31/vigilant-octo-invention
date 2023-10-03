@@ -21,13 +21,12 @@ import { createCheckoutSessionApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
 import { LoginModal } from "../home/LoginModal";
 // @ts-ignore
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useAPIError } from "../../hooks/useApiHook";
 import { useCollections } from "../../store/useCollections";
 import LemonLoader from "./LemonLoader";
 // @ts-ignore
 import isUrl from "is-url";
-import { useLayoutEffect } from "react";
 
 export default function PricingInfo() {
   const [loader, setLoader] = useState(false);
@@ -43,22 +42,6 @@ export default function PricingInfo() {
   const { user } = useAuth((store) => ({
     user: store.user,
   }));
-
-  useLayoutEffect(() => {
-    // @ts-ignore
-    if (window?.LemonSqueezy) {
-      setTimeout(() => {
-        // @ts-ignore
-        window?.LemonSqueezy?.Setup({
-          eventHandler: (event) => {
-            if (event === "close") {
-              setLoader(false);
-            }
-          },
-        });
-      }, 2000);
-    }
-  }, []);
 
   const processPayment = async (planId) => {
     try {
@@ -83,6 +66,10 @@ export default function PricingInfo() {
     setLoader(true);
     if (user) {
       await processPayment(planId);
+      addError(
+        "Your payment is currently being processed. Please be sure to check your email for any pending actions, or consider refreshing your page for updates."
+      );
+      setLoader(false);
     } else {
       onOpenLoginModal();
     }
@@ -178,8 +165,7 @@ export default function PricingInfo() {
     <>
       <LemonLoader />
       <Stack
-        
-        flexDirection={{base: "column", sm: "row"}}
+        flexDirection={{ base: "column", sm: "row" }}
         textAlign="center"
         justify="center"
         spacing={{ base: 4, lg: 10 }}
