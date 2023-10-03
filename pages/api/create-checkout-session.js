@@ -22,10 +22,16 @@ export default AuthorizeMiddleware(async function handler(req, res) {
     urlParams.append("checkout[name]", userName || "");
     urlParams.append("checkout[custom][product]", planId); // plus_tier
     let checkoutUrl = get(plans, [planId, "pricing", "checkout_url"]);
+
+    if (["ayushagg1997@gmail.com", "cvvkshcv@gmail.com"].includes(userEmail))
+      checkoutUrl = get(plans, [planId, "pricing", "test_url"]);
+
     checkoutUrl = `${checkoutUrl}&${urlParams}`;
     res.status(200).send({ url: checkoutUrl });
   } catch (error) {
     logger.error(`/api/create-checkout-session error for ${error.message}`);
-    res.status(500).json({ error: error.message || "Something went wrong, Please try again later" });
+    res.status(500).json({
+      error: error.message || "Something went wrong, Please try again later",
+    });
   }
 });

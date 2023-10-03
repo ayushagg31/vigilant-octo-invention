@@ -32,6 +32,8 @@ export const plans = {
     pricing: {
       checkout_url:
         "https://yourpdf.lemonsqueezy.com/checkout/buy/ac7556da-5370-4afe-b800-03a39f5c495a?embed=1&media=0&dark=1",
+      test_url:
+        "https://yourpdf.lemonsqueezy.com/checkout/buy/f5a9eaa3-3aa4-482c-9300-d71456b2a7c4?embed=1",
       planName: "Pro",
       primaryText: "$5/month",
       amount: 0,

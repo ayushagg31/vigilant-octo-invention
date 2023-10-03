@@ -6,9 +6,17 @@ import Providers from "./_provider";
 import APIErrorNotificationProvider from "../customProviders/apiNotificationProvider";
 import APIErrorProvider from "../customProviders/apiErrorProvider";
 import APILoaderProvider from "../customProviders/apiLoaderProvider";
+import { useEffect } from "react";
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const loader = document.getElementById('globalLoader');
+      if (loader)
+        loader.remove();
+    }
+  }, []);
   return (
     <>
       <Head>
