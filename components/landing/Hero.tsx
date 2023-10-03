@@ -16,9 +16,13 @@ import { IoMdArrowForward } from "react-icons/io";
 import { BsFillArrowDownCircleFill } from "react-icons/bs";
 import { TypeAnimation } from "react-type-animation";
 import { jumpToReleventDiv } from "../../utils";
-
+import { getAnalytics, logEvent } from "firebase/analytics";
+import { app } from "../../config/googleAuth.config";
+import { useEffect } from 'react';
 import { LoginModal } from "../home/LoginModal";
+import { DEMO_CLICKED } from "../../constants/analytics.constants";
 
+let analytics;
 export default function Hero() {
   let router = useRouter();
 
@@ -43,6 +47,9 @@ export default function Hero() {
     }
   };
 
+  useEffect(() => {
+    analytics = getAnalytics(app);
+  }, []);
 
   return (
     <Box
@@ -117,16 +124,17 @@ export default function Hero() {
                 color: "#fff",
                 padding: "1.25rem 1.5rem",
               }}
-
             >
               {
                 user ? "Go to dashboard" : " Start for free"
               }
-
             </Button>
 
             <Button
-              onClick={() => jumpToReleventDiv('demo-section')}
+              onClick={() => {
+                logEvent(analytics, DEMO_CLICKED)
+                jumpToReleventDiv('demo-section');
+              }}
               px={6}
               variant="outline"
               style={{

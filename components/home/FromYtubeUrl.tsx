@@ -8,6 +8,12 @@ import { youtubeTranscribeApi } from "../../services/client.service";
 import RandomLoader from "../common/RandomLoader";
 import { useCollections } from "../../store/useCollections";
 
+import { getAnalytics, logEvent } from "firebase/analytics";
+import {useEffect} from 'react'
+import { app } from "../../config/googleAuth.config";
+import { UPLOAD_YOUTUBE } from "../../constants/analytics.constants";
+
+let analytics;
 export const FromYtubeUrl = () => {
   const [error, setError] = useState(false);
   const router = useRouter();
@@ -15,12 +21,17 @@ export const FromYtubeUrl = () => {
   const { loader, addLoader, removeLoader } = useAPILoader();
   const { fetchCollections } = useCollections();
 
+  useEffect(() => {
+    analytics = getAnalytics(app);
+  }, []);
+
   const saveAsAudio = async (e) => {
     e.preventDefault();
     const url = e.target.elements.url.value;
     setError(false);
     if (isUrl(url)) {
       try {
+        logEvent(analytics, UPLOAD_YOUTUBE);
         addLoader();
         const response = await youtubeTranscribeApi({ ytUrl: url });
         const {

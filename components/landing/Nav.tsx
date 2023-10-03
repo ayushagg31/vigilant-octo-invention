@@ -28,6 +28,11 @@ import { LoginModal } from "../home/LoginModal";
 import { useRouter } from "next/router";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { jumpToReleventDiv } from "../../utils";
+import { getAnalytics, logEvent } from "firebase/analytics";
+import { app } from "../../config/googleAuth.config";
+import { LOGIN_CLICK } from "../../constants/analytics.constants";
+let analytics;
+
 interface Props {
   children: React.ReactNode;
 }
@@ -71,6 +76,7 @@ export default function Simple() {
     router.replace("/");
   };
   useEffect(() => {
+    analytics = getAnalytics(app);
     setMounted(true);
   }, []);
 
@@ -179,6 +185,7 @@ export default function Simple() {
                 }}
                 onClick={() => {
                   onOpenLoginModal();
+                  logEvent(analytics, LOGIN_CLICK);
                 }}
               >
                 Login

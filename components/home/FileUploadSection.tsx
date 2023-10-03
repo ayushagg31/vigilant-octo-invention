@@ -8,7 +8,12 @@ import { FileUploadWrapper } from "./FileUploadWrapper";
 import { useAPIError, useAPILoader } from "../../hooks/useApiHook";
 import RandomLoader from "../common/RandomLoader";
 import { useCollections } from "../../store/useCollections";
+import { getAnalytics, logEvent } from "firebase/analytics";
+import {useEffect} from 'react'
+import { app } from "../../config/googleAuth.config";
+import { UPLOAD_FILE } from "../../constants/analytics.constants";
 
+let analytics;
 export const FileUploadSection = () => {
   const router = useRouter();
   const { addError } = useAPIError();
@@ -25,7 +30,12 @@ export const FileUploadSection = () => {
 
   const [doc, setDoc] = useState(null);
 
+  useEffect(() => {
+    analytics = getAnalytics(app);
+  }, []);
+
   const handleSubmit = async (files) => {
+    logEvent(analytics, UPLOAD_FILE);
     setApiFailure(false);
     let file = files[0];
     setDoc(file);

@@ -6,10 +6,6 @@ import { useDisclosure, Button, Text } from "@chakra-ui/react";
 import { LoginModal } from "./LoginModal";
 
 function LoginButton() {
-  const { openModal } = useModal((store) => ({
-    openModal: store.openModal,
-  }));
-
   const { user, logout, loadingUser } = useAuth((store) => ({
     user: store.user,
     logout: store.logout,

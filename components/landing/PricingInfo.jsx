@@ -27,7 +27,12 @@ import { useCollections } from "../../store/useCollections";
 import LemonLoader from "./LemonLoader";
 // @ts-ignore
 import isUrl from "is-url";
+import {useEffect} from 'react'
+import { getAnalytics, logEvent } from "firebase/analytics";
+import { app } from "../../config/googleAuth.config";
+import { SUBSCRIPTION_CLICK_ANON, SUBSCRIPTION_CLICK_USER } from "../../constants/analytics.constants";
 
+let analytics;
 export default function PricingInfo() {
   const [loader, setLoader] = useState(false);
   const { addError } = useAPIError();
@@ -38,6 +43,10 @@ export default function PricingInfo() {
     onOpen: onOpenLoginModal,
     onClose: onCloseLoginModal,
   } = useDisclosure();
+
+  useEffect(() => {
+    analytics = getAnalytics(app);
+  }, []);
 
   const { user } = useAuth((store) => ({
     user: store.user,
@@ -69,9 +78,11 @@ export default function PricingInfo() {
       addError(
         "Your payment is currently being processed. Please be sure to check your email for any pending actions, or consider refreshing your page for updates.", 'info'
       );
+      logEvent(analytics, SUBSCRIPTION_CLICK_USER, { user: user?.email, name: user?.displayName });
       setLoader(false);
     } else {
       onOpenLoginModal();
+      logEvent(analytics, SUBSCRIPTION_CLICK_ANON);
     }
   };
 

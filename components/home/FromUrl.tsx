@@ -8,6 +8,12 @@ import { downloadDocApi } from "../../services/client.service";
 import RandomLoader from "../common/RandomLoader";
 import { useCollections } from "../../store/useCollections";
 
+import { getAnalytics, logEvent } from "firebase/analytics";
+import {useEffect} from 'react'
+import { app } from "../../config/googleAuth.config";
+import { UPLOAD_URL } from "../../constants/analytics.constants";
+
+let analytics;
 export const FromUrl = () => {
   const [error, setError] = useState(false);
   const router = useRouter();
@@ -15,12 +21,17 @@ export const FromUrl = () => {
   const { loader, addLoader, removeLoader } = useAPILoader();
   const { fetchCollections } = useCollections();
 
+  useEffect(() => {
+    analytics = getAnalytics(app);
+  }, []);
+
   const saveAsPDF = async (e) => {
     e.preventDefault();
     const url = e.target.elements.url.value;
     setError(false);
     if (isUrl(url) && url.endsWith(".pdf")) {
       try {
+        logEvent(analytics, UPLOAD_URL);
         addLoader();
         const response = await downloadDocApi({ pdfUrl: url });
         const {

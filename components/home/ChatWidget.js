@@ -9,6 +9,12 @@ import { AiFillDingtalkCircle, AiOutlineSend } from "react-icons/ai";
 import { chatApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
 
+import { getAnalytics, logEvent } from "firebase/analytics";
+import { app } from "../../config/googleAuth.config";
+import { USER_CHAT } from "../../constants/analytics.constants";
+
+let analytics;
+
 const initalMessage = [
   {
     message:
@@ -42,6 +48,7 @@ export default function ChatWidget() {
 
   // Focus on text field on load
   useEffect(() => {
+    analytics = getAnalytics(app);
     textAreaRef.current.focus();
   }, []);
 
@@ -73,6 +80,7 @@ export default function ChatWidget() {
     }
 
     setLoading(true);
+    logEvent(analytics, USER_CHAT, { user: user?.email });
     setMessages((prevMessages) => [
       ...prevMessages,
       { message: userInput, type: "userMessage" },

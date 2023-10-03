@@ -7,6 +7,8 @@ import APIErrorNotificationProvider from "../customProviders/apiNotificationProv
 import APIErrorProvider from "../customProviders/apiErrorProvider";
 import APILoaderProvider from "../customProviders/apiLoaderProvider";
 import { useEffect } from "react";
+import { getAnalytics, logEvent, isSupported } from "firebase/analytics";
+import { app } from "../config/googleAuth.config";
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
@@ -15,6 +17,10 @@ export default function App({ Component, pageProps }) {
       const loader = document.getElementById('globalLoader');
       if (loader)
         loader.remove();
+    }
+    if (isSupported()) {
+      const analytics = getAnalytics(app);
+      logEvent(analytics, 'test_vikash');
     }
   }, []);
   return (
@@ -34,21 +40,18 @@ export default function App({ Component, pageProps }) {
           </APILoaderProvider>
         </APIErrorProvider>
         <Script src="https://use.fontawesome.com/releases/v5.3.1/js/all.js" />
-        <Script
+        {/* <Script
           strategy="afterInteractive"
           src="https://www.googletagmanager.com/gtag/js?id=G-H4515X7ECK"
         />
-        <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-H4515X7ECK"
-        />
-        <Script strategy="afterInteractive">
+        */}
+        {/* <Script strategy="afterInteractive">
           {`window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
           
             gtag('config', 'G-H4515X7ECK');`}
-        </Script>
+        </Script> */}
       </Providers>
     </>
   );

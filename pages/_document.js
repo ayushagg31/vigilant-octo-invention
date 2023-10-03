@@ -38,7 +38,7 @@ export default function Document() {
         <NextScript />
       </body>
       <div id="globalLoader">
-        <div class="spinner"></div>
+        <div className="spinner"></div>
       </div>
     </Html>
   );

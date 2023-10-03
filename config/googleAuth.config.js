@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, browserSessionPersistence, inMemoryPersistence, browserLocalPersistence, getIdToken } from "firebase/auth";
-import { getAnalytics, logEvent } from "firebase/analytics";
+
 // import dotenv from "dotenv";
 // dotenv.config({ path: '.env' })
 const firebaseConfig = {
@@ -15,8 +15,6 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-// logEvent(analytics, 'notification_received');
 
 const auth = getAuth(app);
 auth.setPersistence(browserSessionPersistence);
