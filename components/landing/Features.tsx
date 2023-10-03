@@ -7,9 +7,12 @@ import {
   Stack,
   Icon,
   Box,
+  Spinner,
 } from "@chakra-ui/react";
 import { FiUploadCloud } from "react-icons/fi";
 import { BsFillChatLeftTextFill } from "react-icons/bs";
+import SpinnerComponent from "../home/SpinnerComponent"
+import { Suspense } from "react";
 
 
 export default function SplitWithImage() {
@@ -37,18 +40,21 @@ export default function SplitWithImage() {
           </Stack>
         </Box>
 
-        <Image
-          margin={"0 auto"}
-          boxShadow={"xl"}
-          border={"2px"}
-          borderColor={"#777"}
-          rounded={"md"}
-          loading="lazy"
-          alt={"feature image"}
-          src={"/demo.gif"}
-          objectFit={"scale-down"}
-          className="demo-image"
-        />
+
+        <Suspense fallback={<SpinnerComponent />}>
+          <Image
+            margin={"0 auto"}
+            boxShadow={"xl"}
+            border={"2px"}
+            borderColor={"#777"}
+            rounded={"md"}
+            loading="lazy"
+            alt={"feature image"}
+            src={"/demo.gif"}
+            objectFit={"scale-down"}
+            className="demo-image"
+          />
+        </Suspense>
       </Box>
     </Box>
   );
