@@ -20,6 +20,7 @@ import {
   MenuItem,
   MenuDivider,
   Box,
+  Text, Tag, TagRightIcon, TagLabel
 } from "@chakra-ui/react";
 import {
   AiFillDingtalkCircle,
@@ -29,7 +30,7 @@ import {
 import { BsFiletypeDoc, BsExclamationCircleFill } from "react-icons/bs";
 import { FcApproval } from "react-icons/fc";
 import { BiUserCircle } from "react-icons/bi";
-import { GiUpgrade } from "react-icons/gi";
+import { FaExternalLinkAlt } from "react-icons/fa";
 import { MdInsights } from "react-icons/md";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import style from "../../styles/NavBar.module.css";
@@ -195,13 +196,14 @@ function NavBar() {
                 size="1.75rem"
               />
             ) : (
-              <GiUpgrade
-                style={{ cursor: "pointer", fontWeight: "bold" }}
-                className={`${style.navbarIcons}`}
-                onClick={() => router.push("/usage")}
-                title={"Upgrade to Pro"}
-                size="1.75rem"
-              />
+
+              <>
+                <Tag size='sm' key='sm' variant='subtle' style={{ cursor: 'pointer' }} onClick={() => router.push("/usage")} colorScheme='cyan'>
+                  <TagLabel>Go Pro</TagLabel>
+                  <TagRightIcon boxSize='5px' as={FaExternalLinkAlt} />
+                </Tag>
+              </>
+
             )}
           </Tooltip>
 
@@ -283,7 +285,7 @@ function NavBar() {
             </>
           )}
         </Flex>
-      </Flex>
+      </Flex >
       <LoginModal isOpen={isOpen} onOpen={onOpen} onClose={onClose} />
 
       <Drawer
