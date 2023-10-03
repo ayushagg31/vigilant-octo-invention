@@ -481,9 +481,41 @@ strong {
 .dark-bg2-shadow {
   box-shadow: 0px 0px 7px 0px rgba(189, 16, 224, 1);
 }
+
 .demo-image {
   z-index: 99;
   position: relative;
   border: 3px solid #FFF;
   /* box-shadow: 1px 1px 25px #fff; */
+}
+
+#globalLoader {
+  position: fixed;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+  background-color: #fff;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.spinner {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background:
+    radial-gradient(farthest-side, #1F1F1F 94%, #0000) top/16px 16px no-repeat,
+    conic-gradient(#0000 30%, #1F1F1F);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 16px), #000 0);
+  animation: s3 1s infinite linear;
+}
+
+@keyframes s3 {
+  100% {
+    transform: rotate(1turn)
+  }
 }
