@@ -10,6 +10,7 @@ import {
   useDisclosure,
   Button
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import { AiFillDingtalkCircle } from "react-icons/ai";
 import FAQComponent from "../landing/FAQ"
 
@@ -33,6 +34,7 @@ export default function LandingFooter() {
     onClose: onCloseFaqModal,
   } = useDisclosure();
 
+  const router = useRouter();
   return (
     <Box
       className="snap-section"
@@ -59,6 +61,9 @@ export default function LandingFooter() {
           </Stack>
           <Stack align={"flex-start"}>
             <ListHeader><a href="mailto:sellifyappshq@gmail.com">Support</a></ListHeader>
+            <Button onClick={() => router.push("/privacy")} variant='link'>
+              Privacy Policy
+            </Button>
           </Stack>
         </SimpleGrid>
       </Container>
