@@ -20,7 +20,7 @@ export default function App({ Component, pageProps }) {
     }
     if (isSupported()) {
       const analytics = getAnalytics(app);
-      logEvent(analytics, 'test_vikash');
+      logEvent(analytics, 'page_view');
     }
   }, []);
   return (
