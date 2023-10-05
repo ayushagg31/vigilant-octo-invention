@@ -277,7 +277,7 @@ export const fetchPlanInfo = async ({ userEmail }) => {
   try {
     const userRef = doc(db, `users/${userEmail}`);
     const userDoc = await getDoc(userRef);
-    let planInfo;
+    let planInfo = FREE_TIER;
     if (userDoc.exists()) {
       planInfo = (await userDoc.data()["currentPlan"]) || FREE_TIER;
     }

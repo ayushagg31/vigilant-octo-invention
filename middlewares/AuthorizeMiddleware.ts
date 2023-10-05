@@ -10,7 +10,7 @@ interface ExtendedNextRequest extends NextRequest {
   context: Context
 }
 
-const AuthorizeMiddleware = function (handler, action = null) {
+const AuthorizeMiddleware = function (handler) {
   return async function (req: ExtendedNextRequest, res) {
     const authorization = req.headers['authorization'];
     if (!authorization) {
@@ -27,14 +27,6 @@ const AuthorizeMiddleware = function (handler, action = null) {
       if (!decodedIdToken || !decodedIdToken.uid || !decodedIdToken.email) {
         logger.info(`Auth Middleware - Not authenticated.: ${decodedIdToken}`)
         return res.status(401).json({ message: 'Authentication required.' })
-      }
-      if (action !== "createUser") {
-        // check if user exist in the DB
-        const isUserExists = await doesUserExists({ userEmail: decodedIdToken.email })
-        if (!isUserExists) {
-          logger.error(`Auth Middleware - isUserExists error for authorization: ${decodedIdToken.email}}`)
-          return res.status(401).json({ message: `404 - User doesn't exist, try login again` })
-        }
       }
       req.context = {
         user: decodedIdToken
