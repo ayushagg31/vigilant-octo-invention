@@ -10,7 +10,7 @@ export const plans = {
         "5 PDFs/month",
         "15 pages/pdf",
         "5 MB/pdf",
-        "2 videos/month",
+        "5 videos/month",
         "5 minutes/video",
         "10 MB/video",
         "20 queries/day",
@@ -19,7 +19,7 @@ export const plans = {
     },
     MAX_DOCUMENT_LIMIT: {
       // handle monthly
-      mp3: 2,
+      mp3: 5,
       pdf: 5,
     },
     MAX_PDF_PAGE_COUNT: 15,
@@ -27,6 +27,7 @@ export const plans = {
     MAX_QUESTIONS_PER_DAY: 20,
     MAX_VIDEO_SIZE_MB: 10,
     COLLECTION_LIMIT: 5,
+    MAX_VIDEO_LENGTH_SECONDS: 300
   },
   plus_tier: {
     pricing: {
@@ -43,7 +44,7 @@ export const plans = {
         "100 PDFs/month",
         "1000 pages/pdf",
         "50 MB/pdf",
-        "15 videos/month",
+        "20 videos/month",
         "10 minutes/video",
         "25 MB/video",
         "200 queries/day",
@@ -51,7 +52,7 @@ export const plans = {
       ],
     },
     MAX_DOCUMENT_LIMIT: {
-      mp3: 15,
+      mp3: 20,
       pdf: 100,
     },
     MAX_PDF_PAGE_COUNT: 1000,
@@ -59,5 +60,6 @@ export const plans = {
     MAX_QUESTIONS_PER_DAY: 200,
     MAX_VIDEO_SIZE_MB: 25,
     COLLECTION_LIMIT: 20,
+    MAX_VIDEO_LENGTH_SECONDS: 600
   },
 };
