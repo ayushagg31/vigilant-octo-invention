@@ -4,8 +4,8 @@ import styles from "../../styles/Home.module.css";
 import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/router";
 // import { HumanMessage, AIMessage } from "langchain/schema";
-import { Box, Avatar, Stack } from "@chakra-ui/react";
-import { AiFillDingtalkCircle, AiOutlineSend } from "react-icons/ai";
+import { Box, Avatar, Stack, Button , IconButton } from "@chakra-ui/react";
+import { AiFillDingtalkCircle, AiOutlineSend, AiFillCopy } from "react-icons/ai";
 import { chatApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
 
@@ -147,15 +147,20 @@ export default function ChatWidget() {
                       key={index}
                       className={
                         message.type === "userMessage" &&
-                        loading &&
-                        index === messages.length - 1
+                          loading &&
+                          index === messages.length - 1
                           ? styles.usermessagewaiting
                           : message.type === "apiMessage"
-                          ? styles.apimessage
-                          : styles.usermessage
+                            ? styles.apimessage
+                            : styles.usermessage
                       }
                     >
                       <div className={styles.markdownanswer}>
+                        {
+                          message.type === "apiMessage" && (<div style={{ float: 'right' }}>
+                            <IconButton variant={'ghost'} aria-label='copy-btn' onClick={() => navigator.clipboard.writeText(message.message)} icon={<AiFillCopy />} />
+                          </div>)
+                        }
                         <ReactMarkdown linkTarget={"_blank"}>
                           {message.message}
                         </ReactMarkdown>
