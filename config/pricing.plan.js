@@ -11,7 +11,7 @@ export const pricingPlanConfig = [
     features: [
       "5 PDFs/month",
       "15 pages/pdf",
-      "5 MB/pdf",
+      "15 MB/pdf",
       "5 videos/month",
       "90 min/video with available transcriptions.",
       "5 min/video without available transcriptions.",
