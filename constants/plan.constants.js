@@ -6,7 +6,7 @@ export const plans = {
     planName: "Free",
     primaryText: "$0/month",
     MAX_DOCUMENT_LIMIT: {
-      mp3: 2,
+      mp3: 5,
       pdf: 5,
     },
     MAX_QUESTIONS_PER_DAY: 20,
@@ -15,7 +15,7 @@ export const plans = {
     planName: "Pro",
     primaryText: "$5/month",
     MAX_DOCUMENT_LIMIT: {
-      mp3: 15,
+      mp3: 20,
       pdf: 100,
     },
     MAX_QUESTIONS_PER_DAY: 200,
