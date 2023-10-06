@@ -15,6 +15,7 @@ export const ingestData = async ({
   pdfUrl = null,
   fileType,
   userEmail,
+  ytTranscript,
 }) => {
   try {
     let loader;
@@ -26,7 +27,7 @@ export const ingestData = async ({
         loader = new PDFLoader(filePath);
         break;
       case "mp3":
-        loader = await AudioLoader(filePath);
+        loader = await AudioLoader(filePath, ytTranscript);
         break;
       default: {
         logger.error(`${fileType} not supported`);
@@ -55,15 +56,17 @@ export const ingestData = async ({
       userEmail,
     });
 
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        logger.error("Error deleting the file:", filePath, err);
-      } else {
-        logger.warn(`Uploded file deleted successfully ${collectionId}`);
-      }
-    });
+    if (filePath) {
+      fs.unlink(filePath, (err) => {
+        if (err) {
+          logger.error("Error deleting the file:", filePath, err);
+        } else {
+          logger.warn(`Uploded file deleted successfully ${collectionId}`);
+        }
+      });
+    }
   } catch (err) {
     logger.error("Ingestion failed - inside ingest-data", err);
-    throw new Error(err.message);
+    throw new Error(err);
   }
 };

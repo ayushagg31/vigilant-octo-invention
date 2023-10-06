@@ -20,11 +20,13 @@ function APIErrorNotificationProvider() {
         if (error?.message !== undefined) {
             toast({
                 title: '',
+                position: 'top',
                 description: error.message,
                 status: error.type ? error.type : 'error',
-                duration: 9000,
+                duration: 200000,
                 onCloseComplete: removeError,
                 isClosable: true,
+                containerStyle: {  }
             })
         }
     }, [error?.message])

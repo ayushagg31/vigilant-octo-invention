@@ -1,5 +1,4 @@
 // pages/api/ytTranscribe.js
-
 import UsageMiddleware from "../../middlewares/UsageMiddleware";
 import PlanMiddleware from "../../middlewares/PlanMiddleware";
 import AuthorizeMiddleware from "../../middlewares/AuthorizeMiddleware";
@@ -8,7 +7,31 @@ import { ingestData } from "../../scripts/ingest-data.mjs";
 import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import ytdl from "ytdl-core";
+import { YoutubeTranscript } from "youtube-transcript";
 import logger from "../../services/logging.service";
+
+async function checkFileSize(filePath, maxFileSizeMB) {
+  try {
+    const stats = await fs.promises.stat(filePath);
+    const fileSizeInBytes = stats.size;
+    const fileSizeMB = fileSizeInBytes / (1024 * 1024);
+
+    if (fileSizeMB < maxFileSizeMB) {
+      return true; // allow
+    } else {
+      return false; // deny
+    }
+  } catch (err) {
+    throw new Error(`Error reading file stats:, ${err}`);
+  }
+}
+
+function checkVideoLength(lengthSeconds, maxVideoLengthSeconds) {
+  if (lengthSeconds) {
+    return lengthSeconds < maxVideoLengthSeconds;
+  }
+  return true;
+}
 
 const ytHandler = async (req, res) => {
   const { ytUrl } = req.body;
@@ -17,86 +40,126 @@ const ytHandler = async (req, res) => {
   if (!userEmail) {
     return res.status(400).json({ message: "Missing required data" });
   }
+
   try {
     const currentPlan = plans[req.headers["X-Plan-Type"]];
-    const { MAX_VIDEO_SIZE_MB } = currentPlan;
-
+    const { MAX_VIDEO_SIZE_MB, MAX_VIDEO_LENGTH_SECONDS } = currentPlan;
     const fileType = "mp3";
     const collectionId = uuidv4();
 
-    const filePath = `uploads/${collectionId}.${fileType}`;
-
     const videoInfo = await ytdl.getInfo(ytUrl);
     const videoTitle = videoInfo?.videoDetails?.title;
+    const videoLengthSeconds = videoInfo?.videoDetails?.lengthSeconds;
 
-    await ytdl(ytUrl, { filter: "audioonly", quality: "lowestaudio" })
-      .pipe(fs.createWriteStream(filePath))
-      .on("finish", async () => {
-        logger.info(`Audio downloaded successfully - ${collectionId}`);
-        await fs.stat(filePath, async (err, stats) => {
-          if (err) {
-            logger.error("Error reading file stats:", err);
-            return res.status(500).json({ error: `Error reading file stats` });
-          }
-          const fileSizeInBytes = stats.size;
-          const fileSizeMB = fileSizeInBytes / (1024 * 1024);
-          if (fileSizeMB < MAX_VIDEO_SIZE_MB) {
-            try {
-              await ingestData({
-                collectionId,
-                collectionName: videoTitle,
-                ytUrl,
-                filePath,
-                fileType,
-                userEmail,
-              });
+    let filePath = null;
+    let ytTranscript = null;
 
-              logger.info(
-                `Transcription and Ingestion complete - ${collectionId}, ${ytUrl}, ${userEmail}`
-              );
+    try {
+      ytTranscript = await YoutubeTranscript.fetchTranscript(ytUrl);
+    } catch (error) {
+      logger.warn("Error fetching the youtube transcript", error);
+      // Handle error when transcript is disabled
+      if (error?.message?.includes("Transcript is disabled for this video")) {
+        logger.warn(
+          `Transcript is disabled for this video - /api/ytTranscribe - userEmail: ${userEmail}, collectionId: ${collectionId}, ytUrl: ${ytUrl}`,
+          error
+        );
+      }
+      try {
+        const isVideoLengthWithinLimit = checkVideoLength(
+          videoLengthSeconds,
+          MAX_VIDEO_LENGTH_SECONDS
+        );
+        if (!isVideoLengthWithinLimit) {
+          return res.status(400).json({
+            error: `Video duration exceeds the maximum allowed limit. Consider upgrading to Pro Tier`,
+          });
+        }
 
-              return res.status(200).json({
-                message: "File transcribed and ingested successfully",
-                collectionName: videoTitle,
-                collectionId,
-                ytUrl,
-              });
-            } catch (error) {
-              logger.error(
-                `Ingestion Failed - /api/ytTranscribe - userEmail: ${userEmail}, collectionId: ${collectionId}`,
-                error
-              );
-              return res.status(500).json({ error: error.message });
-            }
-          } else {
-            fs.unlink(filePath, (err) => {
-              if (err) {
-                logger.error("Error deleting the file:", collectionId, err);
-              } else {
-                logger.info(`File deleted successfully ${collectionId}`);
-              }
-            });
-            return res
-              .status(400)
-              .json({ error: `Exceeding maximum allowed file limit` });
-          }
+        // audio streaming code here
+        const audioStream = ytdl(ytUrl, {
+          filter: "audioonly",
+          quality: "lowestaudio",
         });
-      })
-      .on("error", (err) => {
+
+        filePath = `uploads/${collectionId}.${fileType}`;
+        await new Promise((resolve, reject) => {
+          audioStream.pipe(fs.createWriteStream(filePath));
+          audioStream.on("finish", () => {
+            logger.info(`Audio downloaded successfully - ${collectionId}`);
+            resolve();
+          });
+
+          audioStream.on("error", (err) => {
+            logger.error(
+              `Ingestion Failed - /api/ytTranscribe - userEmail: ${userEmail}, collectionId: ${collectionId}`,
+              err
+            );
+            reject(err);
+          });
+        });
+
+        const isFileSizeWithinLimit = await checkFileSize(
+          filePath,
+          MAX_VIDEO_SIZE_MB
+        );
+        if (!isFileSizeWithinLimit) {
+          fs.promises
+            .unlink(filePath) // Non-blocking unlink
+            .then(() => {
+              logger.info(`File deleted successfully ${collectionId}`);
+            })
+            .catch((err) => {
+              logger.error(`Error deleting the file: ${collectionId}`, err);
+            });
+
+          return res
+            .status(400)
+            .json({
+              error: `Exceeding maximum allowed file limit. Consider upgrading to Pro Tier`,
+            });
+        }
+      } catch (err) {
         logger.error(
           `Error downloading audio - /api/ytTranscribe - userEmail: ${userEmail}, `,
           err
         );
         return res.status(500).json({ error: `Error downloading audio` });
+      }
+    }
+    try {
+      await ingestData({
+        collectionId,
+        collectionName: videoTitle,
+        ytUrl,
+        fileType,
+        userEmail,
+        filePath,
+        ytTranscript,
       });
+
+      logger.info(
+        `Transcription and Ingestion complete using ytTranscript - ${collectionId}, ${ytUrl}, ${userEmail}`
+      );
+      return res.status(200).json({
+        message: "File transcribed and ingested successfully",
+        collectionName: videoTitle,
+        collectionId,
+        ytUrl,
+      });
+    } catch (err) {
+      logger.error(
+        `Ingestion Failed - /api/ytTranscribe - userEmail: ${userEmail}, collectionId: ${collectionId}`,
+        error
+      );
+      return res.status(500).json({ error: `Ingestion Failed` });
+    }
   } catch (err) {
     logger.error(
       `Failed to transcribe - /api/ytTranscribe - userEmail: ${userEmail}`,
       err
     );
-    return res
-      .status(500)
-      .json({ error: `Failed to transcribe: ${err.message}` });
+    return res.status(500).json({ error: `Failed to transcribe` });
   }
 };
 
