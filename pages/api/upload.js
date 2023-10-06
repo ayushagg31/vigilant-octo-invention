@@ -37,7 +37,7 @@ const uploadHandler = async (req, res) => {
 
       if (numPages > MAX_PDF_PAGE_COUNT || fileSizeMB > MAX_PDF_SIZE_MB) {
         return res.status(400).json({
-          error: "PDF exceeds page count or size limits.Please upgrade to Pro Tier",
+          error: "PDF exceeds page count or size limits. Consider upgrading to Pro Tier",
         });
       }
     } else {

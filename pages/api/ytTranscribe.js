@@ -72,7 +72,7 @@ const ytHandler = async (req, res) => {
         );
         if (!isVideoLengthWithinLimit) {
           return res.status(400).json({
-            error: `Video duration exceeds the maximum allowed limit`,
+            error: `Video duration exceeds the maximum allowed limit. Consider upgrading to Pro Tier`,
           });
         }
 
@@ -115,7 +115,9 @@ const ytHandler = async (req, res) => {
 
           return res
             .status(400)
-            .json({ error: `Exceeding maximum allowed file limit` });
+            .json({
+              error: `Exceeding maximum allowed file limit. Consider upgrading to Pro Tier`,
+            });
         }
       } catch (err) {
         logger.error(

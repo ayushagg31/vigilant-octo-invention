@@ -6,16 +6,6 @@ export const plans = {
       amount: 0,
       duration: "month",
       currency: "USD",
-      features: [
-        "5 PDFs/month",
-        "15 pages/pdf",
-        "5 MB/pdf",
-        "5 videos/month",
-        "5 minutes/video",
-        "10 MB/video",
-        "20 queries/day",
-        "5 documents storage",
-      ],
     },
     MAX_DOCUMENT_LIMIT: {
       // handle monthly
@@ -40,16 +30,6 @@ export const plans = {
       amount: 0,
       duration: "month",
       currency: "USD",
-      features: [
-        "100 PDFs/month",
-        "1000 pages/pdf",
-        "50 MB/pdf",
-        "20 videos/month",
-        "10 minutes/video",
-        "25 MB/video",
-        "200 queries/day",
-        "20 documents storage",
-      ],
     },
     MAX_DOCUMENT_LIMIT: {
       mp3: 20,
