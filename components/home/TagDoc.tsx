@@ -25,6 +25,7 @@ const TagDoc = ({ collectionEl, size, closeDrawer }) => {
   if (!mounted) return <></>;
   return (
     <Text
+      noOfLines={1}
       as={NextLink}
       href="#"
       style={{ color: "#fff" }}

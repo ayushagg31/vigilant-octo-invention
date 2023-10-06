@@ -109,6 +109,7 @@ const YourDocs = ({ closeDrawer }) => {
                   as={renderFileIcon(collectionEl.fileType)}
                   color="green.500"
                   mr={2}
+                  minW="30px"
                 />
                 <TagDoc
                   collectionEl={collectionEl}
@@ -116,12 +117,16 @@ const YourDocs = ({ closeDrawer }) => {
                   size="sm"
                 />
               </Flex>
-              <AiFillDelete
-                fontSize={"1.25rem"}
-                style={{
-                  cursor: 'pointer',
-                  color: '#F44336'
-                }} onClick={() => handleDelete(collectionEl)} />
+              <Box minW="30px" ml="2">
+                <AiFillDelete
+                  fontSize={"1.25rem"}
+                  style={{
+                    cursor: 'pointer',
+                    color: '#F44336'
+                  }}
+                  onClick={() => handleDelete(collectionEl)}
+                />
+              </Box>
             </Flex>
           </Box>
         )))}
