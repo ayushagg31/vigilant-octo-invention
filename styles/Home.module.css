@@ -73,6 +73,9 @@
   color: #ececf1;
   outline: none;
 }
+.textarea.hasLeftIcon {
+  padding-left: 3rem;
+}
 
 .textarea:disabled {
   opacity: 0.8;
@@ -85,7 +88,29 @@
 .generatebutton {
   position: absolute;
   top: 0.87rem;
-  right: 1rem;
+  right: 0.4rem;
+  color: rgb(165, 162, 162);
+  background: none;
+  padding: 0.3rem;
+  border: none;
+  display: flex;
+}
+
+/* .flashQueryWrapper {
+  position: absolute;
+  bottom: 20px;
+  padding: 5px;
+  left: 20px;
+  border-radius: 100%;
+  background-color: #fff;
+  animation: heartbeat 3s infinite;
+} */
+.flashQuery {
+  left: 10px;
+  top: 17px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
   color: rgb(165, 162, 162);
   background: none;
   padding: 0.3rem;
@@ -241,6 +266,7 @@
   justify-content: center;
   align-items: center;
   padding: 10px;
+  position: relative;
 }
 
 .pointsnormal {
@@ -364,5 +390,33 @@
   .cloudform {
     position: fixed;
     bottom: -5px;
+  }
+}
+
+@keyframes heartbeat
+{
+  0%
+  {
+    transform: scale( .85 );
+  }
+  20%
+  {
+    transform: scale( 1 );
+  }
+  40%
+  {
+    transform: scale( .85 );
+  }
+  60%
+  {
+    transform: scale( 1 );
+  }
+  80%
+  {
+    transform: scale( .85 );
+  }
+  100%
+  {
+    transform: scale( .85 );
   }
 }

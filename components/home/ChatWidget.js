@@ -3,15 +3,35 @@ import { useState, Children, useRef, useEffect } from "react";
 import styles from "../../styles/Home.module.css";
 import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/router";
-// import { HumanMessage, AIMessage } from "langchain/schema";
-import { Box, Avatar, Stack, Button , IconButton } from "@chakra-ui/react";
-import { AiFillDingtalkCircle, AiOutlineSend, AiFillCopy } from "react-icons/ai";
+import {
+  Box,
+  Avatar,
+  Stack,
+  IconButton,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  Button,
+  DrawerFooter,
+  DrawerCloseButton,
+  useDisclosure,
+} from "@chakra-ui/react";
+import {
+  AiFillDingtalkCircle,
+  AiOutlineSend,
+  AiFillCopy,
+  AiFillThunderbolt,
+} from "react-icons/ai";
 import { chatApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
 
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { app } from "../../config/googleAuth.config";
-import { USER_CHAT } from "../../constants/analytics.constants";
+import { FLAST_QUERY, USER_CHAT } from "../../constants/analytics.constants";
+import useLocalStorageState from "use-local-storage-state";
+import { useFlashQuery } from "../../store/useFlashQuery";
 
 let analytics;
 
@@ -27,15 +47,25 @@ export default function ChatWidget() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    query: { id: collectionId },
+    query: { id: collectionId, name, yt },
   } = router;
+  let youtubeUrl =
+    yt !== undefined && !Array.isArray(yt) ? window.atob(yt) : null;
 
   const [messages, setMessages] = useState([...initalMessage]);
 
   const { user } = useAuth((store) => ({
     user: store.user,
   }));
+
+  const { queries, fetchQuery } = useFlashQuery();
+  let pageType = 'pdf';
+  if (youtubeUrl) {
+    pageType = 'video';
+  }
+  const filteredQueries = queries.filter(query => query.type === pageType);
 
   const messageListRef = useRef(null);
   const textAreaRef = useRef(null);
@@ -120,6 +150,36 @@ export default function ChatWidget() {
     }
   };
 
+
+  const fetchFlashQuery = async (query) => {
+    setLoading(true);
+    logEvent(analytics, FLAST_QUERY, { query: query.question });
+    onClose();
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { message: query.question, type: "userMessage" },
+    ]);
+    try {
+      const data = await fetchQuery(query.id, collectionId);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { message: data.message, type: "apiMessage" },
+      ]);
+    } catch (error) {
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          message:
+            error?.message ||
+            "Oops! There seems to be an error. Please try again.",
+          type: "apiMessage",
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Box className={styles.cloud}>
@@ -176,6 +236,7 @@ export default function ChatWidget() {
       <div>
         <div className={styles.cloudform}>
           <form onSubmit={handleSubmit}>
+            {/*  style={{ display: 'flex', alignItems: "center", gap: '5px'}} */}
             <textarea
               disabled={loading}
               onKeyDown={handleEnter}
@@ -191,9 +252,9 @@ export default function ChatWidget() {
               }
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
-              className={styles.textarea}
+              className={`${styles.textarea} ${filteredQueries.length > 0 ? styles.hasLeftIcon : null}`}
             />
-            <button
+            <Button
               type="submit"
               disabled={loading}
               className={styles.generatebutton}
@@ -204,10 +265,47 @@ export default function ChatWidget() {
                 // Send icon SVG in input field
                 <AiOutlineSend fontSize="1.5rem" />
               )}
-            </button>
+            </Button>
+            {
+            filteredQueries.length > 0 && (
+              <Box
+                onClick={() => {
+                  if (!loading) {
+                    onOpen()
+                  }
+                }}
+                p="2"
+                className={styles.flashQuery}
+              >
+                <AiFillThunderbolt />
+              </Box>
+            )}
           </form>
         </div>
       </div>
+      <Drawer placement={'right'} onClose={onClose} isOpen={isOpen}>
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerHeader borderBottomWidth="1px">Quick query</DrawerHeader>
+          <DrawerBody>
+            
+            {
+              filteredQueries.map((query) => {
+                return (
+                <Button onClick={() => fetchFlashQuery(query)} size="xs" mt="3">
+                  <Box mr="2">{query.question}</Box>
+                </Button>
+                )
+              })
+            }
+          </DrawerBody>
+          <DrawerFooter shadow={"inner"}>
+            <Button variant="outline" mr={3} onClick={onClose}>
+              Close
+            </Button>
+          </DrawerFooter>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 }
