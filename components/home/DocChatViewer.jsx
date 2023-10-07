@@ -14,8 +14,8 @@ import { FaCheck } from "react-icons/fa";
 const DocChatViewer = () => {
   const [isVerified, setIsVerified] = useState(false);
   const { addError } = useAPIError();
-  const [blogState, setBlogState] = useState('NULL');
-  const [blogPost, setBlogPost] = useState('');
+  const [blogState, setBlogState] = useState("NULL");
+  const [blogPost, setBlogPost] = useState("");
   const router = useRouter();
   const {
     query: { id, name, yt },
@@ -55,7 +55,7 @@ const DocChatViewer = () => {
   const generateBlogFromYT = async () => {
     const QUERY =
       "generate a detailed blog from this video with heading and point by point";
-    setBlogState('LOADING');
+    setBlogState("LOADING");
     try {
       const response = await chatApi({
         question: QUERY,
@@ -64,16 +64,16 @@ const DocChatViewer = () => {
       });
       const data = await response.data;
       setBlogPost(data.message);
-      setBlogState('READY');
+      setBlogState("READY");
     } catch (error) {
       console.log(response);
-      setBlogState('ERROR');
+      setBlogState("ERROR");
     }
   };
 
   const copyBlogToClipboard = () => {
-    navigator.clipboard.writeText(blogPost)
-  }
+    navigator.clipboard.writeText(blogPost);
+  };
 
   if (!isVerified) return <LoaderScreen />;
 
@@ -102,19 +102,17 @@ const DocChatViewer = () => {
                 <>
                   <ReactPlayer url={youtubeUrl} />
                   <Box mt="4">
-                    {blogState === 'READY' ? (
+                    {blogState === "READY" ? (
                       <>
-                      <Button onClick={copyBlogToClipboard} size="xs">
-                        <Box mr="2">Copy blog post markdown to clipboard</Box> <FaCheck color="green" />
-                      </Button>
-                      {/* <Text size="xs">Use <a href="https://dillinger.io" target="_blank">https://dillinger.io/</a> to convert to HTML</Text> */}
+                        <Button onClick={copyBlogToClipboard} size="xs">
+                          <Box mr="2">Copy blog post markdown to clipboard</Box>{" "}
+                          <FaCheck color="green" />
+                        </Button>
                       </>
                     ) : (
                       <Button onClick={generateBlogFromYT} size="xs">
                         <Box mr="2">Generate a blog post form this video</Box>
-                        {
-                          (blogState === 'LOADING') && <Spinner size="xs" />
-                        }
+                        {blogState === "LOADING" && <Spinner size="xs" />}
                       </Button>
                     )}
                   </Box>
@@ -131,7 +129,7 @@ const DocChatViewer = () => {
         </Box>
         <Box className={`${style.docinsightSections} ${style.chatSection}`}>
           <Box h="100%" overflowY="scroll">
-            <ChatWidget />
+            <ChatWidget id={id} />
           </Box>
         </Box>
       </Flex>

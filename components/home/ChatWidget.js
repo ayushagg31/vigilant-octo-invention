@@ -3,15 +3,19 @@ import { useState, Children, useRef, useEffect } from "react";
 import styles from "../../styles/Home.module.css";
 import ReactMarkdown from "react-markdown";
 import { useRouter } from "next/router";
-// import { HumanMessage, AIMessage } from "langchain/schema";
-import { Box, Avatar, Stack, Button , IconButton } from "@chakra-ui/react";
-import { AiFillDingtalkCircle, AiOutlineSend, AiFillCopy } from "react-icons/ai";
+import { Box, Avatar, Stack, IconButton } from "@chakra-ui/react";
+import {
+  AiFillDingtalkCircle,
+  AiOutlineSend,
+  AiFillCopy,
+} from "react-icons/ai";
 import { chatApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
 
 import { getAnalytics, logEvent } from "firebase/analytics";
 import { app } from "../../config/googleAuth.config";
 import { USER_CHAT } from "../../constants/analytics.constants";
+import useLocalStorageState from "use-local-storage-state";
 
 let analytics;
 
@@ -22,16 +26,19 @@ const initalMessage = [
     type: "apiMessage",
   },
 ];
-export default function ChatWidget() {
+export default function ChatWidget({ id }) {
   const [userInput, setUserInput] = useState("");
-  const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const {
     query: { id: collectionId },
   } = router;
+  const existingMessages = JSON.parse(localStorage.getItem(id || collectionId));
 
-  const [messages, setMessages] = useState([...initalMessage]);
+  const [history, setHistory] = useState(existingMessages?.slice(-4) || []);
+  const [messages, setMessages] = useLocalStorageState(id || collectionId, {
+    defaultValue: existingMessages || [...initalMessage],
+  });
 
   const { user } = useAuth((store) => ({
     user: store.user,
@@ -51,10 +58,6 @@ export default function ChatWidget() {
     analytics = getAnalytics(app);
     textAreaRef.current.focus();
   }, []);
-
-  useEffect(() => {
-    setMessages([...initalMessage]);
-  }, [collectionId]);
 
   // Handle errors
   const handleError = (error) => {
@@ -147,20 +150,27 @@ export default function ChatWidget() {
                       key={index}
                       className={
                         message.type === "userMessage" &&
-                          loading &&
-                          index === messages.length - 1
+                        loading &&
+                        index === messages.length - 1
                           ? styles.usermessagewaiting
                           : message.type === "apiMessage"
-                            ? styles.apimessage
-                            : styles.usermessage
+                          ? styles.apimessage
+                          : styles.usermessage
                       }
                     >
                       <div className={styles.markdownanswer}>
-                        {
-                          message.type === "apiMessage" && (<div style={{ float: 'right' }}>
-                            <IconButton variant={'ghost'} aria-label='copy-btn' onClick={() => navigator.clipboard.writeText(message.message)} icon={<AiFillCopy />} />
-                          </div>)
-                        }
+                        {message.type === "apiMessage" && (
+                          <div style={{ float: "right" }}>
+                            <IconButton
+                              variant={"ghost"}
+                              aria-label="copy-btn"
+                              onClick={() =>
+                                navigator.clipboard.writeText(message.message)
+                              }
+                              icon={<AiFillCopy />}
+                            />
+                          </div>
+                        )}
                         <ReactMarkdown linkTarget={"_blank"}>
                           {message.message}
                         </ReactMarkdown>
