@@ -96,15 +96,6 @@
   display: flex;
 }
 
-/* .flashQueryWrapper {
-  position: absolute;
-  bottom: 20px;
-  padding: 5px;
-  left: 20px;
-  border-radius: 100%;
-  background-color: #fff;
-  animation: heartbeat 3s infinite;
-} */
 .flashQuery {
   left: 10px;
   top: 17px;
