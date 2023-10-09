@@ -12,8 +12,8 @@ import ReactPlayer from "react-player";
 const DocChatViewer = () => {
   const [isVerified, setIsVerified] = useState(false);
   const { addError } = useAPIError();
-  const [blogState, setBlogState] = useState('NULL');
-  const [blogPost, setBlogPost] = useState('');
+  const [blogState, setBlogState] = useState("NULL");
+  const [blogPost, setBlogPost] = useState("");
   const router = useRouter();
   const {
     query: { id, name, yt },
@@ -51,8 +51,8 @@ const DocChatViewer = () => {
   }, [id]);
 
   const copyBlogToClipboard = () => {
-    navigator.clipboard.writeText(blogPost)
-  }
+    navigator.clipboard.writeText(blogPost);
+  };
 
   if (!isVerified) return <LoaderScreen />;
 
@@ -93,7 +93,7 @@ const DocChatViewer = () => {
         </Box>
         <Box className={`${style.docinsightSections} ${style.chatSection}`}>
           <Box h="100%" overflowY="scroll">
-            <ChatWidget />
+            <ChatWidget id={id} />
           </Box>
         </Box>
       </Flex>

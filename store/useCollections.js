@@ -41,6 +41,7 @@ export const useCollections = create((set, get) => ({
   deleteCollection: async (collectionId) => {
     try {
       const { data } = await deleteCollectionApi({ collectionId });
+      localStorage.removeItem(collectionId);
       set({ collections: data?.collections || [] });
     } catch (error) {
       throw new Error(error);
