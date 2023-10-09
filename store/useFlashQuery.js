@@ -5,8 +5,20 @@ export const useFlashQuery = create((set, get) => ({
   queries: [
     {
       id: 1,
-      question: "Generate a blog post from this video",
+      question: "Generate a blog article 📜",
       prompt: "generate a detailed blog from this video with heading and point by point",
+      type: 'video'
+    },
+    {
+      id: 2,
+      question: "Key insights 💬",
+      prompt: "generate key insights of this video points by point in numeric order and a quick summary at the end",
+      type: 'video'
+    },
+    {
+      id: 3,
+      question: "Create a twitter thread 🧵",
+      prompt: "generate a highly engaging and interesting twitter thread in numeric from this video, also add followup questions for engagement",
       type: 'video'
     }
   ],
