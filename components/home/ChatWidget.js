@@ -298,8 +298,8 @@ export default function ChatWidget({ id }) {
             {
               filteredQueries.map((query) => {
                 return (
-                <Button onClick={() => fetchFlashQuery(query)} size="xs" mt="3">
-                  <Box mr="2">{query.question}</Box>
+                <Button onClick={() => fetchFlashQuery(query)} size="xs" mr="2" mb="3">
+                  <Box>{query.question}</Box>
                 </Button>
                 )
               })
