@@ -6,5 +6,6 @@ export const UPLOAD_YOUTUBE = 'UPLOAD_YOUTUBE';
 export const USER_CHAT = 'USER_CHAT';
 export const DEMO_CLICKED = 'DEMO_CLICKED';
 export const LOGIN_CLICK = 'LOGIN_CLICK';
+export const FLAST_QUERY = 'FLAST_QUERY';
 
 // export const CREATE_USER = 'CREATE_USER';

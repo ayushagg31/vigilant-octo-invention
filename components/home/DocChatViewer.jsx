@@ -8,8 +8,6 @@ import LoaderScreen from "./LoaderScreen";
 import { useAPIError } from "../../hooks/useApiHook";
 import Head from "next/head";
 import ReactPlayer from "react-player";
-import { chatApi } from "../../services/client.service";
-import { FaCheck } from "react-icons/fa";
 
 const DocChatViewer = () => {
   const [isVerified, setIsVerified] = useState(false);
@@ -52,25 +50,6 @@ const DocChatViewer = () => {
     }
   }, [id]);
 
-  const generateBlogFromYT = async () => {
-    const QUERY =
-      "generate a detailed blog from this video with heading and point by point";
-    setBlogState("LOADING");
-    try {
-      const response = await chatApi({
-        question: QUERY,
-        history: [],
-        collectionId: id,
-      });
-      const data = await response.data;
-      setBlogPost(data.message);
-      setBlogState("READY");
-    } catch (error) {
-      console.log(response);
-      setBlogState("ERROR");
-    }
-  };
-
   const copyBlogToClipboard = () => {
     navigator.clipboard.writeText(blogPost);
   };
@@ -101,21 +80,6 @@ const DocChatViewer = () => {
               {youtubeUrl !== null ? (
                 <>
                   <ReactPlayer url={youtubeUrl} />
-                  <Box mt="4">
-                    {blogState === "READY" ? (
-                      <>
-                        <Button onClick={copyBlogToClipboard} size="xs">
-                          <Box mr="2">Copy blog post markdown to clipboard</Box>{" "}
-                          <FaCheck color="green" />
-                        </Button>
-                      </>
-                    ) : (
-                      <Button onClick={generateBlogFromYT} size="xs">
-                        <Box mr="2">Generate a blog post form this video</Box>
-                        {blogState === "LOADING" && <Spinner size="xs" />}
-                      </Button>
-                    )}
-                  </Box>
                 </>
               ) : (
                 <iframe

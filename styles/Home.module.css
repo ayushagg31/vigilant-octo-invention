@@ -73,6 +73,9 @@
   color: #ececf1;
   outline: none;
 }
+.textarea.hasLeftIcon {
+  padding-left: 3rem;
+}
 
 .textarea:disabled {
   opacity: 0.8;
@@ -85,7 +88,20 @@
 .generatebutton {
   position: absolute;
   top: 0.87rem;
-  right: 1rem;
+  right: 0.4rem;
+  color: rgb(165, 162, 162);
+  background: none;
+  padding: 0.3rem;
+  border: none;
+  display: flex;
+}
+
+.flashQuery {
+  left: 10px;
+  top: 17px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  position: absolute;
   color: rgb(165, 162, 162);
   background: none;
   padding: 0.3rem;
@@ -241,6 +257,7 @@
   justify-content: center;
   align-items: center;
   padding: 10px;
+  position: relative;
 }
 
 .pointsnormal {
