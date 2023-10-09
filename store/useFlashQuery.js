@@ -18,7 +18,7 @@ export const useFlashQuery = create((set, get) => ({
     {
       id: 3,
       question: "Create a twitter thread 🧵",
-      prompt: "generate a highly engaging and interesting twitter thread in numeric from this video, also add followup questions for engagement",
+      prompt: "generate a highly engaging and interesting twitter thread with subheading in numeric order from this video, also add followup questions for engagement",
       type: 'video'
     }
   ],
