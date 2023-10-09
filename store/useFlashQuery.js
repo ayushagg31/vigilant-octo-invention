@@ -6,7 +6,7 @@ export const useFlashQuery = create((set, get) => ({
     {
       id: 1,
       question: "Generate a blog article 📜",
-      prompt: "generate a detailed blog from this video with heading and point by point",
+      prompt: "generate a detailed blog from this video with heading and point by point, include numberic values to heading.",
       type: 'video'
     },
     {
