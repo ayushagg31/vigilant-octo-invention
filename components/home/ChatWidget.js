@@ -17,6 +17,7 @@ import {
   DrawerFooter,
   DrawerCloseButton,
   useDisclosure,
+  Tooltip
 } from "@chakra-ui/react";
 import {
   AiFillDingtalkCircle,
@@ -206,12 +207,12 @@ export default function ChatWidget({ id }) {
                       key={index}
                       className={
                         message.type === "userMessage" &&
-                        loading &&
-                        index === messages.length - 1
+                          loading &&
+                          index === messages.length - 1
                           ? styles.usermessagewaiting
                           : message.type === "apiMessage"
-                          ? styles.apimessage
-                          : styles.usermessage
+                            ? styles.apimessage
+                            : styles.usermessage
                       }
                     >
                       <div className={styles.markdownanswer}>
@@ -273,19 +274,22 @@ export default function ChatWidget({ id }) {
               )}
             </Button>
             {
-            filteredQueries.length > 0 && (
-              <Box
-                onClick={() => {
-                  if (!loading) {
-                    onOpen()
-                  }
-                }}
-                p="2"
-                className={styles.flashQuery}
-              >
-                <AiFillThunderbolt />
-              </Box>
-            )}
+              filteredQueries.length > 0 && (
+                <Tooltip label='Use flash queries' >
+                  <Box
+                    onClick={() => {
+                      if (!loading) {
+                        onOpen()
+                      }
+                    }}
+                    p="2"
+                    className={styles.flashQuery}
+                  >
+                    <AiFillThunderbolt />
+                  </Box>
+                </Tooltip>
+
+              )}
           </form>
         </div>
       </div>
@@ -294,13 +298,13 @@ export default function ChatWidget({ id }) {
         <DrawerContent>
           <DrawerHeader borderBottomWidth="1px">Quick query</DrawerHeader>
           <DrawerBody>
-            
+
             {
               filteredQueries.map((query) => {
                 return (
-                <Button onClick={() => fetchFlashQuery(query)} size="xs" mr="2" mb="3">
-                  <Box>{query.question}</Box>
-                </Button>
+                  <Button onClick={() => fetchFlashQuery(query)} size="xs" mr="2" mb="3">
+                    <Box>{query.question}</Box>
+                  </Button>
                 )
               })
             }
