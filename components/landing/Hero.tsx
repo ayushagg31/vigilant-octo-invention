@@ -111,6 +111,19 @@ export default function Hero() {
             Summarize your content, Ask questions and Create notes. Almost
             Instantly.
           </Text>
+          <Text
+            as="b"
+            color={"white"}
+            className="hero-heading"
+            fontWeight={500}
+            fontSize={{ base: "sm", sm: "xl" }}
+            maxW={"4xl"}
+            backgroundColor={"#2645b1"}
+            mt={{ base: 2, md: 8 }}
+          >
+
+            ⚡️  Use Flash queries for crafting Twitter threads, and extracting valuable insights.
+          </Text>
           <Stack spacing={6} direction={"row"} mt={3}>
             <Button
               rightIcon={<IoMdArrowForward />}
