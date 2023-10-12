@@ -12,10 +12,10 @@ import {
   DrawerBody,
   DrawerHeader,
   DrawerOverlay,
+  Tooltip,
   DrawerContent,
   Button,
   DrawerFooter,
-  DrawerCloseButton,
   useDisclosure,
   Tooltip
 } from "@chakra-ui/react";
@@ -23,7 +23,6 @@ import {
   AiFillDingtalkCircle,
   AiOutlineSend,
   AiFillCopy,
-  AiFillThunderbolt,
 } from "react-icons/ai";
 import { chatApi } from "../../services/client.service";
 import { useAuth } from "../../store/useAuth";
@@ -65,11 +64,11 @@ export default function ChatWidget({ id }) {
   }));
 
   const { queries, fetchQuery } = useFlashQuery();
-  let pageType = 'pdf';
+  let pageType = "pdf";
   if (youtubeUrl) {
-    pageType = 'video';
+    pageType = "video";
   }
-  const filteredQueries = queries.filter(query => query.type === pageType);
+  const filteredQueries = queries.filter((query) => query.type === pageType);
 
   const messageListRef = useRef(null);
   const textAreaRef = useRef(null);
@@ -149,7 +148,6 @@ export default function ChatWidget({ id }) {
       e.preventDefault();
     }
   };
-
 
   const fetchFlashQuery = async (query) => {
     setLoading(true);
@@ -259,7 +257,9 @@ export default function ChatWidget({ id }) {
               }
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}
-              className={`${styles.textarea} ${filteredQueries.length > 0 ? styles.hasLeftIcon : null}`}
+              className={`${styles.textarea} ${
+                filteredQueries.length > 0 ? styles.hasLeftIcon : null
+              }`}
             />
             <Button
               type="submit"
@@ -273,6 +273,7 @@ export default function ChatWidget({ id }) {
                 <AiOutlineSend fontSize="1.5rem" />
               )}
             </Button>
+<<<<<<< HEAD
             {
               filteredQueries.length > 0 && (
                 <Tooltip label='Use flash queries' >
@@ -290,14 +291,36 @@ export default function ChatWidget({ id }) {
                 </Tooltip>
 
               )}
+=======
+            {filteredQueries.length > 0 && (
+              <Box
+                onClick={() => {
+                  if (!loading) {
+                    onOpen();
+                  }
+                }}
+                p="2"
+                className={styles.flashQuery}
+              >
+                <Tooltip
+                  label={"Flash Query"}
+                  placement="top"
+                  shouldWrapChildren
+                >
+                  ⚡️
+                </Tooltip>
+              </Box>
+            )}
+>>>>>>> cdde02b2eb8543834b38460f5ff3e1a45f45e833
           </form>
         </div>
       </div>
-      <Drawer placement={'right'} onClose={onClose} isOpen={isOpen}>
+      <Drawer placement={"right"} onClose={onClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader borderBottomWidth="1px">Quick query</DrawerHeader>
+          <DrawerHeader borderBottomWidth="1px">⚡️ Flash Query</DrawerHeader>
           <DrawerBody>
+<<<<<<< HEAD
 
             {
               filteredQueries.map((query) => {
@@ -308,6 +331,20 @@ export default function ChatWidget({ id }) {
                 )
               })
             }
+=======
+            {filteredQueries.map((query) => {
+              return (
+                <Button
+                  onClick={() => fetchFlashQuery(query)}
+                  size="xs"
+                  mr="2"
+                  mb="3"
+                >
+                  <Box>{query.question}</Box>
+                </Button>
+              );
+            })}
+>>>>>>> cdde02b2eb8543834b38460f5ff3e1a45f45e833
           </DrawerBody>
           <DrawerFooter shadow={"inner"}>
             <Button variant="outline" mr={3} onClick={onClose}>

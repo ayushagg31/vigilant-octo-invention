@@ -73,6 +73,7 @@
   color: #ececf1;
   outline: none;
 }
+
 .textarea.hasLeftIcon {
   padding-left: 3rem;
 }
@@ -98,14 +99,11 @@
 
 .flashQuery {
   left: 10px;
-  top: 17px;
+  top: 8px;
   font-size: 1.5rem;
   cursor: pointer;
   position: absolute;
-  color: rgb(165, 162, 162);
-  background: none;
   padding: 0.3rem;
-  border: none;
   display: flex;
 }
 
