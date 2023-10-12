@@ -12,12 +12,11 @@ import {
   DrawerBody,
   DrawerHeader,
   DrawerOverlay,
-  Tooltip,
   DrawerContent,
   Button,
   DrawerFooter,
   useDisclosure,
-  Tooltip
+  Tooltip,
 } from "@chakra-ui/react";
 import {
   AiFillDingtalkCircle,
@@ -205,12 +204,12 @@ export default function ChatWidget({ id }) {
                       key={index}
                       className={
                         message.type === "userMessage" &&
-                          loading &&
-                          index === messages.length - 1
+                        loading &&
+                        index === messages.length - 1
                           ? styles.usermessagewaiting
                           : message.type === "apiMessage"
-                            ? styles.apimessage
-                            : styles.usermessage
+                          ? styles.apimessage
+                          : styles.usermessage
                       }
                     >
                       <div className={styles.markdownanswer}>
@@ -273,25 +272,6 @@ export default function ChatWidget({ id }) {
                 <AiOutlineSend fontSize="1.5rem" />
               )}
             </Button>
-<<<<<<< HEAD
-            {
-              filteredQueries.length > 0 && (
-                <Tooltip label='Use flash queries' >
-                  <Box
-                    onClick={() => {
-                      if (!loading) {
-                        onOpen()
-                      }
-                    }}
-                    p="2"
-                    className={styles.flashQuery}
-                  >
-                    <AiFillThunderbolt />
-                  </Box>
-                </Tooltip>
-
-              )}
-=======
             {filteredQueries.length > 0 && (
               <Box
                 onClick={() => {
@@ -311,7 +291,6 @@ export default function ChatWidget({ id }) {
                 </Tooltip>
               </Box>
             )}
->>>>>>> cdde02b2eb8543834b38460f5ff3e1a45f45e833
           </form>
         </div>
       </div>
@@ -320,18 +299,6 @@ export default function ChatWidget({ id }) {
         <DrawerContent>
           <DrawerHeader borderBottomWidth="1px">⚡️ Flash Query</DrawerHeader>
           <DrawerBody>
-<<<<<<< HEAD
-
-            {
-              filteredQueries.map((query) => {
-                return (
-                  <Button onClick={() => fetchFlashQuery(query)} size="xs" mr="2" mb="3">
-                    <Box>{query.question}</Box>
-                  </Button>
-                )
-              })
-            }
-=======
             {filteredQueries.map((query) => {
               return (
                 <Button
@@ -344,7 +311,6 @@ export default function ChatWidget({ id }) {
                 </Button>
               );
             })}
->>>>>>> cdde02b2eb8543834b38460f5ff3e1a45f45e833
           </DrawerBody>
           <DrawerFooter shadow={"inner"}>
             <Button variant="outline" mr={3} onClick={onClose}>
