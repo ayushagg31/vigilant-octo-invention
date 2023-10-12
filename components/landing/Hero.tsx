@@ -122,7 +122,7 @@ export default function Hero() {
             mt={{ base: 2, md: 8 }}
           >
 
-            ⚡️  Use Flash queries for crafting Twitter threads, blog posts, and extracting valuable insights.
+            ⚡️ Use Flash queries for crafting Twitter threads, blog posts, and extracting valuable insights.
           </Text>
           <Stack spacing={6} direction={"row"} mt={3}>
             <Button
