@@ -118,11 +118,11 @@ export default function Hero() {
             fontWeight={500}
             fontSize={{ base: "sm", sm: "xl" }}
             maxW={"4xl"}
-            backgroundColor={"#2645b1"}
+            style={{ background: "linear-gradient(72.3deg, rgb(25 54 159) 8.5%, rgb(55 161 105) 92.2%" }}
             mt={{ base: 2, md: 8 }}
           >
 
-            ⚡️  Use Flash queries for crafting Twitter threads, and extracting valuable insights.
+            ⚡️  Use Flash queries for crafting Twitter threads, blog posts, and extracting valuable insights.
           </Text>
           <Stack spacing={6} direction={"row"} mt={3}>
             <Button
@@ -185,6 +185,6 @@ export default function Hero() {
         onClose={onCloseLoginModal}
         fn={gotoDashboard}
       />
-    </Box>
+    </Box >
   );
 }
